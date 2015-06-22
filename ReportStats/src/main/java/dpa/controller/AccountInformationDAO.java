@@ -20,6 +20,7 @@ import dpa.utils.DBUtils;
 import dpa.model.AccountInformationLoader;
 import dpa.api.AccountStats;
 
+@SuppressWarnings("ALL")
 public class AccountInformationDAO {
 
     Logger logger= LoggerFactory.getLogger(AccountInformationDAO.class);
