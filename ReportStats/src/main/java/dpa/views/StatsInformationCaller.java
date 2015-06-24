@@ -18,8 +18,13 @@ import dpa.api.AccountStats;
 import dpa.api.AdGroupStats;
 import dpa.api.AdSetStats;
 import dpa.api.CampaignStats;
+import dpa.responseparser.resultdata.AccountsResultData;
+import dpa.responseparser.resultdata.AdGroupResultData;
+import dpa.responseparser.resultdata.AdSetResultData;
+import dpa.responseparser.resultdata.CampaignResultData;
 
 public class StatsInformationCaller {
+
 
     /*
     get the account information for all clients
@@ -52,6 +57,7 @@ public class StatsInformationCaller {
         /*
         objects for all the stats create here statically
          */
+
         AccountStats accountStats=new AccountStats();
         AdGroupStats adGroupStats= new AdGroupStats();
         AdSetStats adSetStats=new AdSetStats();

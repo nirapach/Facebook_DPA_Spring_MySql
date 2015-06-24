@@ -1,34 +1,48 @@
 package dpa.model;
 
+import java.util.Date;
+
 /**
  * Created by niranjan on 6/18/15.
  */
 public class AdGroupStatsLoader {
 
+    private int Client_ID;
     private int Account_ID;
-    private String Account_Name;
-    private int AdGroup_ID;
-    private String AdGroup_Name;
+    private String Product_ID;
     private int Age_Start_Range;
     private int Age_End_Range;
-    private int Gender;
+    private String country;
+    private String Gender;
     private String Placement;
-    private String Action_Device;
     private String Impression_Device;
     private int Reach;
-    private float Frequency;
-    private int impressions;
+    private double Frequency;
+    private int Impressions;
     private int Social_Reach;
     private int Social_Impressions;
     private int Unique_Impressions;
     private int Unique_Social_Impressions;
-    private float CPM;
-    private float CPP;
-    private float Spend;
-    private float CPC;
-    private float CTR;
-    private float Cost_Per_Unique_Click;
-    private float Stats_Date;
+    private double CPM;
+    private double CPP;
+    private double Spend;
+    private double CPC;
+    private double CTR;
+    private double Cost_Per_Unique_Click;
+    private Date Activity_Start_Date;
+    private Date Activity_End_Date;
+    private Date Stats_Date;
+
+    /*getters and setters
+     */
+
+    public int getClient_ID() {
+        return Client_ID;
+    }
+
+    public void setClient_ID(int client_ID) {
+        Client_ID = client_ID;
+    }
 
     public int getAccount_ID() {
         return Account_ID;
@@ -38,28 +52,12 @@ public class AdGroupStatsLoader {
         Account_ID = account_ID;
     }
 
-    public String getAccount_Name() {
-        return Account_Name;
+    public String getProduct_ID() {
+        return Product_ID;
     }
 
-    public void setAccount_Name(String account_Name) {
-        Account_Name = account_Name;
-    }
-
-    public int getAdGroup_ID() {
-        return AdGroup_ID;
-    }
-
-    public void setAdGroup_ID(int adGroup_ID) {
-        AdGroup_ID = adGroup_ID;
-    }
-
-    public String getAdGroup_Name() {
-        return AdGroup_Name;
-    }
-
-    public void setAdGroup_Name(String adGroup_Name) {
-        AdGroup_Name = adGroup_Name;
+    public void setProduct_ID(String product_ID) {
+        Product_ID = product_ID;
     }
 
     public int getAge_Start_Range() {
@@ -78,11 +76,19 @@ public class AdGroupStatsLoader {
         Age_End_Range = age_End_Range;
     }
 
-    public int getGender() {
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getGender() {
         return Gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(String gender) {
         Gender = gender;
     }
 
@@ -92,14 +98,6 @@ public class AdGroupStatsLoader {
 
     public void setPlacement(String placement) {
         Placement = placement;
-    }
-
-    public String getAction_Device() {
-        return Action_Device;
-    }
-
-    public void setAction_Device(String action_Device) {
-        Action_Device = action_Device;
     }
 
     public String getImpression_Device() {
@@ -118,20 +116,20 @@ public class AdGroupStatsLoader {
         Reach = reach;
     }
 
-    public float getFrequency() {
+    public double getFrequency() {
         return Frequency;
     }
 
-    public void setFrequency(float frequency) {
+    public void setFrequency(double frequency) {
         Frequency = frequency;
     }
 
     public int getImpressions() {
-        return impressions;
+        return Impressions;
     }
 
     public void setImpressions(int impressions) {
-        this.impressions = impressions;
+        Impressions = impressions;
     }
 
     public int getSocial_Reach() {
@@ -166,59 +164,75 @@ public class AdGroupStatsLoader {
         Unique_Social_Impressions = unique_Social_Impressions;
     }
 
-    public float getCPM() {
+    public double getCPM() {
         return CPM;
     }
 
-    public void setCPM(float CPM) {
+    public void setCPM(double CPM) {
         this.CPM = CPM;
     }
 
-    public float getCPP() {
+    public double getCPP() {
         return CPP;
     }
 
-    public void setCPP(float CPP) {
+    public void setCPP(double CPP) {
         this.CPP = CPP;
     }
 
-    public float getSpend() {
+    public double getSpend() {
         return Spend;
     }
 
-    public void setSpend(float spend) {
+    public void setSpend(double spend) {
         Spend = spend;
     }
 
-    public float getCPC() {
+    public double getCPC() {
         return CPC;
     }
 
-    public void setCPC(float CPC) {
+    public void setCPC(double CPC) {
         this.CPC = CPC;
     }
 
-    public float getCTR() {
+    public double getCTR() {
         return CTR;
     }
 
-    public void setCTR(float CTR) {
+    public void setCTR(double CTR) {
         this.CTR = CTR;
     }
 
-    public float getCost_Per_Unique_Click() {
+    public double getCost_Per_Unique_Click() {
         return Cost_Per_Unique_Click;
     }
 
-    public void setCost_Per_Unique_Click(float cost_Per_Unique_Click) {
+    public void setCost_Per_Unique_Click(double cost_Per_Unique_Click) {
         Cost_Per_Unique_Click = cost_Per_Unique_Click;
     }
 
-    public float getStats_Date() {
+    public Date getActivity_Start_Date() {
+        return Activity_Start_Date;
+    }
+
+    public void setActivity_Start_Date(Date activity_Start_Date) {
+        Activity_Start_Date = activity_Start_Date;
+    }
+
+    public Date getActivity_End_Date() {
+        return Activity_End_Date;
+    }
+
+    public void setActivity_End_Date(Date activity_End_Date) {
+        Activity_End_Date = activity_End_Date;
+    }
+
+    public Date getStats_Date() {
         return Stats_Date;
     }
 
-    public void setStats_Date(float stats_Date) {
+    public void setStats_Date(Date stats_Date) {
         Stats_Date = stats_Date;
     }
 }

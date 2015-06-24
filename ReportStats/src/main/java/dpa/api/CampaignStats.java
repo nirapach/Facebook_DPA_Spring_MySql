@@ -4,6 +4,10 @@ package dpa.api;
  * Created by niranjan on 6/18/15.
  */
 
+import com.google.gson.Gson;
+import dpa.controller.CampaignStatsDAO;
+import dpa.responseparser.responsedata.CampaignStatsJSONResponse;
+import dpa.responseparser.resultdata.CampaignResultData;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
@@ -12,6 +16,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.json.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import java.util.List;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,13 +34,14 @@ public class CampaignStats {
     public void getCampaignstats(int Account_ID_Integer,int Client_ID_Integer,String Access_Token) throws URISyntaxException, IOException {
 
         //Fields in the parameters
+        int Client_ID=Client_ID_Integer;
         String Account_ID = Integer.toString(Account_ID_Integer);
         String date_preset = "yesterday";
         String data_columns = "[\"campaign_group_id\",\"product_id\",\"spend\",\"age\",\"gender\",\"country\"," +
-                "\"placement\",\"impression_device\",\"reach\",\"clicks\",\"impressions\",\"frequency\",\"social_reach\"," +
+                "\"placement\",\"impression_device\",\"total_actions\",\"reach\",\"clicks\",\"impressions\",\"frequency\",\"social_reach\"," +
                 "\"social_impressions\"," +
-                "\"cpm\",\"unique_impressions\",\"unique_social_impressions\",\"cpp\",\"ctr\",\"cpc\"," +
-                "\"cost_per_unique_click\",\"ctr\",\"spend\",\"cost_per_unique_click\"";
+                "\"cpm\",\"unique_impressions\",\"unique_social_impressions\",\"cpp\",\"ctr\",\"cpc\"" +
+                "\"cost_per_unique_click\"";
 
         //url for the get request
         String Campaign_Stats_Get_URL = "graph.facebook.com";
@@ -66,17 +72,31 @@ public class CampaignStats {
         BufferedReader reader = new BufferedReader(new InputStreamReader(
                 httpResponse.getEntity().getContent()));
 
-        String inputLine;
+        /*String inputLine;
         StringBuffer response = new StringBuffer();
 
         while ((inputLine = reader.readLine()) != null) {
             response.append(inputLine);
         }
-        reader.close();
 
         // Save the Json Response
         String jsonresponse = response.toString();
         JSONObject JsonCampaignStats = new JSONObject(jsonresponse);
+        */
+
+        reader.close();
+
+        Gson gson=new Gson();
+
+        CampaignStatsJSONResponse response=gson.fromJson(reader,CampaignStatsJSONResponse.class);
+
+        List<CampaignResultData> results= response.resultdata;
+
+        for(CampaignResultData resultData:results){
+            CampaignStatsDAO.storecampaignlevelstats(Client_ID, resultData);
+        }
+
+
         httpClient.close();
 
     }
