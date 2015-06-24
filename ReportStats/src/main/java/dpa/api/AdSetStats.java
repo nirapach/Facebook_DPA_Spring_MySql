@@ -6,20 +6,16 @@ package dpa.api;
 
 import com.google.gson.Gson;
 import dpa.controller.AdSetStatsDAO;
-import dpa.controller.CampaignStatsDAO;
 import dpa.model.AdSetStatsLoader;
 import dpa.responseparser.responsedata.AdSetStatsJSONResponse;
-import dpa.responseparser.resultdata.AdGroupResultData;
 import dpa.responseparser.resultdata.AdSetResultData;
-import dpa.responseparser.resultdata.CampaignResultData;
-import dpa.views.StatsInformationCaller;
+import dpa.utils.StatisticsDate;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.json.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -38,7 +34,7 @@ import java.net.URISyntaxException;
 public class AdSetStats {
 
     Logger logger= LoggerFactory.getLogger(AdSetStats.class);
-    java.util.Calendar calendar = new java.util.GregorianCalendar();
+
     /*
        Makes a Get API call to reportstats API to get the statistics at the AdSet Level
         */
@@ -125,7 +121,7 @@ public class AdSetStats {
 
             /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
             are getting yesterday's datein date_preset field of the curl request*/
-            Date Stats_Date =calendar.getTime();
+            Date Stats_Date = StatisticsDate.getYesterday();
 
             adSetStatsLoader.setClient_ID(Client_ID);
             adSetStatsLoader.setAdSet_ID(resultData.campaign_id);

@@ -10,6 +10,7 @@ import dpa.model.AccountStatsLoader;
 import dpa.model.CampaignStatsLoader;
 import dpa.responseparser.responsedata.CampaignStatsJSONResponse;
 import dpa.responseparser.resultdata.CampaignResultData;
+import dpa.utils.StatisticsDate;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -35,7 +36,6 @@ import java.net.URISyntaxException;
 public class CampaignStats {
 
     Logger logger= LoggerFactory.getLogger(CampaignStats.class);
-    java.util.Calendar calendar = new java.util.GregorianCalendar();
 
     /*
     Makes a Get API call to reportstats API to get the statistics at the Campaign Level
@@ -129,7 +129,7 @@ public class CampaignStats {
 
             /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
             are getting yesterday's datein date_preset field of the curl request*/
-            Date Stats_Date =calendar.getTime();
+            Date Stats_Date = StatisticsDate.getYesterday();
 
             campaignStatsLoader.setClient_ID(Client_ID);
             campaignStatsLoader.setCampaign_ID(resultData.campaign_group_id);

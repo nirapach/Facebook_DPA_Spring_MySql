@@ -5,12 +5,9 @@ package dpa.views;
  */
 
 import java.beans.PropertyVetoException;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import dpa.model.AccountInformationLoader;
 import dpa.controller.AccountInformationDAO;
@@ -18,10 +15,7 @@ import dpa.api.AccountStats;
 import dpa.api.AdGroupStats;
 import dpa.api.AdSetStats;
 import dpa.api.CampaignStats;
-import dpa.responseparser.resultdata.AccountsResultData;
-import dpa.responseparser.resultdata.AdGroupResultData;
-import dpa.responseparser.resultdata.AdSetResultData;
-import dpa.responseparser.resultdata.CampaignResultData;
+
 
 public class StatsInformationCaller {
 

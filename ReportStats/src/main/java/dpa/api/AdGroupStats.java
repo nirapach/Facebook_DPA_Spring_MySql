@@ -6,19 +6,17 @@ package dpa.api;
 
 import com.google.gson.Gson;
 import dpa.controller.AdGroupStatsDAO;
-import dpa.controller.AdSetStatsDAO;
 import dpa.model.AdGroupStatsLoader;
 import dpa.responseparser.responsedata.AdGroupStatsJSONResponse;
 import dpa.responseparser.resultdata.AdGroupResultData;
-import dpa.responseparser.resultdata.AdSetResultData;
-import dpa.views.StatsInformationCaller;
+import dpa.utils.StatisticsDate;
+
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.json.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -37,7 +35,6 @@ import java.net.URISyntaxException;
 public class AdGroupStats {
 
     Logger logger= LoggerFactory.getLogger(AdGroupStats.class);
-    java.util.Calendar calendar = new java.util.GregorianCalendar();
     /*
        Makes a Get API call to reportstats API to get the statistics at the Individual Ads Level with individual products
         level stats for each ad
@@ -126,7 +123,7 @@ public class AdGroupStats {
 
             /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
             are getting yesterday's datein date_preset field of the curl request*/
-            Date Stats_Date =calendar.getTime();
+            Date Stats_Date = StatisticsDate.getYesterday();
 
             adGroupStatsLoader.setClient_ID(Client_ID);
             adGroupStatsLoader.setAdGroup_ID(resultData.adgroup_id);

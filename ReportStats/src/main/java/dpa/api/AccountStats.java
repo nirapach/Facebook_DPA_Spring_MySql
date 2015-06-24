@@ -9,7 +9,7 @@ import dpa.controller.AccountStatsDAO;
 import dpa.model.AccountStatsLoader;
 import dpa.responseparser.responsedata.AccountStatsJSONResponse;
 import dpa.responseparser.resultdata.AccountsResultData;
-import dpa.views.StatsInformationCaller;
+import dpa.utils.StatisticsDate;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -21,8 +21,6 @@ import org.json.JSONObject;
 import java.beans.PropertyVetoException;
 import java.sql.SQLException;
 import java.util.*;
-import java.lang.Object;
-import java.util.Calendar;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +29,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
-import dpa.model.AccountInformationLoader;
 
 public class AccountStats {
 
     Logger logger= LoggerFactory.getLogger(AccountStats.class);
-    java.util.Calendar calendar = new java.util.GregorianCalendar();
 
 
     /*
@@ -124,7 +120,8 @@ public class AccountStats {
 
             /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
             are getting yesterday's datein date_preset field of the curl request*/
-            Date Stats_Date =calendar.getTime();
+
+            Date Stats_Date = StatisticsDate.getYesterday();
 
             accountStatsLoader.setClient_ID(Client_ID);
             accountStatsLoader.setAccount_ID(resultData.account_id);
