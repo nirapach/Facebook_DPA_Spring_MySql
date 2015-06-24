@@ -66,8 +66,8 @@ public class StatsInformationCaller {
         /*
         extract the account ID from each accountInformationLoader Object
          */
-        int Ad_Account_ID_Integer = accountInformationLoader.getAd_Account_ID();
-        int Client_ID_Integer=accountInformationLoader.getApplication_Client_ID();
+        long Ad_Account_ID_Integer = accountInformationLoader.getAd_Account_ID();
+        long Client_ID_Integer=accountInformationLoader.getApplication_Client_ID();
         String Access_Token=accountInformationLoader.getAccess_Token();
 
         /*

@@ -29,7 +29,7 @@ public class AdGroupStatsDAO {
     public static void storeadgrouplevelstats(List<AdGroupStatsLoader> adGroupStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
 
         Logger logger = LoggerFactory.getLogger(AdSetStatsDAO.class);
-        String query = "INSERT INTO `G4_DPA_REPORTS_DB`.`Product_AdSet_Statistics_Results` " +
+        String query = "INSERT INTO `G4_DPA_REPORTS_DB`.`Product_Ad_Statistics_Results` " +
                 "(`Application_Client_ID`,`Client_Campaign_ID`,`Client_Product_ID`," +
                 "`Client_Reports_Age_Stats_Start_Range`,`Client_Reports_Age_Stats_End_Range`," +
                 "`Client_Reports_Country_Stats`,`Client_Reports_Gender_Stats`,`Client_Reports_Placement`," +
@@ -50,8 +50,8 @@ public class AdGroupStatsDAO {
 
             for(AdGroupStatsLoader adGroupStatsLoader:adGroupStatsLoaderList){
                 statement = connection.prepareStatement(query);
-                statement.setInt(1,adGroupStatsLoader.getClient_ID());
-                statement.setInt(2,adGroupStatsLoader.getAdGroup_ID());
+                statement.setLong(1,adGroupStatsLoader.getClient_ID());
+                statement.setLong(2,adGroupStatsLoader.getAdGroup_ID());
                 statement.setString(3, adGroupStatsLoader.getProduct_ID());
                 statement.setInt(4,adGroupStatsLoader.getAge_Start_Range());
                 statement.setInt(5,adGroupStatsLoader.getAge_End_Range());
@@ -59,16 +59,16 @@ public class AdGroupStatsDAO {
                 statement.setString(7,adGroupStatsLoader.getGender());
                 statement.setString(8,adGroupStatsLoader.getPlacement());
                 statement.setString(9,adGroupStatsLoader.getImpression_Device());
-                statement.setInt(10,adGroupStatsLoader.getReach());
+                statement.setLong(10,adGroupStatsLoader.getReach());
                 statement.setDouble(11,adGroupStatsLoader.getFrequency());
-                statement.setInt(12,adGroupStatsLoader.getImpressions());
-                statement.setInt(13,adGroupStatsLoader.getClicks());
-                statement.setInt(14,adGroupStatsLoader.getTotal_Actions());
+                statement.setLong(12,adGroupStatsLoader.getImpressions());
+                statement.setLong(13,adGroupStatsLoader.getClicks());
+                statement.setLong(14,adGroupStatsLoader.getTotal_Actions());
                 statement.setDouble(15,adGroupStatsLoader.getRelevany_Score());
-                statement.setInt(16,adGroupStatsLoader.getSocial_Reach());
-                statement.setInt(17,adGroupStatsLoader.getSocial_Impressions());
-                statement.setInt(18,adGroupStatsLoader.getUnique_Impressions());
-                statement.setInt(19,adGroupStatsLoader.getUnique_Social_Impressions());
+                statement.setLong(16,adGroupStatsLoader.getSocial_Reach());
+                statement.setLong(17,adGroupStatsLoader.getSocial_Impressions());
+                statement.setLong(18,adGroupStatsLoader.getUnique_Impressions());
+                statement.setLong(19,adGroupStatsLoader.getUnique_Social_Impressions());
                 statement.setDouble(20,adGroupStatsLoader.getCPM());
                 statement.setDouble(21,adGroupStatsLoader.getCPP());
                 statement.setDouble(22,adGroupStatsLoader.getCPC());

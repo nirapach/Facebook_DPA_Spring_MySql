@@ -10,6 +10,7 @@ import dpa.model.AccountStatsLoader;
 import dpa.model.CampaignStatsLoader;
 import dpa.responseparser.responsedata.CampaignStatsJSONResponse;
 import dpa.responseparser.resultdata.CampaignResultData;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
@@ -39,11 +40,11 @@ public class CampaignStats {
     /*
     Makes a Get API call to reportstats API to get the statistics at the Campaign Level
      */
-    public void getCampaignstats(int Account_ID_Integer,int Client_ID_Integer,String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException {
+    public void getCampaignstats(long Account_ID_Integer, long Client_ID_Integer,String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException {
 
         //Fields in the parameters
-        int Client_ID=Client_ID_Integer;
-        String Account_ID = Integer.toString(Account_ID_Integer);
+        long Client_ID=Client_ID_Integer;
+        String Account_ID = Long.toString(Account_ID_Integer);
         String date_preset = "yesterday";
         String data_columns = "[\"campaign_group_id\",\"product_id\",\"spend\",\"age\",\"gender\",\"country\"," +
                 "\"placement\",\"impression_device\",\"total_actions\",\"reach\",\"clicks\",\"impressions\",\"frequency\",\"social_reach\"," +
@@ -62,23 +63,35 @@ public class CampaignStats {
                 .setParameter("date_preset", date_preset)
                 .setParameter("access_token",Access_Token);
 
+        BufferedReader reader=null;
         //declaring the httpget request
         HttpGet httpGet = new HttpGet(builder.build());
         //getting the httpresponse
-        CloseableHttpResponse httpResponse = null;
         try {
-            httpResponse = httpClient.execute(httpGet);
+            CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
+
+
+            System.out.println("GET Response Status: "
+                    + httpResponse.getStatusLine().getStatusCode());
+
+            reader = new BufferedReader(new InputStreamReader(
+                    httpResponse.getEntity().getContent()));
+            reader.close();
+        }
+        catch (ClientProtocolException e) {
+            logger.info("ClientProtocolException ");
+            logger.info(String.valueOf(e));
+            e.printStackTrace();
         } catch (IOException e) {
-            logger.info("CampaignStats HTTP Response");
-            logger.info(String.valueOf(httpResponse));
+            logger.info("CampaignStats HTTP Response IO Exception");
+            logger.info(String.valueOf(e));
             e.printStackTrace();
         }
-
-        System.out.println("GET Response Status: "
-                + httpResponse.getStatusLine().getStatusCode());
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                httpResponse.getEntity().getContent()));
+        catch (NullPointerException e) {
+            logger.info("CampaignStats HTTP Response NullPinterException");
+            logger.info(String.valueOf(e));
+            e.printStackTrace();
+        }
 
         /*String inputLine;
         StringBuffer response = new StringBuffer();
@@ -92,7 +105,7 @@ public class CampaignStats {
         JSONObject JsonCampaignStats = new JSONObject(jsonresponse);
         */
 
-        reader.close();
+
 
         Gson gson=new Gson();
 

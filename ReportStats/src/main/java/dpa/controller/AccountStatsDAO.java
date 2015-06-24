@@ -49,8 +49,8 @@ public class AccountStatsDAO {
 
             for(AccountStatsLoader accountStatsLoader:accountStatsLoaderList){
                 statement = connection.prepareStatement(query);
-                statement.setInt(1,accountStatsLoader.getClient_ID());
-                statement.setInt(2,accountStatsLoader.getAccount_ID());
+                statement.setLong(1,accountStatsLoader.getClient_ID());
+                statement.setLong(2,accountStatsLoader.getAccount_ID());
                 statement.setString(3,accountStatsLoader.getProduct_ID());
                 statement.setInt(4,accountStatsLoader.getAge_Start_Range());
                 statement.setInt(5,accountStatsLoader.getAge_End_Range());
@@ -58,15 +58,15 @@ public class AccountStatsDAO {
                 statement.setString(7,accountStatsLoader.getGender());
                 statement.setString(8,accountStatsLoader.getPlacement());
                 statement.setString(9,accountStatsLoader.getImpression_Device());
-                statement.setInt(10,accountStatsLoader.getReach());
+                statement.setLong(10,accountStatsLoader.getReach());
                 statement.setDouble(11,accountStatsLoader.getFrequency());
-                statement.setInt(12,accountStatsLoader.getImpressions());
-                statement.setInt(13,accountStatsLoader.getClicks());
-                statement.setInt(14,accountStatsLoader.getTotal_Actions());
-                statement.setInt(15,accountStatsLoader.getSocial_Reach());
-                statement.setInt(16,accountStatsLoader.getSocial_Impressions());
-                statement.setInt(17,accountStatsLoader.getUnique_Impressions());
-                statement.setInt(18,accountStatsLoader.getUnique_Social_Impressions());
+                statement.setLong(12,accountStatsLoader.getImpressions());
+                statement.setLong(13,accountStatsLoader.getClicks());
+                statement.setLong(14,accountStatsLoader.getTotal_Actions());
+                statement.setLong(15,accountStatsLoader.getSocial_Reach());
+                statement.setLong(16,accountStatsLoader.getSocial_Impressions());
+                statement.setLong(17,accountStatsLoader.getUnique_Impressions());
+                statement.setLong(18,accountStatsLoader.getUnique_Social_Impressions());
                 statement.setDouble(19,accountStatsLoader.getCPM());
                 statement.setDouble(20,accountStatsLoader.getCPP());
                 statement.setDouble(21,accountStatsLoader.getCPC());

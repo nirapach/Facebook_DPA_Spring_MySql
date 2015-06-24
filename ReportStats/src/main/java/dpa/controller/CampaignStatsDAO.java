@@ -49,8 +49,8 @@ public class CampaignStatsDAO {
 
             for(CampaignStatsLoader campaignStatsLoader:campaignStatsLoaderList){
                 statement = connection.prepareStatement(query);
-                statement.setInt(1,campaignStatsLoader.getClient_ID());
-                statement.setInt(2,campaignStatsLoader.getCampaign_ID());
+                statement.setLong(1,campaignStatsLoader.getClient_ID());
+                statement.setLong(2,campaignStatsLoader.getCampaign_ID());
                 statement.setString(3,campaignStatsLoader.getProduct_ID());
                 statement.setInt(4,campaignStatsLoader.getAge_Start_Range());
                 statement.setInt(5,campaignStatsLoader.getAge_End_Range());
@@ -58,15 +58,15 @@ public class CampaignStatsDAO {
                 statement.setString(7,campaignStatsLoader.getGender());
                 statement.setString(8,campaignStatsLoader.getPlacement());
                 statement.setString(9,campaignStatsLoader.getImpression_Device());
-                statement.setInt(10,campaignStatsLoader.getReach());
+                statement.setLong(10,campaignStatsLoader.getReach());
                 statement.setDouble(11,campaignStatsLoader.getFrequency());
-                statement.setInt(12,campaignStatsLoader.getImpressions());
-                statement.setInt(13,campaignStatsLoader.getClicks());
-                statement.setInt(14,campaignStatsLoader.getTotal_Actions());
-                statement.setInt(15,campaignStatsLoader.getSocial_Reach());
-                statement.setInt(16,campaignStatsLoader.getSocial_Impressions());
-                statement.setInt(17,campaignStatsLoader.getUnique_Impressions());
-                statement.setInt(18,campaignStatsLoader.getUnique_Social_Impressions());
+                statement.setLong(12,campaignStatsLoader.getImpressions());
+                statement.setLong(13,campaignStatsLoader.getClicks());
+                statement.setLong(14,campaignStatsLoader.getTotal_Actions());
+                statement.setLong(15,campaignStatsLoader.getSocial_Reach());
+                statement.setLong(16,campaignStatsLoader.getSocial_Impressions());
+                statement.setLong(17,campaignStatsLoader.getUnique_Impressions());
+                statement.setLong(18,campaignStatsLoader.getUnique_Social_Impressions());
                 statement.setDouble(19,campaignStatsLoader.getCPM());
                 statement.setDouble(20,campaignStatsLoader.getCPP());
                 statement.setDouble(21,campaignStatsLoader.getCPC());

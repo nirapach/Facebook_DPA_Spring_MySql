@@ -49,8 +49,8 @@ public class AdSetStatsDAO {
 
             for(AdSetStatsLoader adSetStatsLoader:adSetStatsLoaderList){
                 statement = connection.prepareStatement(query);
-                statement.setInt(1,adSetStatsLoader.getClient_ID());
-                statement.setInt(2,adSetStatsLoader.getAdSet_ID());
+                statement.setLong(1,adSetStatsLoader.getClient_ID());
+                statement.setLong(2,adSetStatsLoader.getAdSet_ID());
                 statement.setString(3, adSetStatsLoader.getProduct_ID());
                 statement.setInt(4,adSetStatsLoader.getAge_Start_Range());
                 statement.setInt(5,adSetStatsLoader.getAge_End_Range());
@@ -58,15 +58,15 @@ public class AdSetStatsDAO {
                 statement.setString(7,adSetStatsLoader.getGender());
                 statement.setString(8,adSetStatsLoader.getPlacement());
                 statement.setString(9,adSetStatsLoader.getImpression_Device());
-                statement.setInt(10,adSetStatsLoader.getReach());
+                statement.setLong(10,adSetStatsLoader.getReach());
                 statement.setDouble(11,adSetStatsLoader.getFrequency());
-                statement.setInt(12,adSetStatsLoader.getImpressions());
-                statement.setInt(13,adSetStatsLoader.getClicks());
-                statement.setInt(14,adSetStatsLoader.getTotal_Actions());
-                statement.setInt(15,adSetStatsLoader.getSocial_Reach());
-                statement.setInt(16,adSetStatsLoader.getSocial_Impressions());
-                statement.setInt(17,adSetStatsLoader.getUnique_Impressions());
-                statement.setInt(18,adSetStatsLoader.getUnique_Social_Impressions());
+                statement.setLong(12,adSetStatsLoader.getImpressions());
+                statement.setLong(13,adSetStatsLoader.getClicks());
+                statement.setLong(14,adSetStatsLoader.getTotal_Actions());
+                statement.setLong(15,adSetStatsLoader.getSocial_Reach());
+                statement.setLong(16,adSetStatsLoader.getSocial_Impressions());
+                statement.setLong(17,adSetStatsLoader.getUnique_Impressions());
+                statement.setLong(18,adSetStatsLoader.getUnique_Social_Impressions());
                 statement.setDouble(19,adSetStatsLoader.getCPM());
                 statement.setDouble(20,adSetStatsLoader.getCPP());
                 statement.setDouble(21,adSetStatsLoader.getCPC());

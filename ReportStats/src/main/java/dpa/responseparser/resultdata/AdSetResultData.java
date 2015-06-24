@@ -10,10 +10,10 @@ import java.util.Date;
 public class AdSetResultData {
 
     @SerializedName("campaign_id")
-    public int campaign_id;
+    public long campaign_id;
 
     @SerializedName("product_id")
-    public int product_id;
+    public long product_id;
 
     @SerializedName("date_start")
     public Date date_start;
@@ -22,10 +22,10 @@ public class AdSetResultData {
     public Date date_stop;
 
     @SerializedName("impressions")
-    public int impressions;
+    public long impressions;
 
     @SerializedName("clicks")
-    public int clicks;
+    public long clicks;
 
     @SerializedName("spend")
     public double spend;
@@ -46,25 +46,25 @@ public class AdSetResultData {
     public String impression_device;
 
     @SerializedName("total_actions")
-    public int total_actions;
+    public long total_actions;
 
     @SerializedName("reach")
-    public int reach;
+    public long reach;
 
     @SerializedName("frequency")
     public double frequency;
 
     @SerializedName("social_reach")
-    public int social_reach;
+    public long social_reach;
 
     @SerializedName("social_impressions")
-    public int social_impressions;
+    public long social_impressions;
 
     @SerializedName("unique_impressions")
-    public int unique_impressions;
+    public long unique_impressions;
 
     @SerializedName("unique_social_impressions")
-    public int unique_social_impressions;
+    public long unique_social_impressions;
 
     @SerializedName("cpm")
     public double cpm;
