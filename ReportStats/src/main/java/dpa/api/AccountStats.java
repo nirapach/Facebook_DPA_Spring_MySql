@@ -128,6 +128,8 @@ public class AccountStats {
             accountStatsLoader.setReach(resultData.reach);
             accountStatsLoader.setFrequency(resultData.frequency);
             accountStatsLoader.setImpressions(resultData.impressions);
+            accountStatsLoader.setClicks(resultData.clicks);
+            accountStatsLoader.setTotal_Actions(resultData.total_actions);
             accountStatsLoader.setSocial_Reach(resultData.social_reach);
             accountStatsLoader.setSocial_Impressions(resultData.social_impressions);
             accountStatsLoader.setUnique_Impressions(resultData.unique_impressions);

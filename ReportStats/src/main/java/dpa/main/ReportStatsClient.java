@@ -27,7 +27,6 @@ public class ReportStatsClient {
         }
         catch(Exception e){
             logger.error(String.valueOf(e));
-
         }
 
     }

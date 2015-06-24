@@ -8,7 +8,7 @@ import java.util.Date;
 public class AdGroupStatsLoader {
 
     private int Client_ID;
-    private int Account_ID;
+    private int AdGroup_ID;
     private String Product_ID;
     private int Age_Start_Range;
     private int Age_End_Range;
@@ -18,8 +18,11 @@ public class AdGroupStatsLoader {
     private String Impression_Device;
     private int Reach;
     private double Frequency;
+    private int Clicks;
+    private int Total_Actions;
     private int Impressions;
     private int Social_Reach;
+    private double Relevany_Score;
     private int Social_Impressions;
     private int Unique_Impressions;
     private int Unique_Social_Impressions;
@@ -44,12 +47,12 @@ public class AdGroupStatsLoader {
         Client_ID = client_ID;
     }
 
-    public int getAccount_ID() {
-        return Account_ID;
+    public int getAdGroup_ID() {
+        return AdGroup_ID;
     }
 
-    public void setAccount_ID(int account_ID) {
-        Account_ID = account_ID;
+    public void setAdGroup_ID(int adGroup_ID) {
+        AdGroup_ID = adGroup_ID;
     }
 
     public String getProduct_ID() {
@@ -124,6 +127,22 @@ public class AdGroupStatsLoader {
         Frequency = frequency;
     }
 
+    public int getClicks() {
+        return Clicks;
+    }
+
+    public void setClicks(int clicks) {
+        Clicks = clicks;
+    }
+
+    public int getTotal_Actions() {
+        return Total_Actions;
+    }
+
+    public void setTotal_Actions(int total_Actions) {
+        Total_Actions = total_Actions;
+    }
+
     public int getImpressions() {
         return Impressions;
     }
@@ -138,6 +157,14 @@ public class AdGroupStatsLoader {
 
     public void setSocial_Reach(int social_Reach) {
         Social_Reach = social_Reach;
+    }
+
+    public double getRelevany_Score() {
+        return Relevany_Score;
+    }
+
+    public void setRelevany_Score(double relevany_Score) {
+        Relevany_Score = relevany_Score;
     }
 
     public int getSocial_Impressions() {

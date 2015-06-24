@@ -25,7 +25,7 @@ public class CampaignResultData {
     public int impressions;
 
     @SerializedName("clicks")
-    public int click;
+    public int clicks;
 
     @SerializedName("spend")
     public double spend;
@@ -60,11 +60,15 @@ public class CampaignResultData {
     @SerializedName("social_impressions")
     public int social_impressions;
 
+    @SerializedName("unique_impressions")
+    public int unique_impressions;
+
     @SerializedName("unique_social_impressions")
     public int unique_social_impressions;
 
     @SerializedName("cpm")
     public double cpm;
+
 
     @SerializedName("cpp")
     public double cpp;

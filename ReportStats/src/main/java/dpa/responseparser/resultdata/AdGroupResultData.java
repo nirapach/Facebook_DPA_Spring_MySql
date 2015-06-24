@@ -24,7 +24,7 @@ public class AdGroupResultData {
     public int impressions;
 
     @SerializedName("clicks")
-    public int click;
+    public int clicks;
 
     @SerializedName("spend")
     public double spend;
@@ -40,6 +40,9 @@ public class AdGroupResultData {
 
     @SerializedName("placement")
     public String placement;
+
+    @SerializedName("relevancy_score")
+    public double relevancy_score;
 
     @SerializedName("impression_device")
     public String impression_device;
@@ -59,11 +62,15 @@ public class AdGroupResultData {
     @SerializedName("social_impressions")
     public int social_impressions;
 
+    @SerializedName("unique_impressions")
+    public int unique_impressions;
+
     @SerializedName("unique_social_impressions")
     public int unique_social_impressions;
 
     @SerializedName("cpm")
     public double cpm;
+
 
     @SerializedName("cpp")
     public double cpp;

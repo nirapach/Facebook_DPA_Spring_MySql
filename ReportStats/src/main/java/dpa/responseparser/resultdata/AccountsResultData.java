@@ -25,7 +25,7 @@ public class AccountsResultData {
     public int impressions;
 
     @SerializedName("clicks")
-    public int click;
+    public int clicks;
 
     @SerializedName("spend")
     public double spend;

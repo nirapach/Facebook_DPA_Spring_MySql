@@ -18,6 +18,8 @@ public class CampaignStatsLoader {
     private String Impression_Device;
     private int Reach;
     private double Frequency;
+    private int Clicks;
+    private int Total_Actions;
     private int Impressions;
     private int Social_Reach;
     private int Social_Impressions;
@@ -34,9 +36,26 @@ public class CampaignStatsLoader {
     private Date Stats_Date;
 
 
+
     /*
     getters and setters
      */
+
+    public int getClicks() {
+        return Clicks;
+    }
+
+    public void setClicks(int clicks) {
+        Clicks = clicks;
+    }
+
+    public int getTotal_Actions() {
+        return Total_Actions;
+    }
+
+    public void setTotal_Actions(int total_Actions) {
+        Total_Actions = total_Actions;
+    }
 
     public int getClient_ID() {
         return Client_ID;

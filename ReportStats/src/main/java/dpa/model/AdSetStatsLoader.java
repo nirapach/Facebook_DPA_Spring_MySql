@@ -8,7 +8,7 @@ import java.util.Date;
 public class AdSetStatsLoader {
 
     private int Client_ID;
-    private int Account_ID;
+    private int AdSet_ID;
     private String Product_ID;
     private int Age_Start_Range;
     private int Age_End_Range;
@@ -18,6 +18,8 @@ public class AdSetStatsLoader {
     private String Impression_Device;
     private int Reach;
     private double Frequency;
+    private int Clicks;
+    private int Total_Actions;
     private int Impressions;
     private int Social_Reach;
     private int Social_Impressions;
@@ -45,12 +47,12 @@ public class AdSetStatsLoader {
         Client_ID = client_ID;
     }
 
-    public int getAccount_ID() {
-        return Account_ID;
+    public int getAdSet_ID() {
+        return AdSet_ID;
     }
 
-    public void setAccount_ID(int account_ID) {
-        Account_ID = account_ID;
+    public void setAdSet_ID(int adSet_ID) {
+        AdSet_ID = adSet_ID;
     }
 
     public String getProduct_ID() {
@@ -123,6 +125,22 @@ public class AdSetStatsLoader {
 
     public void setFrequency(double frequency) {
         Frequency = frequency;
+    }
+
+    public int getClicks() {
+        return Clicks;
+    }
+
+    public void setClicks(int clicks) {
+        Clicks = clicks;
+    }
+
+    public int getTotal_Actions() {
+        return Total_Actions;
+    }
+
+    public void setTotal_Actions(int total_Actions) {
+        Total_Actions = total_Actions;
     }
 
     public int getImpressions() {

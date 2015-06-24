@@ -52,7 +52,7 @@ public class StatsInformationCaller {
             e.printStackTrace();
         }
     }
-    public static void getAllStats(AccountInformationLoader accountInformationLoader) throws IOException, URISyntaxException {
+    public static void getAllStats(AccountInformationLoader accountInformationLoader) throws IOException, URISyntaxException, PropertyVetoException, SQLException {
 
         /*
         objects for all the stats create here statically
