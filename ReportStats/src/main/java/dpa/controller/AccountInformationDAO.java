@@ -49,8 +49,8 @@ public class AccountInformationDAO {
                  */
                 accountInformationLoader=new AccountInformationLoader();
 
-                accountInformationLoader.setAd_Account_ID(resultSet.getLong("Business_Manager_Ad_Account_ID"));
                 accountInformationLoader.setApplication_Client_ID(resultSet.getLong("Application_Client_ID"));
+                accountInformationLoader.setAd_Account_ID(resultSet.getLong("Business_Manager_Ad_Account_ID"));
                 accountInformationLoader.setAccess_Token(resultSet.getString("Application_Long_Lived_Access_Token"));
 
                 /*
