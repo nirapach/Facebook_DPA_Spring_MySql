@@ -10,6 +10,7 @@ import dpa.model.AccountStatsLoader;
 import dpa.model.CampaignStatsLoader;
 import dpa.responseparser.responsedata.CampaignStatsJSONResponse;
 import dpa.responseparser.resultdata.CampaignResultData;
+import dpa.utils.OAuthExpirationTokenChecker;
 import dpa.utils.StatisticsDate;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -40,7 +41,7 @@ public class CampaignStats {
     /*
     Makes a Get API call to reportstats API to get the statistics at the Campaign Level
      */
-    public void getCampaignstats(long Account_ID_Integer, long Client_ID_Integer,String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException {
+    public boolean getCampaignstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException {
 
         //Fields in the parameters
         long Client_ID=Client_ID_Integer;
@@ -93,79 +94,76 @@ public class CampaignStats {
             e.printStackTrace();
         }
 
-        /*String inputLine;
-        StringBuffer response = new StringBuffer();
-
-        while ((inputLine = reader.readLine()) != null) {
-            response.append(inputLine);
-        }
-
-        // Save the Json Response
-        String jsonresponse = response.toString();
-        JSONObject JsonCampaignStats = new JSONObject(jsonresponse);
-        */
-
-
-
         Gson gson=new Gson();
 
-        CampaignStatsJSONResponse response=gson.fromJson(reader,CampaignStatsJSONResponse.class);
+        /*
+        To check for OAuth Token Expiration
+         */
 
-        List<CampaignResultData> results= response.resultdata;
+        OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
+        int status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader);
 
-        CampaignStatsLoader campaignStatsLoader;
-        List<CampaignStatsLoader> campaignStatsLoaderList=new ArrayList<CampaignStatsLoader>();
+        if(status==1) {
+            CampaignStatsJSONResponse response = gson.fromJson(reader, CampaignStatsJSONResponse.class);
 
-        for(CampaignResultData resultData:results){
+            List<CampaignResultData> results = response.resultdata;
 
-            campaignStatsLoader = new CampaignStatsLoader();
+            CampaignStatsLoader campaignStatsLoader;
+            List<CampaignStatsLoader> campaignStatsLoaderList = new ArrayList<CampaignStatsLoader>();
 
-            //getting the age range and splitting it into accessible integer values
-            String Age=resultData.age;
-            String Age_Start_SubString=Age.substring(Age.lastIndexOf("-")-1);
-            String Age_End_SubString=Age.substring(Age.lastIndexOf("-")+1);
-            int Age_Start_Range = Integer.parseInt(Age_Start_SubString);
-            int Age_End_Range= Integer.parseInt(Age_End_SubString);
+            for (CampaignResultData resultData : results) {
+
+                campaignStatsLoader = new CampaignStatsLoader();
+
+                //getting the age range and splitting it into accessible integer values
+                String Age = resultData.age;
+                String Age_Start_SubString = Age.substring(Age.lastIndexOf("-") - 1);
+                String Age_End_SubString = Age.substring(Age.lastIndexOf("-") + 1);
+                int Age_Start_Range = Integer.parseInt(Age_Start_SubString);
+                int Age_End_Range = Integer.parseInt(Age_End_SubString);
 
             /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
             are getting yesterday's datein date_preset field of the curl request*/
-            Date Stats_Date = StatisticsDate.getYesterday();
+                Date Stats_Date = StatisticsDate.getYesterday();
 
-            campaignStatsLoader.setClient_ID(Client_ID);
-            campaignStatsLoader.setCampaign_ID(resultData.campaign_group_id);
-            campaignStatsLoader.setActivity_Start_Date(resultData.date_start);
-            campaignStatsLoader.setActivity_End_Date(resultData.date_stop);
-            campaignStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-            campaignStatsLoader.setCountry(resultData.country);
-            campaignStatsLoader.setAge_Start_Range(Age_Start_Range);
-            campaignStatsLoader.setAge_End_Range(Age_End_Range);
-            campaignStatsLoader.setGender(resultData.gender);
-            campaignStatsLoader.setPlacement(resultData.placement);
-            campaignStatsLoader.setImpression_Device(resultData.impression_device);
-            campaignStatsLoader.setReach(resultData.reach);
-            campaignStatsLoader.setFrequency(resultData.frequency);
-            campaignStatsLoader.setImpressions(resultData.impressions);
-            campaignStatsLoader.setClicks(resultData.clicks);
-            campaignStatsLoader.setTotal_Actions(resultData.total_actions);
-            campaignStatsLoader.setSocial_Reach(resultData.social_reach);
-            campaignStatsLoader.setSocial_Impressions(resultData.social_impressions);
-            campaignStatsLoader.setUnique_Impressions(resultData.unique_impressions);
-            campaignStatsLoader.setUnique_Social_Impressions(resultData.unique_social_impressions);
-            campaignStatsLoader.setCPC(resultData.cpc);
-            campaignStatsLoader.setCPM(resultData.cpm);
-            campaignStatsLoader.setCTR(resultData.ctr);
-            campaignStatsLoader.setCPP(resultData.cpp);
-            campaignStatsLoader.setSpend(resultData.spend);
-            campaignStatsLoader.setStats_Date(Stats_Date);
+                campaignStatsLoader.setClient_ID(Client_ID);
+                campaignStatsLoader.setCampaign_ID(resultData.campaign_group_id);
+                campaignStatsLoader.setActivity_Start_Date(resultData.date_start);
+                campaignStatsLoader.setActivity_End_Date(resultData.date_stop);
+                campaignStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
+                campaignStatsLoader.setCountry(resultData.country);
+                campaignStatsLoader.setAge_Start_Range(Age_Start_Range);
+                campaignStatsLoader.setAge_End_Range(Age_End_Range);
+                campaignStatsLoader.setGender(resultData.gender);
+                campaignStatsLoader.setPlacement(resultData.placement);
+                campaignStatsLoader.setImpression_Device(resultData.impression_device);
+                campaignStatsLoader.setReach(resultData.reach);
+                campaignStatsLoader.setFrequency(resultData.frequency);
+                campaignStatsLoader.setImpressions(resultData.impressions);
+                campaignStatsLoader.setClicks(resultData.clicks);
+                campaignStatsLoader.setTotal_Actions(resultData.total_actions);
+                campaignStatsLoader.setSocial_Reach(resultData.social_reach);
+                campaignStatsLoader.setSocial_Impressions(resultData.social_impressions);
+                campaignStatsLoader.setUnique_Impressions(resultData.unique_impressions);
+                campaignStatsLoader.setUnique_Social_Impressions(resultData.unique_social_impressions);
+                campaignStatsLoader.setCPC(resultData.cpc);
+                campaignStatsLoader.setCPM(resultData.cpm);
+                campaignStatsLoader.setCTR(resultData.ctr);
+                campaignStatsLoader.setCPP(resultData.cpp);
+                campaignStatsLoader.setSpend(resultData.spend);
+                campaignStatsLoader.setStats_Date(Stats_Date);
 
-            campaignStatsLoaderList.add(campaignStatsLoader);
+                campaignStatsLoaderList.add(campaignStatsLoader);
 
+            }
+            CampaignStatsDAO.storecampaignlevelstats(campaignStatsLoaderList);
 
-
+            httpClient.close();
+            return true;
         }
-        CampaignStatsDAO.storecampaignlevelstats(campaignStatsLoaderList);
 
-        httpClient.close();
-
+        else{
+            return false;
+        }
     }
 }

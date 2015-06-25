@@ -9,6 +9,7 @@ import dpa.controller.AdGroupStatsDAO;
 import dpa.model.AdGroupStatsLoader;
 import dpa.responseparser.responsedata.AdGroupStatsJSONResponse;
 import dpa.responseparser.resultdata.AdGroupResultData;
+import dpa.utils.OAuthExpirationTokenChecker;
 import dpa.utils.StatisticsDate;
 
 import org.apache.http.client.ClientProtocolException;
@@ -39,7 +40,7 @@ public class AdGroupStats {
        Makes a Get API call to reportstats API to get the statistics at the Individual Ads Level with individual products
         level stats for each ad
         */
-    public void getAdgroupstats(long Account_ID_Integer, long Client_ID_Integer,String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException {
+    public boolean getAdgroupstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException {
 
         //Fields in the parameters
         long Client_ID=Client_ID_Integer;
@@ -93,80 +94,82 @@ public class AdGroupStats {
             e.printStackTrace();
         }
 
-        /*String inputLine;
-        StringBuffer response = new StringBuffer();
-
-        while ((inputLine = reader.readLine()) != null) {
-            response.append(inputLine);
-        }*/
-
 
         Gson gson = new Gson();
 
-        AdGroupStatsJSONResponse response = gson.fromJson(reader,AdGroupStatsJSONResponse.class);
+        /*
+        To check for OAuth Token Expiration
+         */
 
-        List<AdGroupResultData> results = response.resultdata;
+        OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
+        int status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader);
 
-        AdGroupStatsLoader adGroupStatsLoader;
-        List<AdGroupStatsLoader> adGroupStatsLoaderList=new ArrayList<AdGroupStatsLoader>();
+        if(status==1) {
 
-        for(AdGroupResultData resultData:results){
+            AdGroupStatsJSONResponse response = gson.fromJson(reader, AdGroupStatsJSONResponse.class);
 
-            adGroupStatsLoader = new AdGroupStatsLoader();
+            List<AdGroupResultData> results = response.resultdata;
 
-            //getting the age range and splitting it into accessible integer values
-            String Age=resultData.age;
-            String Age_Start_SubString=Age.substring(Age.lastIndexOf("-")-1);
-            String Age_End_SubString=Age.substring(Age.lastIndexOf("-")+1);
-            int Age_Start_Range = Integer.parseInt(Age_Start_SubString);
-            int Age_End_Range= Integer.parseInt(Age_End_SubString);
+            AdGroupStatsLoader adGroupStatsLoader;
+            List<AdGroupStatsLoader> adGroupStatsLoaderList = new ArrayList<AdGroupStatsLoader>();
+
+            for (AdGroupResultData resultData : results) {
+
+                adGroupStatsLoader = new AdGroupStatsLoader();
+
+                //getting the age range and splitting it into accessible integer values
+                String Age = resultData.age;
+                String Age_Start_SubString = Age.substring(Age.lastIndexOf("-") - 1);
+                String Age_End_SubString = Age.substring(Age.lastIndexOf("-") + 1);
+                int Age_Start_Range = Integer.parseInt(Age_Start_SubString);
+                int Age_End_Range = Integer.parseInt(Age_End_SubString);
 
             /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
             are getting yesterday's datein date_preset field of the curl request*/
-            Date Stats_Date = StatisticsDate.getYesterday();
+                Date Stats_Date = StatisticsDate.getYesterday();
 
-            adGroupStatsLoader.setClient_ID(Client_ID);
-            adGroupStatsLoader.setAdGroup_ID(resultData.adgroup_id);
-            adGroupStatsLoader.setActivity_Start_Date(resultData.date_start);
-            adGroupStatsLoader.setActivity_End_Date(resultData.date_stop);
-            adGroupStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-            adGroupStatsLoader.setCountry(resultData.country);
-            adGroupStatsLoader.setAge_Start_Range(Age_Start_Range);
-            adGroupStatsLoader.setAge_End_Range(Age_End_Range);
-            adGroupStatsLoader.setGender(resultData.gender);
-            adGroupStatsLoader.setPlacement(resultData.placement);
-            adGroupStatsLoader.setImpression_Device(resultData.impression_device);
-            adGroupStatsLoader.setReach(resultData.reach);
-            adGroupStatsLoader.setFrequency(resultData.frequency);
-            adGroupStatsLoader.setImpressions(resultData.impressions);
-            adGroupStatsLoader.setClicks(resultData.clicks);
-            adGroupStatsLoader.setTotal_Actions(resultData.total_actions);
-            adGroupStatsLoader.setRelevany_Score(resultData.relevancy_score);
-            adGroupStatsLoader.setSocial_Reach(resultData.social_reach);
-            adGroupStatsLoader.setSocial_Impressions(resultData.social_impressions);
-            adGroupStatsLoader.setUnique_Impressions(resultData.unique_impressions);
-            adGroupStatsLoader.setUnique_Social_Impressions(resultData.unique_social_impressions);
-            adGroupStatsLoader.setCPC(resultData.cpc);
-            adGroupStatsLoader.setCPM(resultData.cpm);
-            adGroupStatsLoader.setCTR(resultData.ctr);
-            adGroupStatsLoader.setCPP(resultData.cpp);
-            adGroupStatsLoader.setSpend(resultData.spend);
-            adGroupStatsLoader.setStats_Date(Stats_Date);
+                adGroupStatsLoader.setClient_ID(Client_ID);
+                adGroupStatsLoader.setAdGroup_ID(resultData.adgroup_id);
+                adGroupStatsLoader.setActivity_Start_Date(resultData.date_start);
+                adGroupStatsLoader.setActivity_End_Date(resultData.date_stop);
+                adGroupStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
+                adGroupStatsLoader.setCountry(resultData.country);
+                adGroupStatsLoader.setAge_Start_Range(Age_Start_Range);
+                adGroupStatsLoader.setAge_End_Range(Age_End_Range);
+                adGroupStatsLoader.setGender(resultData.gender);
+                adGroupStatsLoader.setPlacement(resultData.placement);
+                adGroupStatsLoader.setImpression_Device(resultData.impression_device);
+                adGroupStatsLoader.setReach(resultData.reach);
+                adGroupStatsLoader.setFrequency(resultData.frequency);
+                adGroupStatsLoader.setImpressions(resultData.impressions);
+                adGroupStatsLoader.setClicks(resultData.clicks);
+                adGroupStatsLoader.setTotal_Actions(resultData.total_actions);
+                adGroupStatsLoader.setRelevany_Score(resultData.relevancy_score);
+                adGroupStatsLoader.setSocial_Reach(resultData.social_reach);
+                adGroupStatsLoader.setSocial_Impressions(resultData.social_impressions);
+                adGroupStatsLoader.setUnique_Impressions(resultData.unique_impressions);
+                adGroupStatsLoader.setUnique_Social_Impressions(resultData.unique_social_impressions);
+                adGroupStatsLoader.setCPC(resultData.cpc);
+                adGroupStatsLoader.setCPM(resultData.cpm);
+                adGroupStatsLoader.setCTR(resultData.ctr);
+                adGroupStatsLoader.setCPP(resultData.cpp);
+                adGroupStatsLoader.setSpend(resultData.spend);
+                adGroupStatsLoader.setStats_Date(Stats_Date);
 
-            adGroupStatsLoaderList.add(adGroupStatsLoader);
+                adGroupStatsLoaderList.add(adGroupStatsLoader);
 
 
+            }
+            AdGroupStatsDAO.storeadgrouplevelstats(adGroupStatsLoaderList);
 
+            httpClient.close();
+
+            return true;
         }
-        AdGroupStatsDAO.storeadgrouplevelstats(adGroupStatsLoaderList);
 
-        /*
-        // Save the Json Response
-        String jsonresponse = response.toString();
-        JSONObject JsonAdGroupStats = new JSONObject(jsonresponse);
-        */
-        httpClient.close();
-
+        else {
+            return false;
+        }
     }
 }
 

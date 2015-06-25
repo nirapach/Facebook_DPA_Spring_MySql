@@ -9,6 +9,7 @@ import dpa.controller.AccountStatsDAO;
 import dpa.model.AccountStatsLoader;
 import dpa.responseparser.responsedata.AccountStatsJSONResponse;
 import dpa.responseparser.resultdata.AccountsResultData;
+import dpa.utils.OAuthExpirationTokenChecker;
 import dpa.utils.StatisticsDate;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -25,6 +26,7 @@ import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.xml.ws.http.HTTPException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -38,7 +40,7 @@ public class AccountStats {
     /*
        Makes a Get API call to reportstats API to get the statistics at the Ad Account Level
         */
-    public void getAccountstats(long Account_ID_Integer, long Client_ID_Integer,String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException {
+    public boolean getAccountstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException, HTTPException {
 
         //Fields in the parameters
         long Client_ID=Client_ID_Integer;
@@ -72,9 +74,9 @@ public class AccountStats {
             System.out.println("GET Response Status: "
                     + httpResponse.getStatusLine().getStatusCode());
 
-            reader = new BufferedReader(new InputStreamReader(
-                    httpResponse.getEntity().getContent()));
-            reader.close();
+                reader = new BufferedReader(new InputStreamReader(
+                        httpResponse.getEntity().getContent()));
+                reader.close();
 
         } catch (ClientProtocolException e) {
             logger.info("ClientProtocolException ");
@@ -86,81 +88,86 @@ public class AccountStats {
             e.printStackTrace();
         }
         catch (NullPointerException e) {
-            logger.info("AccountStats HTTP Response NullPinterException");
+            logger.info("AccountStats HTTP Response NullPointerException");
             logger.info(String.valueOf(e));
             e.printStackTrace();
         }
-
-        /*String inputLine;
-        StringBuffer response = new StringBuffer();
-
-        while ((inputLine = reader.readLine()) != null) {
-            response.append(inputLine);
-        }*/
-
         Gson gson=new Gson();
 
-        AccountStatsJSONResponse response = gson.fromJson(reader,AccountStatsJSONResponse.class);
+        /*
+        To check for OAuth Token Expiration
+         */
 
-        List<AccountsResultData> results = response.resultdata;
+        OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
+        int status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader);
 
-        AccountStatsLoader accountStatsLoader;
-        List<AccountStatsLoader> accountStatsLoaderList=new ArrayList<AccountStatsLoader>();
+        /*
+        To write the Account Level Stats to the Database
+        Only when the returned status is '1' then this data is written into the database
+         */
+        if(status==1) {
+            AccountStatsJSONResponse response = gson.fromJson(reader, AccountStatsJSONResponse.class);
 
-        for(AccountsResultData resultData:results ){
+            List<AccountsResultData> results = response.resultdata;
 
-            accountStatsLoader= new AccountStatsLoader();
+            AccountStatsLoader accountStatsLoader;
+            List<AccountStatsLoader> accountStatsLoaderList = new ArrayList<AccountStatsLoader>();
 
-            //getting the age range and splitting it into accessible integer values
-            String Age=resultData.age;
-            String Age_Start_SubString=Age.substring(Age.lastIndexOf("-")-1);
-            String Age_End_SubString=Age.substring(Age.lastIndexOf("-")+1);
-            int Age_Start_Range = Integer.parseInt(Age_Start_SubString);
-            int Age_End_Range= Integer.parseInt(Age_End_SubString);
+            for (AccountsResultData resultData : results) {
+
+                accountStatsLoader = new AccountStatsLoader();
+
+                //getting the age range and splitting it into accessible integer values
+                String Age = resultData.age;
+                String Age_Start_SubString = Age.substring(Age.lastIndexOf("-") - 1);
+                String Age_End_SubString = Age.substring(Age.lastIndexOf("-") + 1);
+                int Age_Start_Range = Integer.parseInt(Age_Start_SubString);
+                int Age_End_Range = Integer.parseInt(Age_End_SubString);
 
             /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
             are getting yesterday's datein date_preset field of the curl request*/
 
-            Date Stats_Date = StatisticsDate.getYesterday();
+                Date Stats_Date = StatisticsDate.getYesterday();
 
-            accountStatsLoader.setClient_ID(Client_ID);
-            accountStatsLoader.setAccount_ID(resultData.account_id);
-            accountStatsLoader.setActivity_Start_Date(resultData.date_start);
-            accountStatsLoader.setActivity_End_Date(resultData.date_stop);
-            accountStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-            accountStatsLoader.setCountry(resultData.country);
-            accountStatsLoader.setAge_Start_Range(Age_Start_Range);
-            accountStatsLoader.setAge_End_Range(Age_End_Range);
-            accountStatsLoader.setGender(resultData.gender);
-            accountStatsLoader.setPlacement(resultData.placement);
-            accountStatsLoader.setImpression_Device(resultData.impression_device);
-            accountStatsLoader.setReach(resultData.reach);
-            accountStatsLoader.setFrequency(resultData.frequency);
-            accountStatsLoader.setImpressions(resultData.impressions);
-            accountStatsLoader.setClicks(resultData.clicks);
-            accountStatsLoader.setTotal_Actions(resultData.total_actions);
-            accountStatsLoader.setSocial_Reach(resultData.social_reach);
-            accountStatsLoader.setSocial_Impressions(resultData.social_impressions);
-            accountStatsLoader.setUnique_Impressions(resultData.unique_impressions);
-            accountStatsLoader.setUnique_Social_Impressions(resultData.unique_social_impressions);
-            accountStatsLoader.setCPC(resultData.cpc);
-            accountStatsLoader.setCPM(resultData.cpm);
-            accountStatsLoader.setCTR(resultData.ctr);
-            accountStatsLoader.setCPP(resultData.cpp);
-            accountStatsLoader.setSpend(resultData.spend);
-            accountStatsLoader.setStats_Date(Stats_Date);
+                accountStatsLoader.setClient_ID(Client_ID);
+                accountStatsLoader.setAccount_ID(resultData.account_id);
+                accountStatsLoader.setActivity_Start_Date(resultData.date_start);
+                accountStatsLoader.setActivity_End_Date(resultData.date_stop);
+                accountStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
+                accountStatsLoader.setCountry(resultData.country);
+                accountStatsLoader.setAge_Start_Range(Age_Start_Range);
+                accountStatsLoader.setAge_End_Range(Age_End_Range);
+                accountStatsLoader.setGender(resultData.gender);
+                accountStatsLoader.setPlacement(resultData.placement);
+                accountStatsLoader.setImpression_Device(resultData.impression_device);
+                accountStatsLoader.setReach(resultData.reach);
+                accountStatsLoader.setFrequency(resultData.frequency);
+                accountStatsLoader.setImpressions(resultData.impressions);
+                accountStatsLoader.setClicks(resultData.clicks);
+                accountStatsLoader.setTotal_Actions(resultData.total_actions);
+                accountStatsLoader.setSocial_Reach(resultData.social_reach);
+                accountStatsLoader.setSocial_Impressions(resultData.social_impressions);
+                accountStatsLoader.setUnique_Impressions(resultData.unique_impressions);
+                accountStatsLoader.setUnique_Social_Impressions(resultData.unique_social_impressions);
+                accountStatsLoader.setCPC(resultData.cpc);
+                accountStatsLoader.setCPM(resultData.cpm);
+                accountStatsLoader.setCTR(resultData.ctr);
+                accountStatsLoader.setCPP(resultData.cpp);
+                accountStatsLoader.setSpend(resultData.spend);
+                accountStatsLoader.setStats_Date(Stats_Date);
 
-            accountStatsLoaderList.add(accountStatsLoader);
+                accountStatsLoaderList.add(accountStatsLoader);
 
 
+            }
+            AccountStatsDAO.storeaccountlevelstats(accountStatsLoaderList);
+
+            httpClient.close();
+
+            return true;
         }
-        AccountStatsDAO.storeaccountlevelstats(accountStatsLoaderList);
-        /*
-        // Save the Json Response
-        String jsonresponse = response.toString();
-        JSONObject JsonAccountStats = new JSONObject(jsonresponse);
-        */
-        httpClient.close();
-
+        else{
+            return false;
+        }
     }
 }

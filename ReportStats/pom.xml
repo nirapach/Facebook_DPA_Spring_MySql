@@ -84,6 +84,13 @@
             <artifactId>junit-dep</artifactId>
             <version>4.8.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-email</artifactId>
+            <version>1.4</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
@@ -110,6 +117,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <version>2.6</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -122,6 +130,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
+                <version>1.4.0</version>
                 <configuration>
                     <mainClass>dpa.main.ReportStatsClient</mainClass>
                 </configuration>

@@ -9,6 +9,7 @@ import dpa.controller.AdSetStatsDAO;
 import dpa.model.AdSetStatsLoader;
 import dpa.responseparser.responsedata.AdSetStatsJSONResponse;
 import dpa.responseparser.resultdata.AdSetResultData;
+import dpa.utils.OAuthExpirationTokenChecker;
 import dpa.utils.StatisticsDate;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -38,7 +39,7 @@ public class AdSetStats {
     /*
        Makes a Get API call to reportstats API to get the statistics at the AdSet Level
         */
-    public void getAdsetstats(long Account_ID_Integer, long Client_ID_Integer,String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException {
+    public boolean getAdsetstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException {
 
         //Fields in the parameters
         long Client_ID=Client_ID_Integer;
@@ -91,77 +92,78 @@ public class AdSetStats {
             e.printStackTrace();
         }
 
-        /*String inputLine;
-        StringBuffer response = new StringBuffer();
-
-        while ((inputLine = reader.readLine()) != null) {
-            response.append(inputLine);
-        }*/
-
 
         Gson gson= new Gson();
 
-        AdSetStatsJSONResponse response = gson.fromJson(reader,AdSetStatsJSONResponse.class);
+        /*
+        To check for OAuth Token Expiration
+         */
 
-        List<AdSetResultData> results = response.resultdata;
+        OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
+        int status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader);
 
-        AdSetStatsLoader adSetStatsLoader;
-        List<AdSetStatsLoader> adSetStatsLoaderList=new ArrayList<AdSetStatsLoader>();
+        if(status==1) {
+            AdSetStatsJSONResponse response = gson.fromJson(reader, AdSetStatsJSONResponse.class);
 
-        for(AdSetResultData resultData:results){
+            List<AdSetResultData> results = response.resultdata;
 
-            adSetStatsLoader = new AdSetStatsLoader();
+            AdSetStatsLoader adSetStatsLoader;
+            List<AdSetStatsLoader> adSetStatsLoaderList = new ArrayList<AdSetStatsLoader>();
 
-            //getting the age range and splitting it into accessible integer values
-            String Age=resultData.age;
-            String Age_Start_SubString=Age.substring(Age.lastIndexOf("-")-1);
-            String Age_End_SubString=Age.substring(Age.lastIndexOf("-")+1);
-            int Age_Start_Range = Integer.parseInt(Age_Start_SubString);
-            int Age_End_Range= Integer.parseInt(Age_End_SubString);
+            for (AdSetResultData resultData : results) {
+
+                adSetStatsLoader = new AdSetStatsLoader();
+
+                //getting the age range and splitting it into accessible integer values
+                String Age = resultData.age;
+                String Age_Start_SubString = Age.substring(Age.lastIndexOf("-") - 1);
+                String Age_End_SubString = Age.substring(Age.lastIndexOf("-") + 1);
+                int Age_Start_Range = Integer.parseInt(Age_Start_SubString);
+                int Age_End_Range = Integer.parseInt(Age_End_SubString);
 
             /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
             are getting yesterday's datein date_preset field of the curl request*/
-            Date Stats_Date = StatisticsDate.getYesterday();
+                Date Stats_Date = StatisticsDate.getYesterday();
 
-            adSetStatsLoader.setClient_ID(Client_ID);
-            adSetStatsLoader.setAdSet_ID(resultData.campaign_id);
-            adSetStatsLoader.setActivity_Start_Date(resultData.date_start);
-            adSetStatsLoader.setActivity_End_Date(resultData.date_stop);
-            adSetStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-            adSetStatsLoader.setCountry(resultData.country);
-            adSetStatsLoader.setAge_Start_Range(Age_Start_Range);
-            adSetStatsLoader.setAge_End_Range(Age_End_Range);
-            adSetStatsLoader.setGender(resultData.gender);
-            adSetStatsLoader.setPlacement(resultData.placement);
-            adSetStatsLoader.setImpression_Device(resultData.impression_device);
-            adSetStatsLoader.setReach(resultData.reach);
-            adSetStatsLoader.setFrequency(resultData.frequency);
-            adSetStatsLoader.setImpressions(resultData.impressions);
-            adSetStatsLoader.setClicks(resultData.clicks);
-            adSetStatsLoader.setTotal_Actions(resultData.total_actions);
-            adSetStatsLoader.setSocial_Reach(resultData.social_reach);
-            adSetStatsLoader.setSocial_Impressions(resultData.social_impressions);
-            adSetStatsLoader.setUnique_Impressions(resultData.unique_impressions);
-            adSetStatsLoader.setUnique_Social_Impressions(resultData.unique_social_impressions);
-            adSetStatsLoader.setCPC(resultData.cpc);
-            adSetStatsLoader.setCPM(resultData.cpm);
-            adSetStatsLoader.setCTR(resultData.ctr);
-            adSetStatsLoader.setCPP(resultData.cpp);
-            adSetStatsLoader.setSpend(resultData.spend);
-            adSetStatsLoader.setStats_Date(Stats_Date);
+                adSetStatsLoader.setClient_ID(Client_ID);
+                adSetStatsLoader.setAdSet_ID(resultData.campaign_id);
+                adSetStatsLoader.setActivity_Start_Date(resultData.date_start);
+                adSetStatsLoader.setActivity_End_Date(resultData.date_stop);
+                adSetStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
+                adSetStatsLoader.setCountry(resultData.country);
+                adSetStatsLoader.setAge_Start_Range(Age_Start_Range);
+                adSetStatsLoader.setAge_End_Range(Age_End_Range);
+                adSetStatsLoader.setGender(resultData.gender);
+                adSetStatsLoader.setPlacement(resultData.placement);
+                adSetStatsLoader.setImpression_Device(resultData.impression_device);
+                adSetStatsLoader.setReach(resultData.reach);
+                adSetStatsLoader.setFrequency(resultData.frequency);
+                adSetStatsLoader.setImpressions(resultData.impressions);
+                adSetStatsLoader.setClicks(resultData.clicks);
+                adSetStatsLoader.setTotal_Actions(resultData.total_actions);
+                adSetStatsLoader.setSocial_Reach(resultData.social_reach);
+                adSetStatsLoader.setSocial_Impressions(resultData.social_impressions);
+                adSetStatsLoader.setUnique_Impressions(resultData.unique_impressions);
+                adSetStatsLoader.setUnique_Social_Impressions(resultData.unique_social_impressions);
+                adSetStatsLoader.setCPC(resultData.cpc);
+                adSetStatsLoader.setCPM(resultData.cpm);
+                adSetStatsLoader.setCTR(resultData.ctr);
+                adSetStatsLoader.setCPP(resultData.cpp);
+                adSetStatsLoader.setSpend(resultData.spend);
+                adSetStatsLoader.setStats_Date(Stats_Date);
 
-            adSetStatsLoaderList.add(adSetStatsLoader);
+                adSetStatsLoaderList.add(adSetStatsLoader);
 
 
+            }
+            AdSetStatsDAO.storeadsetlevelstats(adSetStatsLoaderList);
 
+            httpClient.close();
+            return true;
         }
-        AdSetStatsDAO.storeadsetlevelstats(adSetStatsLoaderList);
-
-        /*Save the Json Response
-        String jsonresponse = response.toString();
-        JSONObject JsonCampignStats = new JSONObject(jsonresponse);*/
-        httpClient.close();
-
+        else{
+            return false;
+        }
     }
 }
 
