@@ -100,7 +100,7 @@ public class AdSetStats {
          */
 
         OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
-        int status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader);
+        int status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader,Client_ID);
 
         if(status==1) {
             AdSetStatsJSONResponse response = gson.fromJson(reader, AdSetStatsJSONResponse.class);

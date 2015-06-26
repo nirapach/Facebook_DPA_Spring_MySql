@@ -102,7 +102,7 @@ public class AdGroupStats {
          */
 
         OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
-        int status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader);
+        int status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader,Client_ID);
 
         if(status==1) {
 

@@ -101,7 +101,7 @@ public class CampaignStats {
          */
 
         OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
-        int status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader);
+        int status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader,Client_ID);
 
         if(status==1) {
             CampaignStatsJSONResponse response = gson.fromJson(reader, CampaignStatsJSONResponse.class);

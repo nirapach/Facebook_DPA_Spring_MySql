@@ -19,7 +19,7 @@ import org.apache.commons.mail.SimpleEmail;
 
 public class OAuthExpirationTokenChecker {
 
-    public int checkOAuthTokenException(BufferedReader reader) throws IOException {
+    public int checkOAuthTokenException(BufferedReader reader,long client_id) throws IOException {
 
           /* to test whether the JSON response is oauth authentication error or actually the stats response*/
         String inputLine;
@@ -41,7 +41,7 @@ public class OAuthExpirationTokenChecker {
         }
 
         //need to get the list of mail id's for sending emails
-        String receiveremailaddress="example@example.com";
+        String receiveremailaddress="sundi@gravity4.com";
         String hostname = config.getProperty("hostname");
         int smtpport = Integer.parseInt(config.getProperty("smtpport"));
         String sendermailusername = config.getProperty("sendermailusername");
@@ -76,8 +76,9 @@ public class OAuthExpirationTokenChecker {
                                  email.setAuthentication(sendermailname, sendermailpassword);
                                  email.setStartTLSEnabled(true);
                                  email.setFrom(sendermailname, sendermailusername);
-                                 email.setSubject("OAUTH Access Token Expiration for Facebook DYnamic Product Ads Campaign");
-                                 email.setMsg("OAUTH Access Token Expiration for Facebook Dynamic Product Ads Campaign");
+                                 email.setSubject("OAUTH Access Token Expiration for Facebook Dynamic Product Ads" +
+                                         " Campaign for the client:"+client_id);
+                                 email.setMsg("OAUTH Access Token Expiration for Facebook Dynamic Product Ads Campaign for the client:"+client_id);
                                  email.addTo(receiveremailaddress);
                                  email.send();
                             /*

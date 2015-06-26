@@ -63,6 +63,7 @@ public class StatsInformationCaller {
         Logger logger= LoggerFactory.getLogger(StatsInformationCaller.class);
         Properties config = new Properties();
         String propertyFileName = "config.properties";
+        long client_id=accountInformationLoader.getApplication_Client_ID();
 
         Email email = new SimpleEmail();
 
@@ -81,7 +82,7 @@ public class StatsInformationCaller {
         String sendermailpassword;
         String sendermailname;
         //need to get the list of mail id's for sending emails
-        String receiveremailaddress="example@example.com";
+        String receiveremailaddress="sundi@gravity4.com";
         try {
             hostname = config.getProperty("hostname");
             smtpport = Integer.parseInt(config.getProperty("smtpport"));
@@ -119,11 +120,11 @@ public class StatsInformationCaller {
                 email.setAuthentication(sendermailname, sendermailpassword);
                 email.setStartTLSEnabled(true);
                 email.setFrom(sendermailname, sendermailusername);
-                email.setSubject("Account Level Statistics got uploaded to the database");
-                email.setMsg("Account Level Statistics got uploaded to the database");
+                email.setSubject("Account Level Statistics got uploaded to the database for client: " + client_id);
+                email.setMsg("Account Level Statistics got uploaded to the database for client:" + client_id);
                 email.addTo(receiveremailaddress);
                 email.send();
-                logger.info("Account level stats Email Notification Sent Successfully");
+                logger.info("Account level stats Email Notification Sent Successfully for client:"+client_id);
             } catch (EmailException ee) {
                 ee.printStackTrace();
             }
@@ -141,11 +142,11 @@ public class StatsInformationCaller {
                 email.setAuthentication(sendermailname, sendermailpassword);
                 email.setStartTLSEnabled(true);
                 email.setFrom(sendermailname, sendermailusername);
-                email.setSubject("Campaign Level Statistics got uploaded to the database");
-                email.setMsg("Campaign Level Statistics got uploaded to the database");
+                email.setSubject("Campaign Level Statistics got uploaded to the database for client:"+client_id);
+                email.setMsg("Campaign Level Statistics got uploaded to the database for client:"+client_id);
                 email.addTo(receiveremailaddress);
                 email.send();
-                logger.info("Campaign level stats Email Notification Sent Successfully");
+                logger.info("Campaign level stats Email Notification Sent Successfully for client:"+client_id);
             } catch (EmailException ee) {
                 ee.printStackTrace();
             }
@@ -162,11 +163,11 @@ public class StatsInformationCaller {
                 email.setAuthentication(sendermailname, sendermailpassword);
                 email.setStartTLSEnabled(true);
                 email.setFrom(sendermailname, sendermailusername);
-                email.setSubject("AdSet Level Statistics got uploaded to the database");
-                email.setMsg("AdSet Level Statistics got uploaded to the database");
+                email.setSubject("AdSet Level Statistics got uploaded to the database for client:"+client_id);
+                email.setMsg("AdSet Level Statistics got uploaded to the database for client:"+client_id);
                 email.addTo(receiveremailaddress);
                 email.send();
-                logger.info("AdSet level stats Email Notification Sent Successfully");
+                logger.info("AdSet level stats Email Notification Sent Successfully for client:"+client_id);
             } catch (EmailException ee) {
                 ee.printStackTrace();
             }
@@ -183,11 +184,11 @@ public class StatsInformationCaller {
                 email.setAuthentication(sendermailname, sendermailpassword);
                 email.setStartTLSEnabled(true);
                 email.setFrom(sendermailname, sendermailusername);
-                email.setSubject("AdGroup Level Statistics got uploaded to the database");
-                email.setMsg("AdGroup Level Statistics got uploaded to the database");
+                email.setSubject("AdGroup Level Statistics got uploaded to the database for client:"+client_id);
+                email.setMsg("AdGroup Level Statistics got uploaded to the database for client:"+client_id);
                 email.addTo(receiveremailaddress);
                 email.send();
-                logger.info("AdGroup level stats Email Notification Sent Successfully");
+                logger.info("AdGroup level stats Email Notification Sent Successfully for client:"+client_id);
             } catch (EmailException ee) {
                 ee.printStackTrace();
             }
