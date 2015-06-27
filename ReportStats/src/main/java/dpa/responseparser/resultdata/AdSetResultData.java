@@ -30,6 +30,7 @@ public class AdSetResultData {
     @SerializedName("spend")
     public double spend;
 
+    /*
     @SerializedName("age")
     public String age;
 
@@ -43,7 +44,7 @@ public class AdSetResultData {
     public String placement;
 
     @SerializedName("impression_device")
-    public String impression_device;
+    public String impression_device;*/
 
     @SerializedName("total_actions")
     public long total_actions;

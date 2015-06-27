@@ -29,6 +29,7 @@ public class AdGroupResultData {
     @SerializedName("spend")
     public double spend;
 
+    /*
     @SerializedName("age")
     public String age;
 
@@ -39,13 +40,13 @@ public class AdGroupResultData {
     public String country;
 
     @SerializedName("placement")
-    public String placement;
+    public String placement;*/
 
     @SerializedName("relevancy_score")
     public double relevancy_score;
-
+/*
     @SerializedName("impression_device")
-    public String impression_device;
+    public String impression_device;*/
 
     @SerializedName("total_actions")
     public long total_actions;

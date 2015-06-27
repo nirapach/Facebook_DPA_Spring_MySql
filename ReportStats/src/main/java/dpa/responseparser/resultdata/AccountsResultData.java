@@ -30,11 +30,12 @@ public class AccountsResultData {
     @SerializedName("spend")
     public double spend;
 
-    @SerializedName("age")
+    /*@SerializedName("age")
     public String age;
 
     @SerializedName("gender")
     public String gender;
+
 
     @SerializedName("country")
     public String country;
@@ -44,7 +45,7 @@ public class AccountsResultData {
 
     @SerializedName("impression_device")
     public String impression_device;
-
+*/
     @SerializedName("total_actions")
     public long total_actions;
 

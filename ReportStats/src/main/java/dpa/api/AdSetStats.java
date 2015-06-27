@@ -45,11 +45,11 @@ public class AdSetStats {
         long Client_ID=Client_ID_Integer;
         String Account_ID = Long.toString(Account_ID_Integer);
         String date_preset = "yesterday";
-        String data_columns = "[\"campaign_id\",\"product_id\",\"spend\",\"age\",\"gender\",\"country\"," +
-                "\"placement\",\"impression_device\",\"total_actions\",\"reach\",\"clicks\",\"impressions\",\"frequency\",\"social_reach\"," +
+        String data_columns = "[\"campaign_id\",\"product_id\",\"spend\"," +
+                "\"total_actions\",\"reach\",\"clicks\",\"impressions\",\"frequency\",\"social_reach\"," +
                 "\"social_impressions\"," +
                 "\"cpm\",\"unique_impressions\",\"unique_social_impressions\",\"cpp\",\"ctr\",\"cpc\"," +
-                "\"cost_per_unique_click\"";
+                "\"cost_per_unique_click\"]";
 
         //url for the get request
         String Campaign_Stats_Get_URL = "graph.facebook.com";
@@ -63,11 +63,13 @@ public class AdSetStats {
                 .setParameter("access_token",Access_Token);
 
         BufferedReader reader=null;
+        //getting the httpresponse
+        CloseableHttpResponse httpResponse;
         //declaring the httpget request
         HttpGet httpGet = new HttpGet(builder.build());
-        //getting the httpresponse
+
         try {
-            CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
+            httpResponse = httpClient.execute(httpGet);
 
 
             System.out.println("GET Response Status: "
@@ -75,7 +77,7 @@ public class AdSetStats {
 
             reader = new BufferedReader(new InputStreamReader(
                     httpResponse.getEntity().getContent()));
-            reader.close();
+
         }
         catch (ClientProtocolException e) {
             logger.info("ClientProtocolException ");
@@ -91,6 +93,7 @@ public class AdSetStats {
             logger.info(String.valueOf(e));
             e.printStackTrace();
         }
+        reader.close();
 
 
         Gson gson= new Gson();
@@ -115,11 +118,11 @@ public class AdSetStats {
                 adSetStatsLoader = new AdSetStatsLoader();
 
                 //getting the age range and splitting it into accessible integer values
-                String Age = resultData.age;
+                /*String Age = resultData.age;
                 String Age_Start_SubString = Age.substring(Age.lastIndexOf("-") - 1);
                 String Age_End_SubString = Age.substring(Age.lastIndexOf("-") + 1);
                 int Age_Start_Range = Integer.parseInt(Age_Start_SubString);
-                int Age_End_Range = Integer.parseInt(Age_End_SubString);
+                int Age_End_Range = Integer.parseInt(Age_End_SubString);*/
 
             /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
             are getting yesterday's datein date_preset field of the curl request*/
@@ -130,12 +133,13 @@ public class AdSetStats {
                 adSetStatsLoader.setActivity_Start_Date(resultData.date_start);
                 adSetStatsLoader.setActivity_End_Date(resultData.date_stop);
                 adSetStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-                adSetStatsLoader.setCountry(resultData.country);
+                adSetStatsLoader.setProduct_ID(resultData.product_id);
+                /*adSetStatsLoader.setCountry(resultData.country);
                 adSetStatsLoader.setAge_Start_Range(Age_Start_Range);
                 adSetStatsLoader.setAge_End_Range(Age_End_Range);
                 adSetStatsLoader.setGender(resultData.gender);
                 adSetStatsLoader.setPlacement(resultData.placement);
-                adSetStatsLoader.setImpression_Device(resultData.impression_device);
+                adSetStatsLoader.setImpression_Device(resultData.impression_device);*/
                 adSetStatsLoader.setReach(resultData.reach);
                 adSetStatsLoader.setFrequency(resultData.frequency);
                 adSetStatsLoader.setImpressions(resultData.impressions);

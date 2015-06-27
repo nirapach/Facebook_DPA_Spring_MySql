@@ -10,7 +10,7 @@ public class AdGroupStatsLoader {
 
     private long Client_ID;
     private long AdGroup_ID;
-    private String Product_ID;
+    private long Product_ID;
     private int Age_Start_Range;
     private int Age_End_Range;
     private String country;
@@ -56,11 +56,12 @@ public class AdGroupStatsLoader {
         AdGroup_ID = adGroup_ID;
     }
 
-    public String getProduct_ID() {
+    public long getProduct_ID() {
+
         return Product_ID;
     }
 
-    public void setProduct_ID(String product_ID) {
+    public void setProduct_ID(long product_ID) {
         Product_ID = product_ID;
     }
 

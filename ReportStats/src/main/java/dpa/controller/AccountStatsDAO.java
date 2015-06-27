@@ -50,10 +50,10 @@ public class AccountStatsDAO {
             for(AccountStatsLoader accountStatsLoader:accountStatsLoaderList){
                 statement = connection.prepareStatement(query);
                 statement.setLong(1,accountStatsLoader.getClient_ID());
-                statement.setLong(2,accountStatsLoader.getAccount_ID());
-                statement.setString(3,accountStatsLoader.getProduct_ID());
+                statement.setLong(2, accountStatsLoader.getAccount_ID());
+                statement.setLong(3, accountStatsLoader.getProduct_ID());
                 statement.setInt(4,accountStatsLoader.getAge_Start_Range());
-                statement.setInt(5,accountStatsLoader.getAge_End_Range());
+                statement.setInt(5, accountStatsLoader.getAge_End_Range());
                 statement.setString(6,accountStatsLoader.getCountry());
                 statement.setString(7,accountStatsLoader.getGender());
                 statement.setString(8,accountStatsLoader.getPlacement());
