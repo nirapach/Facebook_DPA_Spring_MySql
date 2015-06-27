@@ -81,12 +81,6 @@ public class CampaignStats {
             reader = new BufferedReader(new InputStreamReader(
                     httpResponse.getEntity().getContent()));
 
-            String b=null;
-            while ((b=reader.readLine())!=null){
-                System.out.println(b);
-            }
-
-
         }
         catch (ClientProtocolException e) {
             logger.info("ClientProtocolException ");
