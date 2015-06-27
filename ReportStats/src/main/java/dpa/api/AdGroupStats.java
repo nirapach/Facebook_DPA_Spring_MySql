@@ -46,10 +46,10 @@ public class AdGroupStats {
         long Client_ID=Client_ID_Integer;
         String Account_ID = Long.toString(Account_ID_Integer);
         String date_preset = "yesterday";
-        String data_columns = "[\"adgroup_id\",\"product_id\",\"spend\"" +
-                ",\"total_actions\",\"reach\",\"clicks\",\"impressions\",\"frequency\",\"social_reach\"," +
+        String data_columns = "[\"adgroup_id\",\"product_id\",\"spend\"," +
+                "\"total_actions\",\"reach\",\"clicks\",\"impressions\",\"frequency\",\"social_reach\",\"relevance_score\"," +
                 "\"social_impressions\"," +
-                "\"cpm\",\"unique_impressions\",\"relevancy_score\",\"unique_social_impressions\",\"cpp\",\"ctr\",\"cpc\"," +
+                "\"cpm\",\"unique_impressions\",\"unique_social_impressions\",\"cpp\",\"ctr\",\"cpc\"," +
                 "\"cost_per_unique_click\"]";
 
         //url for the get request
@@ -79,6 +79,10 @@ public class AdGroupStats {
             reader = new BufferedReader(new InputStreamReader(
                     httpResponse.getEntity().getContent()));
 
+           String b=null;
+            while((b=reader.readLine())!=null){
+               System.out.println(b);
+            }
 
         }
         catch (ClientProtocolException e) {
