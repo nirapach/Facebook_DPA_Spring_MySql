@@ -20,13 +20,14 @@ import org.apache.commons.mail.SimpleEmail;
 public class OAuthExpirationTokenChecker {
 
     public int checkOAuthTokenException(BufferedReader reader,long client_id) throws IOException {
+        Logger logger= LoggerFactory.getLogger(OAuthExpirationTokenChecker.class);
 
           /* to test whether the JSON response is oauth authentication error or actually the stats response*/
         String inputLine;
-        int status = 0;
-        StringBuilder fbresponse = new StringBuilder();
+        int status=0;
+        StringBuffer fbresponse = new StringBuffer();
         String propertyFileName = "config.properties";
-        Logger logger= LoggerFactory.getLogger(OAuthExpirationTokenChecker.class);
+
         Properties config = new Properties();
 
         Email email = new SimpleEmail();
@@ -44,7 +45,7 @@ public class OAuthExpirationTokenChecker {
         String receiveremailaddress="sundi@gravity4.com";
         String hostname = config.getProperty("hostname");
         int smtpport = Integer.parseInt(config.getProperty("smtpport"));
-        String sendermailusername = config.getProperty("sendermailusername");
+        String sendermailaddress = config.getProperty("sendermailaddress");
         String sendermailpassword = config.getProperty("sendermailpassword");
         String sendermailname = config.getProperty("sendermailname");
 
@@ -53,6 +54,7 @@ public class OAuthExpirationTokenChecker {
             while ((inputLine = reader.readLine()) != null) {
                 fbresponse.append(inputLine);
             }
+            reader.close();
             /*convert the reader to JSON Object to check whether it is a Error or Actual Data Response*/
             String jsonfeed = fbresponse.toString();
             JSONObject JSONFeed_ID = new JSONObject(jsonfeed);
@@ -65,7 +67,6 @@ public class OAuthExpirationTokenChecker {
             if(JSONFeed_ID.has(error_property)) {
 
                 //status 1 means JSON response does not have the data object
-                status=0;
                 JSONObject JSONError_Obj = JSONFeed_ID.getJSONObject(error_property);
                 error_code=JSONError_Obj.getInt("code");
                          if(error_code== 190) {
@@ -73,9 +74,9 @@ public class OAuthExpirationTokenChecker {
                              try {
                                  email.setHostName(hostname);
                                  email.setSmtpPort(smtpport);
-                                 email.setAuthentication(sendermailname, sendermailpassword);
+                                 email.setAuthentication(sendermailaddress, sendermailpassword);
                                  email.setStartTLSEnabled(true);
-                                 email.setFrom(sendermailname, sendermailusername);
+                                 email.setFrom(sendermailaddress,sendermailname);
                                  email.setSubject("OAUTH Access Token Expiration for Facebook Dynamic Product Ads" +
                                          " Campaign for the client:"+client_id);
                                  email.setMsg("OAUTH Access Token Expiration for Facebook Dynamic Product Ads Campaign for the client:"+client_id);
@@ -84,14 +85,14 @@ public class OAuthExpirationTokenChecker {
                             /*
                                  if error code is 190 it means OAuth Exception
                              */
-                                 logger.info(JSONFeed_ID.getString("type"));
+                                 //logger.info(JSONFeed_ID.getString("type"));
                              }catch (EmailException ee) {
                                  ee.printStackTrace();
                              }
                          }
 
             }
-            else if (JSONFeed_ID.has(error_property)) {
+            else if (JSONFeed_ID.has("data")) {
                 //status 1 means JSON response has data object
                 status = 1;
             }

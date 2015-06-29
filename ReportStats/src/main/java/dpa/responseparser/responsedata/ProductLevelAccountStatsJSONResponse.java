@@ -5,11 +5,11 @@ package dpa.responseparser.responsedata;
  */
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
-import dpa.responseparser.resultdata.AccountsResultData;
+import dpa.responseparser.resultdata.ProductLevelAccountsResultData;
 
-public class AccountStatsJSONResponse {
+public class ProductLevelAccountStatsJSONResponse {
 
-    public List<AccountsResultData> resultdata;
+    public List<ProductLevelAccountsResultData> resultdata;
 
     @SerializedName("limit")
     public int limit;

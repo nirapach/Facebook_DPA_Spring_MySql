@@ -1,16 +1,14 @@
 package dpa.responseparser.responsedata;
 
 import com.google.gson.annotations.SerializedName;
-import dpa.responseparser.resultdata.AdSetResultData;
+import dpa.responseparser.resultdata.OverAllAccountsResultData;
+import dpa.responseparser.resultdata.OverAllAdSetResultData;
 
 import java.util.List;
 
-/**
- * Created by niranjan on 6/23/15.
- */
-public class AdSetStatsJSONResponse {
+public class OverAllAdSetStatsJSONResponse {
 
-    public List<AdSetResultData> resultdata;
+    public List<OverAllAdSetResultData> resultdata;
 
     @SerializedName("limit")
     public int limit;
@@ -19,4 +17,5 @@ public class AdSetStatsJSONResponse {
     public int offset;
 
     public JSONResponsePaging paging;
+
 }

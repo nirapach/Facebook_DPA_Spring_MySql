@@ -13,7 +13,6 @@ CREATE TABLE `Overall_Account_Statistics_Results` (
   `Application_Ad_Account_ID` bigint(20) DEFAULT NULL,
   `Client_Reports_Age_Stats_Start_Range` int(11) DEFAULT NULL,
   `Client_Reports_Age_Stats_End_Range` int(11) DEFAULT NULL,
-  `Client_Reports_Country_Stats` varchar(45) DEFAULT NULL,
   `Client_Reports_Gender_Stats` varchar(45) DEFAULT NULL,
   `Client_Reports_Reach` bigint(20) DEFAULT NULL,
   `Client_Reports_Frequency` double DEFAULT NULL,
@@ -32,6 +31,7 @@ CREATE TABLE `Overall_Account_Statistics_Results` (
   `Stats_Date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `Client_Reports_Ad_Activity_Date_Start` datetime DEFAULT NULL,
   `Client_Reports_Ad_Activity_Date_End` datetime DEFAULT NULL,
+  `Client_Cost_Per_Unique_Click` double DEFAULT NULL,
   PRIMARY KEY (`Application_Client_ID`,`Stats_Date`));
 
 CREATE TABLE `Overall_AdSet_Statistics_Results` (
@@ -39,7 +39,6 @@ CREATE TABLE `Overall_AdSet_Statistics_Results` (
   `Application_Ad_AdSet_ID` bigint(20) DEFAULT NULL,
   `Client_Reports_Age_Stats_Start_Range` int(11) DEFAULT NULL,
   `Client_Reports_Age_Stats_End_Range` int(11) DEFAULT NULL,
-  `Client_Reports_Country_Stats` varchar(45) DEFAULT NULL,
   `Client_Reports_Gender_Stats` varchar(45) DEFAULT NULL,
   `Client_Reports_Reach` bigint(20) DEFAULT NULL,
   `Client_Reports_Frequency` double DEFAULT NULL,
@@ -58,6 +57,7 @@ CREATE TABLE `Overall_AdSet_Statistics_Results` (
   `Stats_Date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `Client_Reports_Ad_Activity_Date_Start` datetime DEFAULT NULL,
   `Client_Reports_Ad_Activity_Date_End` datetime DEFAULT NULL,
+  `Client_Cost_Per_Unique_Click` double DEFAULT NULL,
   PRIMARY KEY (`Application_Client_ID`,`Stats_Date`));
 
 CREATE TABLE `Overall_Ad_Statistics_Results` (
@@ -65,7 +65,6 @@ CREATE TABLE `Overall_Ad_Statistics_Results` (
   `Application_Ad_Group_ID` bigint(20) DEFAULT NULL,
   `Client_Reports_Age_Stats_Start_Range` int(11) DEFAULT NULL,
   `Client_Reports_Age_Stats_End_Range` int(11) DEFAULT NULL,
-  `Client_Reports_Country_Stats` varchar(45) DEFAULT NULL,
   `Client_Reports_Gender_Stats` varchar(45) DEFAULT NULL,
   `Client_Reports_Reach` bigint(20) DEFAULT NULL,
   `Client_Reports_Frequency` double DEFAULT NULL,
@@ -84,6 +83,8 @@ CREATE TABLE `Overall_Ad_Statistics_Results` (
   `Stats_Date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `Client_Reports_Ad_Activity_Date_Start` datetime DEFAULT NULL,
   `Client_Reports_Ad_Activity_Date_End` datetime DEFAULT NULL,
+  `Client_Cost_Per_Unique_Click` double DEFAULT NULL,
+  `Client_Ad_Relevance_Score` double DEFAULT NULL,
   PRIMARY KEY (`Application_Client_ID`,`Stats_Date`));
 
 CREATE TABLE `Overall_Campaign_Statistics_Results` (
@@ -91,7 +92,6 @@ CREATE TABLE `Overall_Campaign_Statistics_Results` (
   `Application_Campaign_ID` bigint(20) DEFAULT NULL,
   `Client_Reports_Age_Stats_Start_Range` int(11) DEFAULT NULL,
   `Client_Reports_Age_Stats_End_Range` int(11) DEFAULT NULL,
-  `Client_Reports_Country_Stats` varchar(45) DEFAULT NULL,
   `Client_Reports_Gender_Stats` varchar(45) DEFAULT NULL,
   `Client_Reports_Reach` bigint(20) DEFAULT NULL,
   `Client_Reports_Frequency` double DEFAULT NULL,
@@ -110,6 +110,7 @@ CREATE TABLE `Overall_Campaign_Statistics_Results` (
   `Stats_Date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `Client_Reports_Ad_Activity_Date_Start` datetime DEFAULT NULL,
   `Client_Reports_Ad_Activity_Date_End` datetime DEFAULT NULL,
+  `Client_Cost_Per_Unique_Click` double DEFAULT NULL,
   PRIMARY KEY (`Application_Client_ID`,`Stats_Date`));
 
   CREATE TABLE `Product_Account_Statistics_Results` (

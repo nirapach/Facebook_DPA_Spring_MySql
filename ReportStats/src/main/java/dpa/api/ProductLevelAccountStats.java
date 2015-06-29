@@ -5,10 +5,10 @@ package dpa.api;
  */
 
 import com.google.gson.Gson;
-import dpa.controller.AccountStatsDAO;
+import dpa.controller.ProductLevelAccountStatsDAO;
 import dpa.model.AccountStatsLoader;
-import dpa.responseparser.responsedata.AccountStatsJSONResponse;
-import dpa.responseparser.resultdata.AccountsResultData;
+import dpa.responseparser.responsedata.ProductLevelAccountStatsJSONResponse;
+import dpa.responseparser.resultdata.ProductLevelAccountsResultData;
 import dpa.utils.OAuthExpirationTokenChecker;
 import dpa.utils.StatisticsDate;
 import org.apache.http.client.ClientProtocolException;
@@ -17,7 +17,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.json.JSONObject;
 
 import java.beans.PropertyVetoException;
 import java.sql.SQLException;
@@ -32,9 +31,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 
-public class AccountStats {
+public class ProductLevelAccountStats {
 
-    Logger logger= LoggerFactory.getLogger(AccountStats.class);
+    Logger logger= LoggerFactory.getLogger(ProductLevelAccountStats.class);
 
 
     /*
@@ -64,6 +63,7 @@ public class AccountStats {
                 .setParameter("access_token",Access_Token);
 
         BufferedReader reader=null;
+        int status=0;
         //getting the httpresponse
         CloseableHttpResponse httpResponse;
         //declaring the httpget request
@@ -79,18 +79,27 @@ public class AccountStats {
                 reader = new BufferedReader(new InputStreamReader(
                         httpResponse.getEntity().getContent()));
 
+             /*
+        To check for OAuth Token Expiration
+         */
+
+            OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
+            status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader,Client_ID);
+
+
+
 
         } catch (ClientProtocolException e) {
             logger.info("ClientProtocolException ");
             logger.info(String.valueOf(e));
             e.printStackTrace();
         } catch (IOException e) {
-            logger.info("AccountStats HTTP Response IO Exception");
+            logger.info("ProductLevelAccountStats HTTP Response IO Exception");
             logger.info(String.valueOf(e));
             e.printStackTrace();
         }
         catch (NullPointerException e) {
-            logger.info("AccountStats HTTP Response NullPointerException");
+            logger.info("ProductLevelAccountStats HTTP Response NullPointerException");
             logger.info(String.valueOf(e));
             e.printStackTrace();
         }
@@ -98,34 +107,21 @@ public class AccountStats {
         Gson gson=new Gson();
 
         /*
-        To check for OAuth Token Expiration
-         */
-
-        OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
-        int status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader,Client_ID);
-
-        /*
         To write the Account Level Stats to the Database
         Only when the returned status is '1' then this data is written into the database
          */
         if(status==1) {
-            AccountStatsJSONResponse response = gson.fromJson(reader, AccountStatsJSONResponse.class);
+            ProductLevelAccountStatsJSONResponse response = gson.fromJson(reader, ProductLevelAccountStatsJSONResponse.class);
 
-            List<AccountsResultData> results = response.resultdata;
+            List<ProductLevelAccountsResultData> results = response.resultdata;
 
             AccountStatsLoader accountStatsLoader;
             List<AccountStatsLoader> accountStatsLoaderList = new ArrayList<AccountStatsLoader>();
 
-            for (AccountsResultData resultData : results) {
+            for (ProductLevelAccountsResultData resultData : results) {
 
                 accountStatsLoader = new AccountStatsLoader();
 
-                //getting the age range and splitting it into accessible integer values
-                /*String Age = resultData.age;
-                String Age_Start_SubString = Age.substring(Age.lastIndexOf("-") - 1);
-                String Age_End_SubString = Age.substring(Age.lastIndexOf("-") + 1);
-                int Age_Start_Range = Integer.parseInt(Age_Start_SubString);
-                int Age_End_Range = Integer.parseInt(Age_End_SubString);*/
 
             /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
             are getting yesterday's datein date_preset field of the curl request*/
@@ -138,12 +134,6 @@ public class AccountStats {
                 accountStatsLoader.setActivity_End_Date(resultData.date_stop);
                 accountStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
                 accountStatsLoader.setProduct_ID(resultData.product_id);
-                /*accountStatsLoader.setAge_Start_Range(Age_Start_Range);
-                accountStatsLoader.setAge_End_Range(Age_End_Range);
-                accountStatsLoader.setGender(resultData.gender);
-                accountStatsLoader.setCountry(resultData.country);
-                accountStatsLoader.setPlacement(resultData.placement);
-                accountStatsLoader.setImpression_Device(resultData.impression_device);*/
                 accountStatsLoader.setReach(resultData.reach);
                 accountStatsLoader.setFrequency(resultData.frequency);
                 accountStatsLoader.setImpressions(resultData.impressions);
@@ -164,7 +154,7 @@ public class AccountStats {
 
 
             }
-            AccountStatsDAO.storeaccountlevelstats(accountStatsLoaderList);
+            ProductLevelAccountStatsDAO.storeaccountlevelstats(accountStatsLoaderList);
 
             httpClient.close();
 

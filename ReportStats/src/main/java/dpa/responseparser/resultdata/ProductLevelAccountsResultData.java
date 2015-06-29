@@ -1,16 +1,16 @@
 package dpa.responseparser.resultdata;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.Date;
-
 /**
  * Created by niranjan on 6/23/15.
  */
-public class AdSetResultData {
+import java.util.List;
+import java.util.Date;
+import com.google.gson.annotations.SerializedName;
 
-    @SerializedName("campaign_id")
-    public long campaign_id;
+public class ProductLevelAccountsResultData {
+
+    @SerializedName("account_id")
+    public long account_id;
 
     @SerializedName("product_id")
     public long product_id;
@@ -29,22 +29,6 @@ public class AdSetResultData {
 
     @SerializedName("spend")
     public double spend;
-
-    /*
-    @SerializedName("age")
-    public String age;
-
-    @SerializedName("gender")
-    public String gender;
-
-    @SerializedName("country")
-    public String country;
-
-    @SerializedName("placement")
-    public String placement;
-
-    @SerializedName("impression_device")
-    public String impression_device;*/
 
     @SerializedName("total_actions")
     public long total_actions;
@@ -70,7 +54,6 @@ public class AdSetResultData {
     @SerializedName("cpm")
     public double cpm;
 
-
     @SerializedName("cpp")
     public double cpp;
 
@@ -82,5 +65,6 @@ public class AdSetResultData {
 
     @SerializedName("cost_per_unique_click")
     public double cost_per_unique_click;
+
 
 }

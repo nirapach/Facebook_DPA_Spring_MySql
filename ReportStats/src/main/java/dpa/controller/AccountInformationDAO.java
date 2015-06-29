@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import dpa.utils.ConnectionDataSource;
 import dpa.utils.DBUtils;
 import dpa.model.AccountInformationLoader;
-import dpa.api.AccountStats;
 
 @SuppressWarnings("ALL")
 public class AccountInformationDAO {

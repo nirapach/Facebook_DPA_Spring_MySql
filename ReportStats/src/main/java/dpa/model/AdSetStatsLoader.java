@@ -13,10 +13,7 @@ public class AdSetStatsLoader {
     private long Product_ID;
     private int Age_Start_Range;
     private int Age_End_Range;
-    private String country;
     private String Gender;
-    private String Placement;
-    private String Impression_Device;
     private long Reach;
     private double Frequency;
     private long Clicks;
@@ -82,13 +79,6 @@ public class AdSetStatsLoader {
         Age_End_Range = age_End_Range;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
 
     public String getGender() {
         return Gender;
@@ -98,21 +88,6 @@ public class AdSetStatsLoader {
         Gender = gender;
     }
 
-    public String getPlacement() {
-        return Placement;
-    }
-
-    public void setPlacement(String placement) {
-        Placement = placement;
-    }
-
-    public String getImpression_Device() {
-        return Impression_Device;
-    }
-
-    public void setImpression_Device(String impression_Device) {
-        Impression_Device = impression_Device;
-    }
 
     public long getReach() {
         return Reach;

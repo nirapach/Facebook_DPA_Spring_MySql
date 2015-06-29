@@ -5,11 +5,10 @@ package dpa.api;
  */
 
 import com.google.gson.Gson;
-import dpa.controller.CampaignStatsDAO;
-import dpa.model.AccountStatsLoader;
+import dpa.controller.ProductLevelCampaignStatsDAO;
 import dpa.model.CampaignStatsLoader;
-import dpa.responseparser.responsedata.CampaignStatsJSONResponse;
-import dpa.responseparser.resultdata.CampaignResultData;
+import dpa.responseparser.responsedata.ProductLevelCampaignStatsJSONResponse;
+import dpa.responseparser.resultdata.ProductLevelCampaignResultData;
 import dpa.utils.OAuthExpirationTokenChecker;
 import dpa.utils.StatisticsDate;
 import org.apache.http.client.ClientProtocolException;
@@ -18,7 +17,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.json.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -34,9 +32,9 @@ import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 
 
-public class CampaignStats {
+public class ProductLevelCampaignStats {
 
-    Logger logger= LoggerFactory.getLogger(CampaignStats.class);
+    Logger logger= LoggerFactory.getLogger(ProductLevelCampaignStats.class);
 
     /*
     Makes a Get API call to reportstats API to get the statistics at the Campaign Level
@@ -66,6 +64,7 @@ public class CampaignStats {
 
         BufferedReader reader=null;
 
+        int status=0;
         //getting the httpresponse
         CloseableHttpResponse httpResponse;
         //declaring the httpget request
@@ -80,6 +79,12 @@ public class CampaignStats {
 
             reader = new BufferedReader(new InputStreamReader(
                     httpResponse.getEntity().getContent()));
+            /*
+        To check for OAuth Token Expiration
+         */
+
+            OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
+            status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader,Client_ID);
 
         }
         catch (ClientProtocolException e) {
@@ -87,44 +92,34 @@ public class CampaignStats {
             logger.info(String.valueOf(e));
             e.printStackTrace();
         } catch (IOException e) {
-            logger.info("CampaignStats HTTP Response IO Exception");
+            logger.info("ProductLevelCampaignStats HTTP Response IO Exception");
             logger.info(String.valueOf(e));
             e.printStackTrace();
         }
         catch (NullPointerException e) {
-            logger.info("CampaignStats HTTP Response NullPinterException");
+            logger.info("ProductLevelCampaignStats HTTP Response NullPinterException");
             logger.info(String.valueOf(e));
             e.printStackTrace();
         }
         reader.close();
 
+
         Gson gson=new Gson();
 
-        /*
-        To check for OAuth Token Expiration
-         */
 
-        OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
-        int status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader,Client_ID);
 
         if(status==1) {
-            CampaignStatsJSONResponse response = gson.fromJson(reader, CampaignStatsJSONResponse.class);
+            ProductLevelCampaignStatsJSONResponse response = gson.fromJson(reader, ProductLevelCampaignStatsJSONResponse.class);
 
-            List<CampaignResultData> results = response.resultdata;
+            List<ProductLevelCampaignResultData> results = response.resultdata;
 
             CampaignStatsLoader campaignStatsLoader;
             List<CampaignStatsLoader> campaignStatsLoaderList = new ArrayList<CampaignStatsLoader>();
 
-            for (CampaignResultData resultData : results) {
+            for (ProductLevelCampaignResultData resultData : results) {
 
                 campaignStatsLoader = new CampaignStatsLoader();
 
-                //getting the age range and splitting it into accessible integer values
-                /*String Age = resultData.age;
-                String Age_Start_SubString = Age.substring(Age.lastIndexOf("-") - 1);
-                String Age_End_SubString = Age.substring(Age.lastIndexOf("-") + 1);
-                int Age_Start_Range = Integer.parseInt(Age_Start_SubString);
-                int Age_End_Range = Integer.parseInt(Age_End_SubString);*/
 
             /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
             are getting yesterday's datein date_preset field of the curl request*/
@@ -136,12 +131,6 @@ public class CampaignStats {
                 campaignStatsLoader.setActivity_End_Date(resultData.date_stop);
                 campaignStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
                 campaignStatsLoader.setProduct_ID(resultData.product_id);
-                /*campaignStatsLoader.setCountry(resultData.country);
-                campaignStatsLoader.setAge_Start_Range(Age_Start_Range);
-                campaignStatsLoader.setAge_End_Range(Age_End_Range);
-                campaignStatsLoader.setGender(resultData.gender);
-                campaignStatsLoader.setPlacement(resultData.placement);
-                campaignStatsLoader.setImpression_Device(resultData.impression_device);*/
                 campaignStatsLoader.setReach(resultData.reach);
                 campaignStatsLoader.setFrequency(resultData.frequency);
                 campaignStatsLoader.setImpressions(resultData.impressions);
@@ -161,7 +150,7 @@ public class CampaignStats {
                 campaignStatsLoaderList.add(campaignStatsLoader);
 
             }
-            CampaignStatsDAO.storecampaignlevelstats(campaignStatsLoaderList);
+            ProductLevelCampaignStatsDAO.storecampaignlevelstats(campaignStatsLoaderList);
 
             httpClient.close();
             return true;

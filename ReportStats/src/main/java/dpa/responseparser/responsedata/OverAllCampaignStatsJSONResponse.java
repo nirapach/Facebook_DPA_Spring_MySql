@@ -1,17 +1,14 @@
 package dpa.responseparser.responsedata;
 
 import com.google.gson.annotations.SerializedName;
-import dpa.responseparser.resultdata.AdGroupResultData;
+import dpa.responseparser.resultdata.OverAllAccountsResultData;
+import dpa.responseparser.resultdata.OverAllCampaignResultData;
 
 import java.util.List;
 
-/**
- * Created by niranjan on 6/23/15.
- */
-public class AdGroupStatsJSONResponse {
+public class OverAllCampaignStatsJSONResponse {
 
-
-    public List<AdGroupResultData> resultdata;
+    public List<OverAllCampaignResultData> resultdata;
 
     @SerializedName("limit")
     public int limit;

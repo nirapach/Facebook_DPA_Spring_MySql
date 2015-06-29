@@ -7,10 +7,9 @@ import java.util.Date;
 /**
  * Created by niranjan on 6/23/15.
  */
-public class CampaignResultData {
-
-    @SerializedName("campaign_group_id")
-    public long campaign_group_id;
+public class ProductLevelAdGroupResultData {
+    @SerializedName("adgroup_id")
+    public long adgroup_id;
 
     @SerializedName("product_id")
     public long product_id;
@@ -30,21 +29,10 @@ public class CampaignResultData {
     @SerializedName("spend")
     public double spend;
 
-    /*
-    @SerializedName("age")
-    public String age;
 
-    @SerializedName("gender")
-    public String gender;
+    @SerializedName("relevancy_score")
+    public double relevancy_score;
 
-    @SerializedName("country")
-    public String country;
-
-    @SerializedName("placement")
-    public String placement;
-
-    @SerializedName("impression_device")
-    public String impression_device;*/
 
     @SerializedName("total_actions")
     public long total_actions;

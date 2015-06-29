@@ -13,17 +13,14 @@ public class AdGroupStatsLoader {
     private long Product_ID;
     private int Age_Start_Range;
     private int Age_End_Range;
-    private String country;
     private String Gender;
-    private String Placement;
-    private String Impression_Device;
     private long Reach;
     private double Frequency;
     private long Clicks;
     private long Total_Actions;
     private long Impressions;
     private long Social_Reach;
-    private double Relevany_Score;
+    private double Relevancy_Score;
     private long Social_Impressions;
     private long Unique_Impressions;
     private long Unique_Social_Impressions;
@@ -81,13 +78,6 @@ public class AdGroupStatsLoader {
         Age_End_Range = age_End_Range;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
 
     public String getGender() {
         return Gender;
@@ -97,21 +87,6 @@ public class AdGroupStatsLoader {
         Gender = gender;
     }
 
-    public String getPlacement() {
-        return Placement;
-    }
-
-    public void setPlacement(String placement) {
-        Placement = placement;
-    }
-
-    public String getImpression_Device() {
-        return Impression_Device;
-    }
-
-    public void setImpression_Device(String impression_Device) {
-        Impression_Device = impression_Device;
-    }
 
     public long getReach() {
         return Reach;
@@ -161,12 +136,12 @@ public class AdGroupStatsLoader {
         Social_Reach = social_Reach;
     }
 
-    public double getRelevany_Score() {
-        return Relevany_Score;
+    public double getRelevancy_Score() {
+        return Relevancy_Score;
     }
 
-    public void setRelevany_Score(double relevany_Score) {
-        Relevany_Score = relevany_Score;
+    public void setRelevancy_Score(double relevancy_Score) {
+        Relevancy_Score = relevancy_Score;
     }
 
     public long getSocial_Impressions() {

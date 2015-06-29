@@ -13,12 +13,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
+import dpa.api.*;
 import dpa.model.AccountInformationLoader;
 import dpa.controller.AccountInformationDAO;
-import dpa.api.AccountStats;
-import dpa.api.AdGroupStats;
-import dpa.api.AdSetStats;
-import dpa.api.CampaignStats;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
@@ -78,7 +75,7 @@ public class StatsInformationCaller {
 
         String hostname;
         int smtpport;
-        String sendermailusername;
+        String sendermailaddress;
         String sendermailpassword;
         String sendermailname;
         //need to get the list of mail id's for sending emails
@@ -86,7 +83,7 @@ public class StatsInformationCaller {
         try {
             hostname = config.getProperty("hostname");
             smtpport = Integer.parseInt(config.getProperty("smtpport"));
-            sendermailusername = config.getProperty("sendermailusername");
+            sendermailaddress = config.getProperty("sendermailaddress");
             sendermailpassword = config.getProperty("sendermailpassword");
             sendermailname = config.getProperty("sendermailname");
         }
@@ -96,10 +93,19 @@ public class StatsInformationCaller {
 
         }
 
-        AccountStats accountStats=new AccountStats();
-        AdGroupStats adGroupStats= new AdGroupStats();
-        AdSetStats adSetStats=new AdSetStats();
-        CampaignStats campaignStats= new CampaignStats();
+        /*
+        Creating objects for calling the method to make the API call
+         */
+
+        ProductLevelAccountStats productLevelAccountStats =new ProductLevelAccountStats();
+        ProductLevelAdGroupStats productLevelAdGroupStats = new ProductLevelAdGroupStats();
+        ProductLevelAdSetStats productLevelAdSetStats =new ProductLevelAdSetStats();
+        ProductLevelCampaignStats productLevelCampaignStats = new ProductLevelCampaignStats();
+        OverAllAccountStats overAllAccountStats=new OverAllAccountStats();
+        OverAllAdGroupStats overAllAdGroupStats= new OverAllAdGroupStats();
+        OverAllAdSetStats overAllAdSetStats=new OverAllAdSetStats();
+        OverAllCampaignStats overAllCampaignStats= new OverAllCampaignStats();
+
 
         /*
         extract the account ID from each accountInformationLoader Object
@@ -111,15 +117,15 @@ public class StatsInformationCaller {
         /*
         Calling the method to get Account Level Statistics
          */
-        boolean accountstats = accountStats.getAccountstats(Ad_Account_ID_Integer,Client_ID_Integer,Access_Token);
+        boolean accountstats = productLevelAccountStats.getAccountstats(Ad_Account_ID_Integer,Client_ID_Integer,Access_Token);
         //right now just the sample code is given,need to finalize on the email list and the subject header
         if(accountstats) {
             try {
                 email.setHostName(hostname);
                 email.setSmtpPort(smtpport);
-                email.setAuthentication(sendermailname, sendermailpassword);
+                email.setAuthentication(sendermailaddress, sendermailpassword);
                 email.setStartTLSEnabled(true);
-                email.setFrom(sendermailname, sendermailusername);
+                email.setFrom( sendermailaddress,sendermailname);
                 email.setSubject("Account Level Statistics got uploaded to the database for client: " + client_id);
                 email.setMsg("Account Level Statistics got uploaded to the database for client:" + client_id);
                 email.addTo(receiveremailaddress);
@@ -131,17 +137,40 @@ public class StatsInformationCaller {
         }
 
         /*
+        Calling the method to get overall account stats
+         */
+
+        boolean overallaccountstats = overAllAccountStats.getOverAllAccountstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
+        //right now just the sample code is given,need to finalize on the email list and the subject header
+        if(overallaccountstats) {
+            try {
+                email.setHostName(hostname);
+                email.setSmtpPort(smtpport);
+                email.setAuthentication(sendermailaddress, sendermailpassword);
+                email.setStartTLSEnabled(true);
+                email.setFrom( sendermailaddress,sendermailname);
+                email.setSubject("OverAllAccount Level Statistics got uploaded to the database for client: " + client_id);
+                email.setMsg("OverAllAccount Level Statistics got uploaded to the database for client:" + client_id);
+                email.addTo(receiveremailaddress);
+                email.send();
+                logger.info("OverAllAccount level stats Email Notification Sent Successfully for client:"+client_id);
+            } catch (EmailException ee) {
+                ee.printStackTrace();
+            }
+        }
+
+        /*
         Calling the method to get Campaign Level Statistics
          */
-        boolean campaignstats=campaignStats.getCampaignstats(Ad_Account_ID_Integer,Client_ID_Integer,Access_Token);
+        boolean campaignstats= productLevelCampaignStats.getCampaignstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
 
         if(campaignstats) {
             try {
                 email.setHostName(hostname);
                 email.setSmtpPort(smtpport);
-                email.setAuthentication(sendermailname, sendermailpassword);
+                email.setAuthentication(sendermailaddress, sendermailpassword);
                 email.setStartTLSEnabled(true);
-                email.setFrom(sendermailname, sendermailusername);
+                email.setFrom( sendermailaddress,sendermailname);
                 email.setSubject("Campaign Level Statistics got uploaded to the database for client:"+client_id);
                 email.setMsg("Campaign Level Statistics got uploaded to the database for client:"+client_id);
                 email.addTo(receiveremailaddress);
@@ -151,18 +180,40 @@ public class StatsInformationCaller {
                 ee.printStackTrace();
             }
         }
+
+         /*
+        Calling the method to get OverAllCampaign Level Statistics
+         */
+        boolean overallcampaignstats= productLevelCampaignStats.getCampaignstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
+
+        if(overallcampaignstats) {
+            try {
+                email.setHostName(hostname);
+                email.setSmtpPort(smtpport);
+                email.setAuthentication(sendermailaddress, sendermailpassword);
+                email.setStartTLSEnabled(true);
+                email.setFrom( sendermailaddress,sendermailname);
+                email.setSubject("OverAllCampaign Level Statistics got uploaded to the database for client:"+client_id);
+                email.setMsg("OverAllCampaign Level Statistics got uploaded to the database for client:"+client_id);
+                email.addTo(receiveremailaddress);
+                email.send();
+                logger.info("OverAllCampaign level stats Email Notification Sent Successfully for client:"+client_id);
+            } catch (EmailException ee) {
+                ee.printStackTrace();
+            }
+        }
         /*
         Calling the method to get AdSet Level Statistics
          */
-        boolean adsetstats=adSetStats.getAdsetstats(Ad_Account_ID_Integer,Client_ID_Integer,Access_Token);
+        boolean adsetstats= productLevelAdSetStats.getAdsetstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
 
         if(adsetstats) {
             try {
                 email.setHostName(hostname);
                 email.setSmtpPort(smtpport);
-                email.setAuthentication(sendermailname, sendermailpassword);
+                email.setAuthentication(sendermailaddress, sendermailpassword);
                 email.setStartTLSEnabled(true);
-                email.setFrom(sendermailname, sendermailusername);
+                email.setFrom( sendermailaddress,sendermailname);
                 email.setSubject("AdSet Level Statistics got uploaded to the database for client:"+client_id);
                 email.setMsg("AdSet Level Statistics got uploaded to the database for client:"+client_id);
                 email.addTo(receiveremailaddress);
@@ -172,23 +223,66 @@ public class StatsInformationCaller {
                 ee.printStackTrace();
             }
         }
+        /*
+        Calling the method to get OverAllAdSet Level Statistics
+         */
+        boolean overalladsetstats= overAllAdSetStats.getOverAllAdSetstats(Ad_Account_ID_Integer,Client_ID_Integer,Access_Token);
+
+        if(overalladsetstats) {
+            try {
+                email.setHostName(hostname);
+                email.setSmtpPort(smtpport);
+                email.setAuthentication(sendermailaddress, sendermailpassword);
+                email.setStartTLSEnabled(true);
+                email.setFrom( sendermailaddress,sendermailname);
+                email.setSubject("OverAll AdSet Level Statistics got uploaded to the database for client:"+client_id);
+                email.setMsg("OverAll AdSet Level Statistics got uploaded to the database for client:"+client_id);
+                email.addTo(receiveremailaddress);
+                email.send();
+                logger.info("OverAll AdSet level stats Email Notification Sent Successfully for client:"+client_id);
+            } catch (EmailException ee) {
+                ee.printStackTrace();
+            }
+        }
          /*
         Calling the method to get AdGroup Level Statistics
          */
-        boolean adgroupstats=adGroupStats.getAdgroupstats(Ad_Account_ID_Integer,Client_ID_Integer,Access_Token);
+        boolean adgroupstats= productLevelAdGroupStats.getAdgroupstats(Ad_Account_ID_Integer,Client_ID_Integer,Access_Token);
 
         if(adgroupstats) {
             try {
                 email.setHostName(hostname);
                 email.setSmtpPort(smtpport);
-                email.setAuthentication(sendermailname, sendermailpassword);
+                email.setAuthentication(sendermailaddress, sendermailpassword);
                 email.setStartTLSEnabled(true);
-                email.setFrom(sendermailname, sendermailusername);
+                email.setFrom( sendermailaddress,sendermailname);
                 email.setSubject("AdGroup Level Statistics got uploaded to the database for client:"+client_id);
                 email.setMsg("AdGroup Level Statistics got uploaded to the database for client:"+client_id);
                 email.addTo(receiveremailaddress);
                 email.send();
                 logger.info("AdGroup level stats Email Notification Sent Successfully for client:"+client_id);
+            } catch (EmailException ee) {
+                ee.printStackTrace();
+            }
+        }
+
+        /*
+        Calling the method to get OverAllAdGroup Level Statistics
+        */
+        boolean overalladgroupstats= overAllAdGroupStats.getOverAllAdGroupstats(Ad_Account_ID_Integer,Client_ID_Integer,Access_Token);
+
+        if(overalladgroupstats) {
+            try {
+                email.setHostName(hostname);
+                email.setSmtpPort(smtpport);
+                email.setAuthentication(sendermailaddress, sendermailpassword);
+                email.setStartTLSEnabled(true);
+                email.setFrom( sendermailaddress,sendermailname);
+                email.setSubject("OverAllAdGroup Level Statistics got uploaded to the database for client:"+client_id);
+                email.setMsg("OverAllAdGroup Level Statistics got uploaded to the database for client:"+client_id);
+                email.addTo(receiveremailaddress);
+                email.send();
+                logger.info("OverAllAdGroup level stats Email Notification Sent Successfully for client:"+client_id);
             } catch (EmailException ee) {
                 ee.printStackTrace();
             }
