@@ -133,6 +133,7 @@
                 <version>1.4.0</version>
                 <configuration>
                     <mainClass>dpa.main.ReportStatsClient</mainClass>
+                    <cleanupDaemonThreads>false</cleanupDaemonThreads>
                 </configuration>
             </plugin>
         </plugins>
