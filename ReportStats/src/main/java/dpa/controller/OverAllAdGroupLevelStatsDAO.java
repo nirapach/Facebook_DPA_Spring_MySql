@@ -27,7 +27,7 @@ public class OverAllAdGroupLevelStatsDAO {
     public static void storeadgrouplevelstats(List<AdGroupStatsLoader> adGroupStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
 
         Logger logger = LoggerFactory.getLogger(OverAllAdGroupLevelStatsDAO.class);
-        String query = "INSERT INTO `G4_DPA_REPORTS_DB`.`Overall_Ad_Statistics_Results`\n" +
+        String query = "INSERT INTO Overall_Ad_Statistics_Results\n" +
                 "(Application_Client_ID,\n" +
                 "Application_Ad_Group_ID,\n" +
                 "Client_Reports_Age_Stats_Start_Range,\n" +
@@ -86,7 +86,7 @@ public class OverAllAdGroupLevelStatsDAO {
                 statement.setDate(21, (Date) adGroupStatsLoader.getActivity_Start_Date());
                 statement.setDate(22, (Date) adGroupStatsLoader.getActivity_End_Date());
                 statement.setDouble(23,adGroupStatsLoader.getCost_Per_Unique_Click());
-                statement.setDouble(24,adGroupStatsLoader.getRelevancy_Score());
+                statement.setDouble(24,adGroupStatsLoader.getRelevance_Score());
 
                 statement.executeUpdate();
                 logger.info("Row Successfully inserted for OverAllAdGroup Statistics Level");

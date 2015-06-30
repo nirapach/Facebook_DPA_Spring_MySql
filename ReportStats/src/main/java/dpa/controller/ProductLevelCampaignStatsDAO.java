@@ -27,7 +27,7 @@ public class ProductLevelCampaignStatsDAO {
     public static void storecampaignlevelstats(List<CampaignStatsLoader> campaignStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
 
         Logger logger = LoggerFactory.getLogger(ProductLevelCampaignStatsDAO.class);
-        String query = "INSERT INTO `G4_DPA_REPORTS_DB`.`Product_Account_Statistics_Results`\n" +
+        String query = "INSERT INTO Product_Account_Statistics_Results\n" +
                 "(Application_Client_ID,\n" +
                 "Client_Campaign_ID,\n" +
                 "Client_Product_ID,\n" +

@@ -27,7 +27,7 @@ public class OverAllCampaignLevelStatsDAO {
     public static void storecamapignlevelstats(List<CampaignStatsLoader> campaignStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
 
         Logger logger = LoggerFactory.getLogger(OverAllCampaignLevelStatsDAO.class);
-        String query = "INSERT INTO `G4_DPA_REPORTS_DB`.`Overall_Campaign_Statistics_Results`\n" +
+        String query = "INSERT INTO Overall_Campaign_Statistics_Results\n" +
                 "(Application_Client_ID,\n" +
                 "Application_Ad_AdSet_ID,\n" +
                 "Client_Reports_Age_Stats_Start_Range,\n" +

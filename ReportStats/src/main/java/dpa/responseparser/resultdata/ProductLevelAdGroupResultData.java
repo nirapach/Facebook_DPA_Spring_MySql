@@ -9,10 +9,10 @@ import java.util.Date;
  */
 public class ProductLevelAdGroupResultData {
     @SerializedName("adgroup_id")
-    public long adgroup_id;
+    public String adgroup_id;
 
     @SerializedName("product_id")
-    public long product_id;
+    public String product_id;
 
     @SerializedName("date_start")
     public Date date_start;
@@ -20,44 +20,42 @@ public class ProductLevelAdGroupResultData {
     @SerializedName("date_stop")
     public Date date_stop;
 
-    @SerializedName("impressions")
-    public long impressions;
-
-    @SerializedName("clicks")
-    public long clicks;
-
     @SerializedName("spend")
     public double spend;
 
-
-    @SerializedName("relevancy_score")
-    public double relevancy_score;
-
-
     @SerializedName("total_actions")
-    public long total_actions;
+    public int total_actions;
+
+    @SerializedName("relevance_score")
+    public double relevance_score;
+
 
     @SerializedName("reach")
-    public long reach;
+    public int reach;
+
+    @SerializedName("clicks")
+    public  int clicks;
+
+    @SerializedName("impressions")
+    public int impressions;
 
     @SerializedName("frequency")
     public double frequency;
 
     @SerializedName("social_reach")
-    public long social_reach;
+    public int social_reach;
 
     @SerializedName("social_impressions")
-    public long social_impressions;
-
-    @SerializedName("unique_impressions")
-    public long unique_impressions;
-
-    @SerializedName("unique_social_impressions")
-    public long unique_social_impressions;
+    public int social_impressions;
 
     @SerializedName("cpm")
     public double cpm;
 
+    @SerializedName("unique_impressions")
+    public int unique_impressions;
+
+    @SerializedName("unique_social_impressions")
+    public int unique_social_impressions;
 
     @SerializedName("cpp")
     public double cpp;
@@ -70,6 +68,5 @@ public class ProductLevelAdGroupResultData {
 
     @SerializedName("cost_per_unique_click")
     public double cost_per_unique_click;
-
 
 }

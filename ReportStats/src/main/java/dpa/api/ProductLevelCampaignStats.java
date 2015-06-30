@@ -43,13 +43,12 @@ public class ProductLevelCampaignStats {
 
         //Fields in the parameters
         long Client_ID=Client_ID_Integer;
+        boolean store=false;
         String Account_ID = Long.toString(Account_ID_Integer);
-        String date_preset = "yesterday";
-        String data_columns = "[\"campaign_group_id\",\"product_id\",\"spend\"," +
-                "\"total_actions\",\"reach\",\"clicks\",\"impressions\",\"frequency\",\"social_reach\"," +
-                "\"social_impressions\"," +
-                "\"cpm\",\"unique_impressions\",\"unique_social_impressions\",\"cpp\",\"ctr\",\"cpc\"," +
-                "\"cost_per_unique_click\"]";
+        String date_preset = "last_90_days";
+        String data_columns = "['campaign_group_id','spend','product_id','total_actions'," +
+                "'reach','clicks','impressions','frequency','social_reach','social_impressions'," +
+                "'cpm','unique_impressions','unique_social_impressions','cpp','ctr','cpc','cost_per_unique_click']";
 
         //url for the get request
         String Campaign_Stats_Get_URL = "graph.facebook.com";
@@ -79,12 +78,76 @@ public class ProductLevelCampaignStats {
 
             reader = new BufferedReader(new InputStreamReader(
                     httpResponse.getEntity().getContent()));
+
+
             /*
+
         To check for OAuth Token Expiration
          */
 
             OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
             status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader,Client_ID);
+
+
+
+
+            Gson gson=new Gson();
+
+
+
+            if(status==1) {
+                ProductLevelCampaignStatsJSONResponse response = gson.fromJson(reader, ProductLevelCampaignStatsJSONResponse.class);
+
+                List<ProductLevelCampaignResultData> results = response.resultdata;
+
+                CampaignStatsLoader campaignStatsLoader;
+                List<CampaignStatsLoader> campaignStatsLoaderList = new ArrayList<CampaignStatsLoader>();
+
+                for (ProductLevelCampaignResultData resultData : results) {
+
+                    campaignStatsLoader = new CampaignStatsLoader();
+
+
+            /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
+            are getting yesterday's datein date_preset field of the curl request*/
+                    Date Stats_Date = StatisticsDate.getYesterday();
+
+                    campaignStatsLoader.setClient_ID(Client_ID);
+                    campaignStatsLoader.setCampaign_ID(Long.valueOf(resultData.campaign_group_id));
+                    campaignStatsLoader.setActivity_Start_Date(resultData.date_start);
+                    campaignStatsLoader.setActivity_End_Date(resultData.date_stop);
+                    campaignStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
+                    campaignStatsLoader.setProduct_ID(Long.valueOf(resultData.product_id));
+                    campaignStatsLoader.setReach(resultData.reach);
+                    campaignStatsLoader.setFrequency(resultData.frequency);
+                    campaignStatsLoader.setImpressions(resultData.impressions);
+                    campaignStatsLoader.setClicks(resultData.clicks);
+                    campaignStatsLoader.setTotal_Actions(resultData.total_actions);
+                    campaignStatsLoader.setSocial_Reach(resultData.social_reach);
+                    campaignStatsLoader.setSocial_Impressions(resultData.social_impressions);
+                    campaignStatsLoader.setUnique_Impressions(resultData.unique_impressions);
+                    campaignStatsLoader.setUnique_Social_Impressions(resultData.unique_social_impressions);
+                    campaignStatsLoader.setCPC(resultData.cpc);
+                    campaignStatsLoader.setCPM(resultData.cpm);
+                    campaignStatsLoader.setCTR(resultData.ctr);
+                    campaignStatsLoader.setCPP(resultData.cpp);
+                    campaignStatsLoader.setSpend(resultData.spend);
+                    campaignStatsLoader.setStats_Date(Stats_Date);
+
+                    campaignStatsLoader.setAge_Start_Range(0);
+                    campaignStatsLoader.setAge_End_Range(0);
+                    campaignStatsLoader.setGender("null");
+
+                    campaignStatsLoaderList.add(campaignStatsLoader);
+
+                }
+                ProductLevelCampaignStatsDAO.storecampaignlevelstats(campaignStatsLoaderList);
+
+
+                httpClient.close();
+                store= true;
+            }
+            reader.close();
 
         }
         catch (ClientProtocolException e) {
@@ -101,63 +164,7 @@ public class ProductLevelCampaignStats {
             logger.info(String.valueOf(e));
             e.printStackTrace();
         }
-        reader.close();
+return store;
 
-
-        Gson gson=new Gson();
-
-
-
-        if(status==1) {
-            ProductLevelCampaignStatsJSONResponse response = gson.fromJson(reader, ProductLevelCampaignStatsJSONResponse.class);
-
-            List<ProductLevelCampaignResultData> results = response.resultdata;
-
-            CampaignStatsLoader campaignStatsLoader;
-            List<CampaignStatsLoader> campaignStatsLoaderList = new ArrayList<CampaignStatsLoader>();
-
-            for (ProductLevelCampaignResultData resultData : results) {
-
-                campaignStatsLoader = new CampaignStatsLoader();
-
-
-            /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
-            are getting yesterday's datein date_preset field of the curl request*/
-                Date Stats_Date = StatisticsDate.getYesterday();
-
-                campaignStatsLoader.setClient_ID(Client_ID);
-                campaignStatsLoader.setCampaign_ID(resultData.campaign_group_id);
-                campaignStatsLoader.setActivity_Start_Date(resultData.date_start);
-                campaignStatsLoader.setActivity_End_Date(resultData.date_stop);
-                campaignStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-                campaignStatsLoader.setProduct_ID(resultData.product_id);
-                campaignStatsLoader.setReach(resultData.reach);
-                campaignStatsLoader.setFrequency(resultData.frequency);
-                campaignStatsLoader.setImpressions(resultData.impressions);
-                campaignStatsLoader.setClicks(resultData.clicks);
-                campaignStatsLoader.setTotal_Actions(resultData.total_actions);
-                campaignStatsLoader.setSocial_Reach(resultData.social_reach);
-                campaignStatsLoader.setSocial_Impressions(resultData.social_impressions);
-                campaignStatsLoader.setUnique_Impressions(resultData.unique_impressions);
-                campaignStatsLoader.setUnique_Social_Impressions(resultData.unique_social_impressions);
-                campaignStatsLoader.setCPC(resultData.cpc);
-                campaignStatsLoader.setCPM(resultData.cpm);
-                campaignStatsLoader.setCTR(resultData.ctr);
-                campaignStatsLoader.setCPP(resultData.cpp);
-                campaignStatsLoader.setSpend(resultData.spend);
-                campaignStatsLoader.setStats_Date(Stats_Date);
-
-                campaignStatsLoaderList.add(campaignStatsLoader);
-
-            }
-            ProductLevelCampaignStatsDAO.storecampaignlevelstats(campaignStatsLoaderList);
-
-            httpClient.close();
-            return true;
-        }
-
-        else{
-            return false;
-        }
     }
 }

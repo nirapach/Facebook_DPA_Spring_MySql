@@ -43,13 +43,12 @@ public class ProductLevelAdSetStats {
 
         //Fields in the parameters
         long Client_ID=Client_ID_Integer;
+        boolean store=false;
         String Account_ID = Long.toString(Account_ID_Integer);
-        String date_preset = "yesterday";
-        String data_columns = "[\"campaign_id\",\"product_id\",\"spend\"," +
-                "\"total_actions\",\"reach\",\"clicks\",\"impressions\",\"frequency\",\"social_reach\"," +
-                "\"social_impressions\"," +
-                "\"cpm\",\"unique_impressions\",\"unique_social_impressions\",\"cpp\",\"ctr\",\"cpc\"," +
-                "\"cost_per_unique_click\"]";
+        String date_preset = "last_90_days";
+        String data_columns = "['campaign_id','spend','product_id','total_actions'," +
+                "'reach','clicks','impressions','frequency','social_reach','social_impressions'," +
+                "'cpm','unique_impressions','unique_social_impressions','cpp','ctr','cpc','cost_per_unique_click']";
 
         //url for the get request
         String Campaign_Stats_Get_URL = "graph.facebook.com";
@@ -79,6 +78,7 @@ public class ProductLevelAdSetStats {
             reader = new BufferedReader(new InputStreamReader(
                     httpResponse.getEntity().getContent()));
 
+
              /*
         To check for OAuth Token Expiration
          */
@@ -86,6 +86,68 @@ public class ProductLevelAdSetStats {
             OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
             status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader,Client_ID);
 
+            Gson gson= new Gson();
+
+            if(status==1) {
+                ProductLevelAdSetStatsJSONResponse response = gson.fromJson(reader, ProductLevelAdSetStatsJSONResponse.class);
+
+                List<ProductLevelAdSetResultData> results = response.resultdata;
+
+                AdSetStatsLoader adSetStatsLoader;
+                List<AdSetStatsLoader> adSetStatsLoaderList = new ArrayList<AdSetStatsLoader>();
+
+                for (ProductLevelAdSetResultData resultData : results) {
+
+                    adSetStatsLoader = new AdSetStatsLoader();
+
+                    //getting the age range and splitting it into accessible integer values
+                /*String Age = resultData.age;
+                String Age_Start_SubString = Age.substring(Age.lastIndexOf("-") - 1);
+                String Age_End_SubString = Age.substring(Age.lastIndexOf("-") + 1);
+                int Age_Start_Range = Integer.parseInt(Age_Start_SubString);
+                int Age_End_Range = Integer.parseInt(Age_End_SubString);*/
+
+            /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
+            are getting yesterday's datein date_preset field of the curl request*/
+                    Date Stats_Date = StatisticsDate.getYesterday();
+
+                    adSetStatsLoader.setClient_ID(Client_ID);
+                    adSetStatsLoader.setAdSet_ID(Long.valueOf(resultData.campaign_id));
+                    adSetStatsLoader.setActivity_Start_Date(resultData.date_start);
+                    adSetStatsLoader.setActivity_End_Date(resultData.date_stop);
+                    adSetStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
+                    adSetStatsLoader.setProduct_ID(Long.valueOf(resultData.product_id));
+                    adSetStatsLoader.setReach(resultData.reach);
+                    adSetStatsLoader.setFrequency(resultData.frequency);
+                    adSetStatsLoader.setImpressions(resultData.impressions);
+                    adSetStatsLoader.setClicks(resultData.clicks);
+                    adSetStatsLoader.setTotal_Actions(resultData.total_actions);
+                    adSetStatsLoader.setSocial_Reach(resultData.social_reach);
+                    adSetStatsLoader.setSocial_Impressions(resultData.social_impressions);
+                    adSetStatsLoader.setUnique_Impressions(resultData.unique_impressions);
+                    adSetStatsLoader.setUnique_Social_Impressions(resultData.unique_social_impressions);
+                    adSetStatsLoader.setCPC(resultData.cpc);
+                    adSetStatsLoader.setCPM(resultData.cpm);
+                    adSetStatsLoader.setCTR(resultData.ctr);
+                    adSetStatsLoader.setCPP(resultData.cpp);
+                    adSetStatsLoader.setSpend(resultData.spend);
+                    adSetStatsLoader.setStats_Date(Stats_Date);
+
+                    adSetStatsLoader.setAge_Start_Range(0);
+                    adSetStatsLoader.setAge_End_Range(0);
+                    adSetStatsLoader.setGender("null");
+
+                    adSetStatsLoaderList.add(adSetStatsLoader);
+
+
+                }
+                ProductLevelAdSetStatsDAO.storeadsetlevelstats(adSetStatsLoaderList);
+
+
+                httpClient.close();
+                store= true;
+            }
+            reader.close();
         }
         catch (ClientProtocolException e) {
             logger.info("ClientProtocolException ");
@@ -101,74 +163,10 @@ public class ProductLevelAdSetStats {
             logger.info(String.valueOf(e));
             e.printStackTrace();
         }
-        reader.close();
+        return store;
 
 
-        Gson gson= new Gson();
 
-        if(status==1) {
-            ProductLevelAdSetStatsJSONResponse response = gson.fromJson(reader, ProductLevelAdSetStatsJSONResponse.class);
-
-            List<ProductLevelAdSetResultData> results = response.resultdata;
-
-            AdSetStatsLoader adSetStatsLoader;
-            List<AdSetStatsLoader> adSetStatsLoaderList = new ArrayList<AdSetStatsLoader>();
-
-            for (ProductLevelAdSetResultData resultData : results) {
-
-                adSetStatsLoader = new AdSetStatsLoader();
-
-                //getting the age range and splitting it into accessible integer values
-                /*String Age = resultData.age;
-                String Age_Start_SubString = Age.substring(Age.lastIndexOf("-") - 1);
-                String Age_End_SubString = Age.substring(Age.lastIndexOf("-") + 1);
-                int Age_Start_Range = Integer.parseInt(Age_Start_SubString);
-                int Age_End_Range = Integer.parseInt(Age_End_SubString);*/
-
-            /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
-            are getting yesterday's datein date_preset field of the curl request*/
-                Date Stats_Date = StatisticsDate.getYesterday();
-
-                adSetStatsLoader.setClient_ID(Client_ID);
-                adSetStatsLoader.setAdSet_ID(resultData.campaign_id);
-                adSetStatsLoader.setActivity_Start_Date(resultData.date_start);
-                adSetStatsLoader.setActivity_End_Date(resultData.date_stop);
-                adSetStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-                adSetStatsLoader.setProduct_ID(resultData.product_id);
-                /*adSetStatsLoader.setCountry(resultData.country);
-                adSetStatsLoader.setAge_Start_Range(Age_Start_Range);
-                adSetStatsLoader.setAge_End_Range(Age_End_Range);
-                adSetStatsLoader.setGender(resultData.gender);
-                adSetStatsLoader.setPlacement(resultData.placement);
-                adSetStatsLoader.setImpression_Device(resultData.impression_device);*/
-                adSetStatsLoader.setReach(resultData.reach);
-                adSetStatsLoader.setFrequency(resultData.frequency);
-                adSetStatsLoader.setImpressions(resultData.impressions);
-                adSetStatsLoader.setClicks(resultData.clicks);
-                adSetStatsLoader.setTotal_Actions(resultData.total_actions);
-                adSetStatsLoader.setSocial_Reach(resultData.social_reach);
-                adSetStatsLoader.setSocial_Impressions(resultData.social_impressions);
-                adSetStatsLoader.setUnique_Impressions(resultData.unique_impressions);
-                adSetStatsLoader.setUnique_Social_Impressions(resultData.unique_social_impressions);
-                adSetStatsLoader.setCPC(resultData.cpc);
-                adSetStatsLoader.setCPM(resultData.cpm);
-                adSetStatsLoader.setCTR(resultData.ctr);
-                adSetStatsLoader.setCPP(resultData.cpp);
-                adSetStatsLoader.setSpend(resultData.spend);
-                adSetStatsLoader.setStats_Date(Stats_Date);
-
-                adSetStatsLoaderList.add(adSetStatsLoader);
-
-
-            }
-            ProductLevelAdSetStatsDAO.storeadsetlevelstats(adSetStatsLoaderList);
-
-            httpClient.close();
-            return true;
-        }
-        else{
-            return false;
-        }
     }
 }
 

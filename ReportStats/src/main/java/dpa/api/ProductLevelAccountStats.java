@@ -20,6 +20,9 @@ import org.apache.http.impl.client.HttpClients;
 
 import java.beans.PropertyVetoException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.slf4j.Logger;
@@ -43,13 +46,12 @@ public class ProductLevelAccountStats {
 
         //Fields in the parameters
         long Client_ID=Client_ID_Integer;
+        boolean store = false;
         String Account_ID = Long.toString(Account_ID_Integer);
-        String date_preset = "yesterday";
-        String data_columns = "[\"account_id\",\"product_id\",\"spend\"," +
-                "\"total_actions\",\"reach\",\"clicks\",\"impressions\",\"frequency\",\"social_reach\"," +
-                "\"social_impressions\"," +
-                "\"cpm\",\"unique_impressions\",\"unique_social_impressions\",\"cpp\",\"ctr\",\"cpc\"," +
-                "\"cost_per_unique_click\"]";
+        String date_preset = "last_90_days";
+        String data_columns = "['account_id','spend','product_id','total_actions'," +
+                "'reach','clicks','impressions','frequency','social_reach','social_impressions'," +
+                "'cpm','unique_impressions','unique_social_impressions','cpp','ctr','cpc','cost_per_unique_click']";
 
         //url for the get request
         String Campaign_Stats_Get_URL = "graph.facebook.com";
@@ -62,7 +64,7 @@ public class ProductLevelAccountStats {
                 .setParameter("date_preset", date_preset)
                 .setParameter("access_token",Access_Token);
 
-        BufferedReader reader=null;
+        BufferedReader reader;
         int status=0;
         //getting the httpresponse
         CloseableHttpResponse httpResponse;
@@ -79,6 +81,7 @@ public class ProductLevelAccountStats {
                 reader = new BufferedReader(new InputStreamReader(
                         httpResponse.getEntity().getContent()));
 
+
              /*
         To check for OAuth Token Expiration
          */
@@ -86,8 +89,78 @@ public class ProductLevelAccountStats {
             OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
             status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader,Client_ID);
 
+            Gson gson=new Gson();
+
+        /*
+        To write the Account Level Stats to the Database
+        Only when the returned status is '1' then this data is written into the database
+         */
+            if(status==1) {
+
+                ProductLevelAccountStatsJSONResponse response = gson.fromJson(reader, ProductLevelAccountStatsJSONResponse.class);
+
+                List<ProductLevelAccountsResultData> results = response.resultdata;
+
+                AccountStatsLoader accountStatsLoader;
+                List<AccountStatsLoader> accountStatsLoaderList = new ArrayList<AccountStatsLoader>();
+
+                for (ProductLevelAccountsResultData resultData : results) {
+
+                    accountStatsLoader = new AccountStatsLoader();
 
 
+            /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
+            are getting yesterday's datein date_preset field of the curl request*/
+
+                    Date Stats_Date = StatisticsDate.getYesterday();
+
+
+                    /*Date Activity_Start_Date= null;
+                    Date Activity_End_Date=null;
+                    try {
+                        Activity_Start_Date = format.parse(resultData.date_start);
+                        Activity_End_Date=format.parse(resultData.date_stop);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }*/
+
+
+                    accountStatsLoader.setClient_ID(Client_ID);
+                    accountStatsLoader.setAccount_ID(Long.valueOf(resultData.account_id));
+                    accountStatsLoader.setProduct_ID(Long.valueOf(resultData.product_id));
+                    accountStatsLoader.setActivity_Start_Date(resultData.date_start);
+                    accountStatsLoader.setActivity_End_Date(resultData.date_stop);
+                    accountStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
+                    accountStatsLoader.setReach(resultData.reach);
+                    accountStatsLoader.setFrequency(resultData.frequency);
+                    accountStatsLoader.setImpressions(resultData.impressions);
+                    accountStatsLoader.setClicks(resultData.clicks);
+                    accountStatsLoader.setTotal_Actions(resultData.total_actions);
+                    accountStatsLoader.setSocial_Reach(resultData.social_reach);
+                    accountStatsLoader.setSocial_Impressions(resultData.social_impressions);
+                    accountStatsLoader.setUnique_Impressions(resultData.unique_impressions);
+                    accountStatsLoader.setUnique_Social_Impressions(resultData.unique_social_impressions);
+                    accountStatsLoader.setCPC(resultData.cpc);
+                    accountStatsLoader.setCPM(resultData.cpm);
+                    accountStatsLoader.setCTR(resultData.ctr);
+                    accountStatsLoader.setCPP(resultData.cpp);
+                    accountStatsLoader.setSpend(resultData.spend);
+                    accountStatsLoader.setStats_Date(Stats_Date);
+
+                    accountStatsLoader.setAge_Start_Range(0);
+                    accountStatsLoader.setAge_End_Range(0);
+                    accountStatsLoader.setGender("null");
+
+                    accountStatsLoaderList.add(accountStatsLoader);
+
+
+                }
+                ProductLevelAccountStatsDAO.storeaccountlevelstats(accountStatsLoaderList);
+
+                store=true;
+            }
+
+            reader.close();
 
         } catch (ClientProtocolException e) {
             logger.info("ClientProtocolException ");
@@ -103,65 +176,9 @@ public class ProductLevelAccountStats {
             logger.info(String.valueOf(e));
             e.printStackTrace();
         }
-        reader.close();
-        Gson gson=new Gson();
-
-        /*
-        To write the Account Level Stats to the Database
-        Only when the returned status is '1' then this data is written into the database
-         */
-        if(status==1) {
-            ProductLevelAccountStatsJSONResponse response = gson.fromJson(reader, ProductLevelAccountStatsJSONResponse.class);
-
-            List<ProductLevelAccountsResultData> results = response.resultdata;
-
-            AccountStatsLoader accountStatsLoader;
-            List<AccountStatsLoader> accountStatsLoaderList = new ArrayList<AccountStatsLoader>();
-
-            for (ProductLevelAccountsResultData resultData : results) {
-
-                accountStatsLoader = new AccountStatsLoader();
 
 
-            /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
-            are getting yesterday's datein date_preset field of the curl request*/
-
-                Date Stats_Date = StatisticsDate.getYesterday();
-
-                accountStatsLoader.setClient_ID(Client_ID);
-                accountStatsLoader.setAccount_ID(resultData.account_id);
-                accountStatsLoader.setActivity_Start_Date(resultData.date_start);
-                accountStatsLoader.setActivity_End_Date(resultData.date_stop);
-                accountStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-                accountStatsLoader.setProduct_ID(resultData.product_id);
-                accountStatsLoader.setReach(resultData.reach);
-                accountStatsLoader.setFrequency(resultData.frequency);
-                accountStatsLoader.setImpressions(resultData.impressions);
-                accountStatsLoader.setClicks(resultData.clicks);
-                accountStatsLoader.setTotal_Actions(resultData.total_actions);
-                accountStatsLoader.setSocial_Reach(resultData.social_reach);
-                accountStatsLoader.setSocial_Impressions(resultData.social_impressions);
-                accountStatsLoader.setUnique_Impressions(resultData.unique_impressions);
-                accountStatsLoader.setUnique_Social_Impressions(resultData.unique_social_impressions);
-                accountStatsLoader.setCPC(resultData.cpc);
-                accountStatsLoader.setCPM(resultData.cpm);
-                accountStatsLoader.setCTR(resultData.ctr);
-                accountStatsLoader.setCPP(resultData.cpp);
-                accountStatsLoader.setSpend(resultData.spend);
-                accountStatsLoader.setStats_Date(Stats_Date);
-
-                accountStatsLoaderList.add(accountStatsLoader);
-
-
-            }
-            ProductLevelAccountStatsDAO.storeaccountlevelstats(accountStatsLoaderList);
-
-            httpClient.close();
-
-            return true;
-        }
-        else{
-            return false;
-        }
+        httpClient.close();
+        return store;
     }
 }

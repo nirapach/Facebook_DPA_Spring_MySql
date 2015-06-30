@@ -184,7 +184,7 @@ public class StatsInformationCaller {
          /*
         Calling the method to get OverAllCampaign Level Statistics
          */
-        boolean overallcampaignstats= productLevelCampaignStats.getCampaignstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
+        boolean overallcampaignstats= overAllCampaignStats.getOverAllCampaignstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
 
         if(overallcampaignstats) {
             try {

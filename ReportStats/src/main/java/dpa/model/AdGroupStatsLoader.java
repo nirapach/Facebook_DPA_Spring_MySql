@@ -14,16 +14,16 @@ public class AdGroupStatsLoader {
     private int Age_Start_Range;
     private int Age_End_Range;
     private String Gender;
-    private long Reach;
+    private int Reach;
     private double Frequency;
-    private long Clicks;
-    private long Total_Actions;
-    private long Impressions;
-    private long Social_Reach;
-    private double Relevancy_Score;
-    private long Social_Impressions;
-    private long Unique_Impressions;
-    private long Unique_Social_Impressions;
+    private int Clicks;
+    private int Total_Actions;
+    private int Impressions;
+    private int Social_Reach;
+    private double Relevance_Score;
+    private int Social_Impressions;
+    private int Unique_Impressions;
+    private int Unique_Social_Impressions;
     private double CPM;
     private double CPP;
     private double Spend;
@@ -54,7 +54,6 @@ public class AdGroupStatsLoader {
     }
 
     public long getProduct_ID() {
-
         return Product_ID;
     }
 
@@ -78,7 +77,6 @@ public class AdGroupStatsLoader {
         Age_End_Range = age_End_Range;
     }
 
-
     public String getGender() {
         return Gender;
     }
@@ -87,12 +85,11 @@ public class AdGroupStatsLoader {
         Gender = gender;
     }
 
-
-    public long getReach() {
+    public int getReach() {
         return Reach;
     }
 
-    public void setReach(long reach) {
+    public void setReach(int reach) {
         Reach = reach;
     }
 
@@ -104,67 +101,67 @@ public class AdGroupStatsLoader {
         Frequency = frequency;
     }
 
-    public long getClicks() {
+    public int getClicks() {
         return Clicks;
     }
 
-    public void setClicks(long clicks) {
+    public void setClicks(int clicks) {
         Clicks = clicks;
     }
 
-    public long getTotal_Actions() {
+    public int getTotal_Actions() {
         return Total_Actions;
     }
 
-    public void setTotal_Actions(long total_Actions) {
+    public void setTotal_Actions(int total_Actions) {
         Total_Actions = total_Actions;
     }
 
-    public long getImpressions() {
+    public int getImpressions() {
         return Impressions;
     }
 
-    public void setImpressions(long impressions) {
+    public void setImpressions(int impressions) {
         Impressions = impressions;
     }
 
-    public long getSocial_Reach() {
+    public int getSocial_Reach() {
         return Social_Reach;
     }
 
-    public void setSocial_Reach(long social_Reach) {
+    public void setSocial_Reach(int social_Reach) {
         Social_Reach = social_Reach;
     }
 
-    public double getRelevancy_Score() {
-        return Relevancy_Score;
+    public double getRelevance_Score() {
+        return Relevance_Score;
     }
 
-    public void setRelevancy_Score(double relevancy_Score) {
-        Relevancy_Score = relevancy_Score;
+    public void setRelevance_Score(double relevance_Score) {
+        Relevance_Score = relevance_Score;
     }
 
-    public long getSocial_Impressions() {
+    public int getSocial_Impressions() {
         return Social_Impressions;
     }
 
-    public void setSocial_Impressions(long social_Impressions) {
+    public void setSocial_Impressions(int social_Impressions) {
         Social_Impressions = social_Impressions;
     }
 
-    public long getUnique_Impressions() {
+    public int getUnique_Impressions() {
         return Unique_Impressions;
     }
 
-    public void setUnique_Impressions(long unique_Impressions) {
+    public void setUnique_Impressions(int unique_Impressions) {
         Unique_Impressions = unique_Impressions;
     }
 
-    public long getUnique_Social_Impressions() {
+    public int getUnique_Social_Impressions() {
         return Unique_Social_Impressions;
     }
 
-    public void setUnique_Social_Impressions(long unique_Social_Impressions) {
+    public void setUnique_Social_Impressions(int unique_Social_Impressions) {
         Unique_Social_Impressions = unique_Social_Impressions;
     }
 

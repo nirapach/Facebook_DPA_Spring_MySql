@@ -27,7 +27,7 @@ public class ProductLevelAdGroupStatsDAO {
     public static void storeadgrouplevelstats(List<AdGroupStatsLoader> adGroupStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
 
         Logger logger = LoggerFactory.getLogger(ProductLevelAdSetStatsDAO.class);
-        String query = "INSERT INTO `G4_DPA_REPORTS_DB`.`Product_Ad_Statistics_Results`\n" +
+        String query = "INSERT INTO Product_Ad_Statistics_Results\n" +
                 "(Application_Client_ID,\n" +
                 "Client_Ad_Group_ID,\n" +
                 "Client_Product_ID,\n" +
@@ -67,7 +67,7 @@ public class ProductLevelAdGroupStatsDAO {
                 statement.setLong(6,adGroupStatsLoader.getImpressions());
                 statement.setLong(7,adGroupStatsLoader.getClicks());
                 statement.setLong(8,adGroupStatsLoader.getTotal_Actions());
-                statement.setDouble(9,adGroupStatsLoader.getRelevancy_Score());
+                statement.setDouble(9,adGroupStatsLoader.getRelevance_Score());
                 statement.setLong(10,adGroupStatsLoader.getSocial_Reach());
                 statement.setLong(11,adGroupStatsLoader.getSocial_Impressions());
                 statement.setLong(12,adGroupStatsLoader.getUnique_Impressions());

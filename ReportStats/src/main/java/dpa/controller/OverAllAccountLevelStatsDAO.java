@@ -25,7 +25,7 @@ public class OverAllAccountLevelStatsDAO {
     public static void storeaccountlevelstats(List<AccountStatsLoader> accountStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
 
         Logger logger = LoggerFactory.getLogger(OverAllAccountLevelStatsDAO.class);
-        String query = "INSERT INTO `G4_DPA_REPORTS_DB`.`Overall_Account_Statistics_Results`\n" +
+        String query = "INSERT INTO Overall_Account_Statistics_Results\n" +
                 "(Application_Client_ID,\n" +
                 "Application_Ad_Account_ID,\n" +
                 "Client_Reports_Age_Stats_Start_Range,\n" +
