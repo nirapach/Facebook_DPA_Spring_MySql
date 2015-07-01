@@ -28,9 +28,10 @@ public class OverAllAdGroupLevelStatsDAO {
     //default constructor
     public OverAllAdGroupLevelStatsDAO(){}
 
-    public void storeadgrouplevelstats(List<AdGroupStatsLoader> adGroupStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
+    public boolean storeadgrouplevelstats(List<AdGroupStatsLoader> adGroupStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
 
 
+        boolean success=false;
         String query = "INSERT INTO Overall_Ad_Statistics_Results" +
                 "(Application_Client_ID," +
                 "Application_Ad_Group_ID," +
@@ -91,8 +92,11 @@ public class OverAllAdGroupLevelStatsDAO {
                 statement.setDouble(23,adGroupStatsLoader.getCost_Per_Unique_Click());
                 statement.setDouble(24,adGroupStatsLoader.getRelevance_Score());
 
-                statement.executeUpdate();
-                logger.info("Row Successfully inserted for OverAllAdGroup Statistics Level");
+                int rowaffected=statement.executeUpdate();
+                if(rowaffected>0){
+                    success=true;
+                    logger.info("Row Successfully inserted for Account Statistics Level");
+                }
             }
 
 
@@ -106,7 +110,7 @@ public class OverAllAdGroupLevelStatsDAO {
             DBUtils.close(connection);
 
         }
-
+return success;
     }
 }
 

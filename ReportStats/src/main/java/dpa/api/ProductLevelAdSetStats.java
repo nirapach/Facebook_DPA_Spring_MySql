@@ -164,11 +164,13 @@ public class ProductLevelAdSetStats {
 
 
                 }
-                productLevelAdSetStatsDAO.storeadsetlevelstats(adSetStatsLoaderList);
+                boolean success=productLevelAdSetStatsDAO.storeadsetlevelstats(adSetStatsLoaderList);
 
 
-                httpClient.close();
-                store= true;
+
+                if(success){
+                    store=true;
+                }
             }
             reader.close();
         }
@@ -186,6 +188,8 @@ public class ProductLevelAdSetStats {
             logger.info(String.valueOf(e));
             e.printStackTrace();
         }
+
+        httpClient.close();
         return store;
 
 

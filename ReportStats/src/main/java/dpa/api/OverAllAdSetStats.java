@@ -175,13 +175,11 @@ public class OverAllAdSetStats {
 
 
                 }
-                overAllAdSetLevelStatsDAO.storeadsetlevelstats(adSetStatsLoaderList);
+                boolean success=overAllAdSetLevelStatsDAO.storeadsetlevelstats(adSetStatsLoaderList);
 
-
-
-                httpClient.close();
-
-                store=true;
+                if(success){
+                    store=true;
+                }
             }
             reader.close();
 
@@ -199,6 +197,7 @@ public class OverAllAdSetStats {
             logger.info(String.valueOf(e));
             e.printStackTrace();
         }
+        httpClient.close();
         return store;
 
     }

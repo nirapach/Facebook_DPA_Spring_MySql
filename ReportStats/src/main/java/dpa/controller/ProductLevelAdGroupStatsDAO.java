@@ -27,7 +27,8 @@ public class ProductLevelAdGroupStatsDAO {
     public ProductLevelAdGroupStatsDAO(){}
 
 
-    public void storeadgrouplevelstats(List<AdGroupStatsLoader> adGroupStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
+    public boolean storeadgrouplevelstats(List<AdGroupStatsLoader> adGroupStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
+        boolean success=false;
         String query = "INSERT INTO Product_Ad_Statistics_Results" +
                 "(Application_Client_ID," +
                 "Client_Ad_Group_ID," +
@@ -81,8 +82,11 @@ public class ProductLevelAdGroupStatsDAO {
                 statement.setDate(20, (java.sql.Date) adGroupStatsLoader.getActivity_Start_Date());
                 statement.setDate(21, (java.sql.Date) adGroupStatsLoader.getActivity_End_Date());
 
-                statement.executeUpdate();
-                logger.info("Row Successfully inserted for Ad Group Level Statistics Level");
+                int rowaffected=statement.executeUpdate();
+                if(rowaffected>0){
+                    success=true;
+                    logger.info("Row Successfully inserted for Account Statistics Level");
+                }
             }
 
 
@@ -97,5 +101,6 @@ public class ProductLevelAdGroupStatsDAO {
 
         }
 
+        return success;
     }
 }

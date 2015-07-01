@@ -181,12 +181,11 @@ public class OverAllCampaignStats {
 
 
                 }
-                overAllCampaignLevelStatsDAO.storecamapignlevelstats(campaignStatsLoaderList);
+                boolean success=overAllCampaignLevelStatsDAO.storecamapignlevelstats(campaignStatsLoaderList);
 
-
-                httpClient.close();
-
-                return true;
+                if(success){
+                    store=true;
+                }
             }
             reader.close();
 
@@ -205,6 +204,7 @@ public class OverAllCampaignStats {
             e.printStackTrace();
         }
 
+        httpClient.close();
         return store;
     }
 }

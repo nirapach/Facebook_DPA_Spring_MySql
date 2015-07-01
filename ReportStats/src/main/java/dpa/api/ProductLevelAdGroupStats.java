@@ -167,12 +167,14 @@ public class ProductLevelAdGroupStats {
 
 
                 }
-                productLevelAdGroupStatsDAO.storeadgrouplevelstats(adGroupStatsLoaderList);
+                boolean success=productLevelAdGroupStatsDAO.storeadgrouplevelstats(adGroupStatsLoaderList);
 
 
-                httpClient.close();
 
-                store=true;
+
+                if(success){
+                    store=true;
+                }
             }
             reader.close();
         }
@@ -190,6 +192,7 @@ public class ProductLevelAdGroupStats {
             logger.info(String.valueOf(e));
             e.printStackTrace();
         }
+        httpClient.close();
 
         return store;
 

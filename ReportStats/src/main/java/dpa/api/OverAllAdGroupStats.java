@@ -178,13 +178,11 @@ public class OverAllAdGroupStats {
 
 
                 }
-                overAllAdGroupLevelStatsDAO.storeadgrouplevelstats(adGroupStatsLoaderList);
+                boolean success=overAllAdGroupLevelStatsDAO.storeadgrouplevelstats(adGroupStatsLoaderList);
 
-
-
-                httpClient.close();
-
-                store=true;
+                if(success){
+                    store=true;
+                }
             }
             reader.close();
 
@@ -203,6 +201,7 @@ public class OverAllAdGroupStats {
             logger.info(String.valueOf(e));
             e.printStackTrace();
         }
+        httpClient.close();
     return store;
 
     }
