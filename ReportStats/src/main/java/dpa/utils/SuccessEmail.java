@@ -54,7 +54,7 @@ public class SuccessEmail {
         String sendermailaddress;
         String sendermailpassword;
         String sendermailname;
-        String receiveremailaddress="niranjan@gravity4.com";
+        String receiveremailaddress="sundi@gravity4.com";
 
     //need to get the list of mail id's for sending emails
         try {
@@ -73,7 +73,7 @@ public class SuccessEmail {
             email.setMsg(message + Client_ID);
             email.addTo(receiveremailaddress);
             email.send();
-            logger.info("Account level stats Email Notification Sent Successfully for Application:" + Client_ID);
+            logger.info("Email Notification Sent Successfully for Application:" + Client_ID);
 
 
         } catch (EmailException ee) {

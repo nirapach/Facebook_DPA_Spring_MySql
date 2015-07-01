@@ -43,7 +43,7 @@ public class OAuthExpirationTokenChecker {
         }
 
         //need to get the list of mail id's for sending emails
-        String receiveremailaddress="niranjan@gravity4.com";
+        String receiveremailaddress="sundi@gravity4.com";
         String hostname = config.getProperty("hostname");
         int smtpport = Integer.parseInt(config.getProperty("smtpport"));
         String sendermailaddress = config.getProperty("sendermailaddress");

@@ -90,9 +90,6 @@ import java.net.URISyntaxException;
          */
             status=oAuthExpirationTokenChecker.checkOAuthTokenException(OAuthReader,Client_ID);
 
-
-
-
         /*
         To write the Account Level Stats to the Database
         Only when the returned status is '1' then this data is written into the database
@@ -111,6 +108,7 @@ import java.net.URISyntaxException;
                     fbresponse.append(inputLine);
                 }
                 String jsonfeed = fbresponse.toString();
+
 
                 ProductLevelAccountStatsJSONResponse response = gson.fromJson(jsonfeed, ProductLevelAccountStatsJSONResponse.class);
 
