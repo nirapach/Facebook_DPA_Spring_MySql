@@ -26,7 +26,7 @@ public class ProductLevelAccountStatsDAO {
     //default constructor
     public ProductLevelAccountStatsDAO(){}
 
-    public boolean storeaccountlevelstats(List<AccountStatsLoader> accountStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
+    public void storeaccountlevelstats(List<AccountStatsLoader> accountStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
 
 
 
@@ -86,7 +86,6 @@ public class ProductLevelAccountStatsDAO {
 
                 int rowaffected=statement.executeUpdate();
                 if(rowaffected>0){
-                    success=true;
                 logger.info("Row Successfully inserted for Account Statistics Level");
                 }
             }
@@ -102,6 +101,5 @@ public class ProductLevelAccountStatsDAO {
             DBUtils.close(connection);
 
         }
-        return success;
     }
 }
