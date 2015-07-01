@@ -5,11 +5,13 @@ import dpa.responseparser.resultdata.OverAllAccountsResultData;
 import dpa.responseparser.resultdata.OverAllAdGroupResultData;
 import dpa.responseparser.resultdata.OverAllAdSetResultData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OverAllAdGroupStatsJSONResponse {
 
-    public List<OverAllAdGroupResultData> resultdata;
+
+    public List<OverAllAdGroupResultData> data;
 
     @SerializedName("limit")
     public int limit;

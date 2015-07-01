@@ -20,10 +20,10 @@ public class OverAllAccountsResultData {
     public String gender;
 
     @SerializedName("date_start")
-    public Date date_start;
+    public String date_start;
 
     @SerializedName("date_stop")
-    public Date date_stop;
+    public String date_stop;
 
     @SerializedName("spend")
     public double spend;

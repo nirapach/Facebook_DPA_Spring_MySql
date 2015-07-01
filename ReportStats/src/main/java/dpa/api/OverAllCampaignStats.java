@@ -31,6 +31,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,11 +48,12 @@ public class OverAllCampaignStats {
         */
     public boolean getOverAllCampaignstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException, HTTPException {
 
+        OverAllCampaignLevelStatsDAO overAllCampaignLevelStatsDAO=new OverAllCampaignLevelStatsDAO();
         //Fields in the parameters
         long Client_ID=Client_ID_Integer;
         boolean store=false;
         String Account_ID = Long.toString(Account_ID_Integer);
-        String date_preset = "last_90_days";
+        String date_preset = "yesterday";
         String data_columns = "['campaign_group_id','spend','age','gender','total_actions'," +
                 "'reach','clicks','impressions','frequency','social_reach','social_impressions'," +
                 "'cpm','unique_impressions','unique_social_impressions','cpp','ctr','cpc','cost_per_unique_click']";
@@ -66,7 +70,7 @@ public class OverAllCampaignStats {
                 .setParameter("access_token",Access_Token);
 
         BufferedReader reader=null;
-        int status=0;
+        boolean status=false;
         //getting the httpresponse
         CloseableHttpResponse httpResponse;
         //declaring the httpget request
@@ -91,16 +95,30 @@ public class OverAllCampaignStats {
             status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader,Client_ID);
 
 
-            Gson gson=new Gson();
 
         /*
         To write the Account Level Stats to the Database
         Only when the returned status is '1' then this data is written into the database
          */
-            if(status==1) {
-                OverAllCampaignStatsJSONResponse response = gson.fromJson(reader, OverAllCampaignStatsJSONResponse.class);
+            if(status) {
 
-                List<OverAllCampaignResultData> results = response.resultdata;
+                Gson gson=new Gson();
+
+                httpResponse = httpClient.execute(httpGet);
+                reader = new BufferedReader(new InputStreamReader(
+
+                        httpResponse.getEntity().getContent()));
+
+                String inputLine;
+                StringBuffer fbresponse= new StringBuffer();
+                while ((inputLine = reader.readLine()) != null) {
+                    fbresponse.append(inputLine);
+                }
+                String jsonfeed = fbresponse.toString();
+
+                OverAllCampaignStatsJSONResponse response = gson.fromJson(jsonfeed, OverAllCampaignStatsJSONResponse.class);
+
+                List<OverAllCampaignResultData> results = response.data;
 
                 CampaignStatsLoader campaignStatsLoader;
                 List<CampaignStatsLoader> campaignStatsLoaderList = new ArrayList<CampaignStatsLoader>();
@@ -121,10 +139,23 @@ public class OverAllCampaignStats {
 
                     Date Stats_Date = StatisticsDate.getYesterday();
 
+                    DateFormat format=new SimpleDateFormat("yyyy-mm-dd");
+                    String Start_Date=resultData.date_start;
+                    String Stop_Date=resultData.date_stop;
+                    Date Activity_Start_Date= null;
+                    Date Activity_End_Date=null;
+                    try {
+                        Activity_Start_Date = format.parse(Start_Date);
+                        Activity_End_Date=format.parse(Stop_Date);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+
                     campaignStatsLoader.setClient_ID(Client_ID);
-                    campaignStatsLoader.setCampaign_ID(Long.valueOf(resultData.campaign_group_id));
-                    campaignStatsLoader.setActivity_Start_Date(resultData.date_start);
-                    campaignStatsLoader.setActivity_End_Date(resultData.date_stop);
+                    campaignStatsLoader.setCampaign_ID(Long.parseLong(resultData.campaign_group_id.trim()));
+                    campaignStatsLoader.setActivity_Start_Date(Activity_Start_Date);
+                    campaignStatsLoader.setActivity_End_Date(Activity_End_Date);
                     campaignStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
                     campaignStatsLoader.setAge_Start_Range(Age_Start_Range);
                     campaignStatsLoader.setAge_End_Range(Age_End_Range);
@@ -150,7 +181,7 @@ public class OverAllCampaignStats {
 
 
                 }
-                OverAllCampaignLevelStatsDAO.storecamapignlevelstats(campaignStatsLoaderList);
+                overAllCampaignLevelStatsDAO.storecamapignlevelstats(campaignStatsLoaderList);
 
 
                 httpClient.close();

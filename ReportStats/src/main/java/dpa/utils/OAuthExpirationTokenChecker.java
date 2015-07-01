@@ -19,12 +19,13 @@ import org.apache.commons.mail.SimpleEmail;
 
 public class OAuthExpirationTokenChecker {
 
-    public int checkOAuthTokenException(BufferedReader reader,long client_id) throws IOException {
+    public boolean checkOAuthTokenException(BufferedReader OAuthreader,long client_id) throws IOException {
         Logger logger= LoggerFactory.getLogger(OAuthExpirationTokenChecker.class);
 
           /* to test whether the JSON response is oauth authentication error or actually the stats response*/
+        BufferedReader reader=OAuthreader;
         String inputLine;
-        int status=0;
+        boolean status=false;
         StringBuffer fbresponse = new StringBuffer();
         String propertyFileName = "config.properties";
 
@@ -42,7 +43,7 @@ public class OAuthExpirationTokenChecker {
         }
 
         //need to get the list of mail id's for sending emails
-        String receiveremailaddress="sundi@gravity4.com";
+        String receiveremailaddress="niranjan@gravity4.com";
         String hostname = config.getProperty("hostname");
         int smtpport = Integer.parseInt(config.getProperty("smtpport"));
         String sendermailaddress = config.getProperty("sendermailaddress");
@@ -54,7 +55,6 @@ public class OAuthExpirationTokenChecker {
             while ((inputLine = reader.readLine()) != null) {
                 fbresponse.append(inputLine);
             }
-            reader.close();
             /*convert the reader to JSON Object to check whether it is a Error or Actual Data Response*/
             String jsonfeed = fbresponse.toString();
             JSONObject JSONFeed_ID = new JSONObject(jsonfeed);
@@ -95,7 +95,7 @@ public class OAuthExpirationTokenChecker {
             }
             else if (JSONFeed_ID.has("data")) {
                 //status 1 means JSON response has data object
-                status = 1;
+                status = true;
             }
         }catch (IOException e){
             logger.info(String.valueOf(e));

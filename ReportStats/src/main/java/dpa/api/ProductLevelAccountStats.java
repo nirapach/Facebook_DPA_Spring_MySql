@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 
-public class ProductLevelAccountStats {
+    public class ProductLevelAccountStats {
 
     Logger logger= LoggerFactory.getLogger(ProductLevelAccountStats.class);
 
@@ -44,11 +44,13 @@ public class ProductLevelAccountStats {
         */
     public boolean getAccountstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException, HTTPException {
 
+        ProductLevelAccountStatsDAO productLevelAccountStatsDAO=new ProductLevelAccountStatsDAO();
         //Fields in the parameters
+        OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
         long Client_ID=Client_ID_Integer;
         boolean store = false;
         String Account_ID = Long.toString(Account_ID_Integer);
-        String date_preset = "last_90_days";
+        String date_preset = "yesterday";
         String data_columns = "['account_id','spend','product_id','total_actions'," +
                 "'reach','clicks','impressions','frequency','social_reach','social_impressions'," +
                 "'cpm','unique_impressions','unique_social_impressions','cpp','ctr','cpc','cost_per_unique_click']";
@@ -65,7 +67,7 @@ public class ProductLevelAccountStats {
                 .setParameter("access_token",Access_Token);
 
         BufferedReader reader;
-        int status=0;
+        boolean status=false;
         //getting the httpresponse
         CloseableHttpResponse httpResponse;
         //declaring the httpget request
@@ -81,30 +83,43 @@ public class ProductLevelAccountStats {
                 reader = new BufferedReader(new InputStreamReader(
                         httpResponse.getEntity().getContent()));
 
+            BufferedReader OAuthReader=reader;
 
              /*
         To check for OAuth Token Expiration
          */
+            status=oAuthExpirationTokenChecker.checkOAuthTokenException(OAuthReader,Client_ID);
 
-            OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
-            status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader,Client_ID);
 
-            Gson gson=new Gson();
+
 
         /*
         To write the Account Level Stats to the Database
         Only when the returned status is '1' then this data is written into the database
          */
-            if(status==1) {
+            if(status) {
 
-                ProductLevelAccountStatsJSONResponse response = gson.fromJson(reader, ProductLevelAccountStatsJSONResponse.class);
+                Gson gson=new Gson();
 
-                List<ProductLevelAccountsResultData> results = response.resultdata;
+                httpResponse = httpClient.execute(httpGet);
+                reader = new BufferedReader(new InputStreamReader(
+                        httpResponse.getEntity().getContent()));
+
+                String inputLine;
+                StringBuffer fbresponse= new StringBuffer();
+                while ((inputLine = reader.readLine()) != null) {
+                    fbresponse.append(inputLine);
+                }
+                String jsonfeed = fbresponse.toString();
+
+                ProductLevelAccountStatsJSONResponse response = gson.fromJson(jsonfeed, ProductLevelAccountStatsJSONResponse.class);
+
+                List<ProductLevelAccountsResultData> results = response.data;
 
                 AccountStatsLoader accountStatsLoader;
                 List<AccountStatsLoader> accountStatsLoaderList = new ArrayList<AccountStatsLoader>();
 
-                for (ProductLevelAccountsResultData resultData : results) {
+                for (ProductLevelAccountsResultData data : results) {
 
                     accountStatsLoader = new AccountStatsLoader();
 
@@ -114,50 +129,65 @@ public class ProductLevelAccountStats {
 
                     Date Stats_Date = StatisticsDate.getYesterday();
 
-
-                    /*Date Activity_Start_Date= null;
+                    DateFormat format=new SimpleDateFormat("yyyy-mm-dd");
+                    String Start_Date=data.date_start;
+                    String Stop_Date=data.date_stop;
+                    Date Activity_Start_Date= null;
                     Date Activity_End_Date=null;
                     try {
-                        Activity_Start_Date = format.parse(resultData.date_start);
-                        Activity_End_Date=format.parse(resultData.date_stop);
+                        Activity_Start_Date = format.parse(Start_Date);
+                        Activity_End_Date=format.parse(Stop_Date);
                     } catch (ParseException e) {
                         e.printStackTrace();
-                    }*/
-
+                    }
 
                     accountStatsLoader.setClient_ID(Client_ID);
-                    accountStatsLoader.setAccount_ID(Long.valueOf(resultData.account_id));
-                    accountStatsLoader.setProduct_ID(Long.valueOf(resultData.product_id));
-                    accountStatsLoader.setActivity_Start_Date(resultData.date_start);
-                    accountStatsLoader.setActivity_End_Date(resultData.date_stop);
-                    accountStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-                    accountStatsLoader.setReach(resultData.reach);
-                    accountStatsLoader.setFrequency(resultData.frequency);
-                    accountStatsLoader.setImpressions(resultData.impressions);
-                    accountStatsLoader.setClicks(resultData.clicks);
-                    accountStatsLoader.setTotal_Actions(resultData.total_actions);
-                    accountStatsLoader.setSocial_Reach(resultData.social_reach);
-                    accountStatsLoader.setSocial_Impressions(resultData.social_impressions);
-                    accountStatsLoader.setUnique_Impressions(resultData.unique_impressions);
-                    accountStatsLoader.setUnique_Social_Impressions(resultData.unique_social_impressions);
-                    accountStatsLoader.setCPC(resultData.cpc);
-                    accountStatsLoader.setCPM(resultData.cpm);
-                    accountStatsLoader.setCTR(resultData.ctr);
-                    accountStatsLoader.setCPP(resultData.cpp);
-                    accountStatsLoader.setSpend(resultData.spend);
+                    accountStatsLoader.setAccount_ID(Long.parseLong(data.account_id.trim()));
+                    accountStatsLoader.setProduct_ID(Long.parseLong(data.product_id.trim()));
+                    accountStatsLoader.setActivity_Start_Date(Activity_Start_Date);
+                    accountStatsLoader.setActivity_End_Date(Activity_End_Date);
+                    accountStatsLoader.setCost_Per_Unique_Click(data.cost_per_unique_click);
+                    accountStatsLoader.setReach(data.reach);
+                    accountStatsLoader.setFrequency(data.frequency);
+                    accountStatsLoader.setImpressions(data.impressions);
+                    accountStatsLoader.setClicks(data.clicks);
+                    accountStatsLoader.setTotal_Actions(data.total_actions);
+                    accountStatsLoader.setSocial_Reach(data.social_reach);
+                    accountStatsLoader.setSocial_Impressions(data.social_impressions);
+                    accountStatsLoader.setUnique_Impressions(data.unique_impressions);
+                    accountStatsLoader.setUnique_Social_Impressions(data.unique_social_impressions);
+                    accountStatsLoader.setCPC(data.cpc);
+                    accountStatsLoader.setCPM(data.cpm);
+                    accountStatsLoader.setCTR(data.ctr);
+                    accountStatsLoader.setCPP(data.cpp);
+                    accountStatsLoader.setSpend(data.spend);
                     accountStatsLoader.setStats_Date(Stats_Date);
 
                     accountStatsLoader.setAge_Start_Range(0);
                     accountStatsLoader.setAge_End_Range(0);
                     accountStatsLoader.setGender("null");
 
+                    //boolean success=productLevelAccountStatsDAO.storeaccountlevelstats(accountStatsLoader);
+
                     accountStatsLoaderList.add(accountStatsLoader);
 
-
                 }
-                ProductLevelAccountStatsDAO.storeaccountlevelstats(accountStatsLoaderList);
 
+                /*
+                for(AccountStatsLoader accountStatsLoadertest:accountStatsLoaderList){
+
+                    System.out.println(accountStatsLoadertest.getGender());
+                }
+                */
+                /*
+                calling the method to store the data into database
+                 */
+                boolean success=productLevelAccountStatsDAO.storeaccountlevelstats(accountStatsLoaderList);
+
+
+                if(success){
                 store=true;
+                }
             }
 
             reader.close();

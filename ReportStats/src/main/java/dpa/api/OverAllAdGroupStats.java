@@ -27,6 +27,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,11 +44,12 @@ public class OverAllAdGroupStats {
         */
     public boolean getOverAllAdGroupstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException, HTTPException {
 
+        OverAllAdGroupLevelStatsDAO overAllAdGroupLevelStatsDAO=new OverAllAdGroupLevelStatsDAO();
         //Fields in the parameters
         long Client_ID=Client_ID_Integer;
         boolean store=false;
         String Account_ID = Long.toString(Account_ID_Integer);
-        String date_preset = "last_90_days";
+        String date_preset = "yesterday";
         String data_columns = "['adgroup_id','spend','age','gender','total_actions'," +
                 "'reach','clicks','impressions','frequency','social_reach','social_impressions','relevance_score'," +
                 "'cpm','unique_impressions','unique_social_impressions','cpp','ctr','cpc','cost_per_unique_click']";
@@ -62,7 +66,7 @@ public class OverAllAdGroupStats {
                 .setParameter("access_token",Access_Token);
 
         BufferedReader reader=null;
-        int status=0;
+        boolean status=false;
         //getting the httpresponse
         CloseableHttpResponse httpResponse;
         //declaring the httpget request
@@ -87,16 +91,30 @@ public class OverAllAdGroupStats {
             OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
             status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader,Client_ID);
 
-            Gson gson=new Gson();
+
 
         /*
         To write the Account Level Stats to the Database
         Only when the returned status is '1' then this data is written into the database
          */
-            if(status==1) {
-                OverAllAdGroupStatsJSONResponse response = gson.fromJson(reader, OverAllAdGroupStatsJSONResponse.class);
+            if(status) {
 
-                List<OverAllAdGroupResultData> results= response.resultdata;
+                httpResponse = httpClient.execute(httpGet);
+                reader = new BufferedReader(new InputStreamReader(
+
+                        httpResponse.getEntity().getContent()));
+
+                Gson gson=new Gson();
+
+                String inputLine;
+                StringBuffer fbresponse= new StringBuffer();
+                while ((inputLine = reader.readLine()) != null) {
+                    fbresponse.append(inputLine);
+                }
+                String jsonfeed = fbresponse.toString();
+                OverAllAdGroupStatsJSONResponse response = gson.fromJson(jsonfeed, OverAllAdGroupStatsJSONResponse.class);
+
+                List<OverAllAdGroupResultData> results= response.data;
 
                 AdGroupStatsLoader adGroupStatsLoader;
                 List<AdGroupStatsLoader> adGroupStatsLoaderList = new ArrayList<AdGroupStatsLoader>();
@@ -117,10 +135,23 @@ public class OverAllAdGroupStats {
 
                     Date Stats_Date = StatisticsDate.getYesterday();
 
+                    DateFormat format=new SimpleDateFormat("yyyy-mm-dd");
+                    String Start_Date=resultData.date_start;
+                    String Stop_Date=resultData.date_stop;
+                    Date Activity_Start_Date= null;
+                    Date Activity_End_Date=null;
+                    try {
+                        Activity_Start_Date = format.parse(Start_Date);
+                        Activity_End_Date=format.parse(Stop_Date);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+
                     adGroupStatsLoader.setClient_ID(Client_ID);
-                    adGroupStatsLoader.setAdGroup_ID(Long.valueOf(resultData.adgroup_id));
-                    adGroupStatsLoader.setActivity_Start_Date(resultData.date_start);
-                    adGroupStatsLoader.setActivity_End_Date(resultData.date_stop);
+                    adGroupStatsLoader.setAdGroup_ID(Long.parseLong(resultData.adgroup_id.trim()));
+                    adGroupStatsLoader.setActivity_Start_Date(Activity_Start_Date);
+                    adGroupStatsLoader.setActivity_End_Date(Activity_End_Date);
                     adGroupStatsLoader.setRelevance_Score(resultData.relevance_score);
                     adGroupStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
                     adGroupStatsLoader.setAge_Start_Range(Age_Start_Range);
@@ -147,13 +178,13 @@ public class OverAllAdGroupStats {
 
 
                 }
-                OverAllAdGroupLevelStatsDAO.storeadgrouplevelstats(adGroupStatsLoaderList);
+                overAllAdGroupLevelStatsDAO.storeadgrouplevelstats(adGroupStatsLoaderList);
 
 
 
                 httpClient.close();
 
-                store=false;
+                store=true;
             }
             reader.close();
 

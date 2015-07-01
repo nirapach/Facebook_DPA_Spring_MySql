@@ -10,7 +10,6 @@ import java.util.List;
 import java.sql.PreparedStatement;
 
 import dpa.model.AccountStatsLoader;
-import dpa.model.AdGroupStatsLoader;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -20,55 +19,62 @@ import dpa.utils.DBUtils;
 
 public class ProductLevelAccountStatsDAO {
 
+    Logger logger= LoggerFactory.getLogger(ProductLevelAccountStatsDAO.class);
+
+    private Connection connection;
+    private PreparedStatement statement;
     //default constructor
     public ProductLevelAccountStatsDAO(){}
 
-    public static void storeaccountlevelstats(List<AccountStatsLoader> accountStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
+    public boolean storeaccountlevelstats(List<AccountStatsLoader> accountStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
 
-        Logger logger = LoggerFactory.getLogger(ProductLevelAccountStatsDAO.class);
-        String query = "INSERT INTO Product_Account_Statistics_Results\n" +
-                "(Application_Client_ID,\n" +
-                "Application_Ad_Account_ID,\n" +
-                "Client_Product_ID,\n" +
-                "Client_Reports_Reach,\n" +
-                "Client_Reports_Frequency,\n" +
-                "Client_Reports_Impressions,\n" +
-                "Client_Reports_Clicks,\n" +
-                "Client_Reports_Total_Actions,\n" +
-                "Client_Reports_Social_Reach,\n" +
-                "Client_Reports_Social_Impressions,\n" +
-                "Client_Reports_Unique_Impressions,\n" +
-                "Client_Reports_Unique_Social_Impressions,\n" +
-                "Client_Reports_CPM,\n" +
-                "Client_Reports_CPP,\n" +
-                "Client_Reports_CPC,\n" +
-                "Client_Reports_CTR,\n" +
-                "Client_Reports_Spend,\n" +
-                "Stats_Date,\n" +
-                "Client_Reports_Ad_Activity_Date_Start,\n" +
-                "Client_Reports_Ad_Activity_Date_End)\n" +
-                "VALUES\n" +
+
+
+        boolean success=false;
+        String query = "INSERT INTO Product_Account_Statistics_Results" +
+                "(Application_Client_ID," +
+                "Application_Ad_Account_ID," +
+                "Client_Product_ID," +
+                "Client_Reports_Reach," +
+                "Client_Reports_Frequency," +
+                "Client_Reports_Impressions," +
+                "Client_Reports_Clicks," +
+                "Client_Reports_Total_Actions," +
+                "Client_Reports_Social_Reach," +
+                "Client_Reports_Social_Impressions," +
+                "Client_Reports_Unique_Impressions," +
+                "Client_Reports_Unique_Social_Impressions," +
+                "Client_Reports_CPM," +
+                "Client_Reports_CPP," +
+                "Client_Reports_CPC," +
+                "Client_Reports_CTR," +
+                "Client_Reports_Spend," +
+                "Stats_Date," +
+                "Client_Reports_Ad_Activity_Date_Start," +
+                "Client_Reports_Ad_Activity_Date_End)" +
+                "VALUES" +
                 "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        Connection connection = null;
 
-        PreparedStatement statement = null;
         try {
             connection = ConnectionDataSource.getInstance().getConnection();
+            statement = connection.prepareStatement(query);
+
 
             for(AccountStatsLoader accountStatsLoader:accountStatsLoaderList){
-                statement = connection.prepareStatement(query);
+
+                System.out.println(accountStatsLoader.getGender());
                 statement.setLong(1,accountStatsLoader.getClient_ID());
                 statement.setLong(2, accountStatsLoader.getAccount_ID());
                 statement.setLong(3, accountStatsLoader.getProduct_ID());
-                statement.setLong(4,accountStatsLoader.getReach());
+                statement.setInt(4,accountStatsLoader.getReach());
                 statement.setDouble(5,accountStatsLoader.getFrequency());
-                statement.setLong(6,accountStatsLoader.getImpressions());
-                statement.setLong(7,accountStatsLoader.getClicks());
-                statement.setLong(8,accountStatsLoader.getTotal_Actions());
-                statement.setLong(9,accountStatsLoader.getSocial_Reach());
-                statement.setLong(10,accountStatsLoader.getSocial_Impressions());
-                statement.setLong(11,accountStatsLoader.getUnique_Impressions());
-                statement.setLong(12,accountStatsLoader.getUnique_Social_Impressions());
+                statement.setInt(6,accountStatsLoader.getImpressions());
+                statement.setInt(7,accountStatsLoader.getClicks());
+                statement.setInt(8,accountStatsLoader.getTotal_Actions());
+                statement.setInt(9,accountStatsLoader.getSocial_Reach());
+                statement.setInt(10,accountStatsLoader.getSocial_Impressions());
+                statement.setInt(11,accountStatsLoader.getUnique_Impressions());
+                statement.setInt(12,accountStatsLoader.getUnique_Social_Impressions());
                 statement.setDouble(13,accountStatsLoader.getCPM());
                 statement.setDouble(14,accountStatsLoader.getCPP());
                 statement.setDouble(15,accountStatsLoader.getCPC());
@@ -78,8 +84,11 @@ public class ProductLevelAccountStatsDAO {
                 statement.setDate(19, (java.sql.Date) accountStatsLoader.getActivity_Start_Date());
                 statement.setDate(20, (java.sql.Date) accountStatsLoader.getActivity_End_Date());
 
-                statement.executeUpdate();
+                int rowaffected=statement.executeUpdate();
+                if(rowaffected>0){
+                    success=true;
                 logger.info("Row Successfully inserted for Account Statistics Level");
+                }
             }
 
 
@@ -93,6 +102,6 @@ public class ProductLevelAccountStatsDAO {
             DBUtils.close(connection);
 
         }
-
+        return success;
     }
 }

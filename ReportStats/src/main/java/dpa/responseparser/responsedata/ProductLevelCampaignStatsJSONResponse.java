@@ -3,6 +3,7 @@ package dpa.responseparser.responsedata;
 import com.google.gson.annotations.SerializedName;
 import dpa.responseparser.resultdata.ProductLevelCampaignResultData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +11,9 @@ import java.util.List;
  */
 public class ProductLevelCampaignStatsJSONResponse {
 
-    public List<ProductLevelCampaignResultData> resultdata;
+
+
+    public List<ProductLevelCampaignResultData> data;
 
     @SerializedName("limit")
     public int limit;

@@ -3,7 +3,7 @@ package dpa.responseparser.resultdata;
 /**
  * Created by niranjan on 6/23/15.
  */
-import java.util.List;
+
 import java.util.Date;
 import com.google.gson.annotations.SerializedName;
 
@@ -16,10 +16,10 @@ public class ProductLevelAccountsResultData {
     public String product_id;
 
     @SerializedName("date_start")
-    public Date date_start;
+    public String date_start;
 
     @SerializedName("date_stop")
-    public Date date_stop;
+    public String date_stop;
 
     @SerializedName("spend")
     public double spend;

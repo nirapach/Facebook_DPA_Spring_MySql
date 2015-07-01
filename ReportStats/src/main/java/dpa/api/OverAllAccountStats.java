@@ -7,6 +7,7 @@ package dpa.api;
 import com.google.gson.Gson;
 import dpa.controller.OverAllAccountLevelStatsDAO;
 import dpa.controller.ProductLevelAccountStatsDAO;
+import dpa.model.AccountInformationLoader;
 import dpa.model.AccountStatsLoader;
 import dpa.responseparser.responsedata.OverAllAccountStatsJSONResponse;
 import dpa.responseparser.resultdata.OverAllAccountsResultData;
@@ -28,6 +29,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,11 +46,12 @@ public class OverAllAccountStats {
         */
     public boolean getOverAllAccountstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException, HTTPException {
 
+        OverAllAccountLevelStatsDAO overAllAccountLevelStatsDAO=new OverAllAccountLevelStatsDAO();
         //Fields in the parameters
         long Client_ID=Client_ID_Integer;
         boolean store=false;
         String Account_ID = Long.toString(Account_ID_Integer);
-        String date_preset = "last_90_days";
+        String date_preset = "yesterday";
         String data_columns = "['account_id','spend','age','gender','total_actions'," +
                 "'reach','clicks','impressions','frequency','social_reach','social_impressions'," +
                 "'cpm','unique_impressions','unique_social_impressions','cpp','ctr','cpc','cost_per_unique_click']";
@@ -63,7 +68,7 @@ public class OverAllAccountStats {
                 .setParameter("access_token",Access_Token);
 
         BufferedReader reader=null;
-        int status=0;
+        boolean status=false;
         //getting the httpresponse
         CloseableHttpResponse httpResponse;
         //declaring the httpget request
@@ -87,18 +92,30 @@ public class OverAllAccountStats {
             OAuthExpirationTokenChecker oAuthExpirationTokenChecker= new OAuthExpirationTokenChecker();
             status=oAuthExpirationTokenChecker.checkOAuthTokenException(reader,Client_ID);
 
-            Gson gson=new Gson();
+
         /*
         To write the Account Level Stats to the Database
         Only when the returned status is '1' then this data is written into the database
          */
-            if(status==1) {
-                OverAllAccountStatsJSONResponse response = gson.fromJson(reader, OverAllAccountStatsJSONResponse.class);
+            if(status) {
+                httpResponse = httpClient.execute(httpGet);
+                reader = new BufferedReader(new InputStreamReader(
 
-                List<OverAllAccountsResultData> results = response.resultdata;
+                        httpResponse.getEntity().getContent()));
+                String inputLine;
+                StringBuffer fbresponse= new StringBuffer();
+                while ((inputLine = reader.readLine()) != null) {
+                    fbresponse.append(inputLine);
+                }
+                String jsonfeed = fbresponse.toString();
+                Gson gson=new Gson();
+
+                OverAllAccountStatsJSONResponse response = gson.fromJson(jsonfeed, OverAllAccountStatsJSONResponse.class);
+
+                List<OverAllAccountsResultData> results = response.data;
 
                 AccountStatsLoader accountStatsLoader;
-                List<AccountStatsLoader> accountStatsLoaderList = new ArrayList<AccountStatsLoader>();
+                List<AccountStatsLoader> accountStatsLoaderList = new ArrayList<AccountStatsLoader>();;
 
                 for (OverAllAccountsResultData resultData : results) {
 
@@ -115,11 +132,23 @@ public class OverAllAccountStats {
             are getting yesterday's datein date_preset field of the curl request*/
 
                     Date Stats_Date = StatisticsDate.getYesterday();
+                    DateFormat format=new SimpleDateFormat("yyyy-mm-dd");
+                    String Start_Date=resultData.date_start;
+                    String Stop_Date=resultData.date_stop;
+                    Date Activity_Start_Date= null;
+                    Date Activity_End_Date=null;
+                    try {
+                        Activity_Start_Date = format.parse(Start_Date);
+                        Activity_End_Date=format.parse(Stop_Date);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
 
                     accountStatsLoader.setClient_ID(Client_ID);
-                    accountStatsLoader.setAccount_ID(Long.valueOf(resultData.account_id));
-                    accountStatsLoader.setActivity_Start_Date(resultData.date_start);
-                    accountStatsLoader.setActivity_End_Date(resultData.date_stop);
+                    accountStatsLoader.setAccount_ID(Long.parseLong(resultData.account_id.trim()));
+                    accountStatsLoader.setActivity_Start_Date(Activity_Start_Date);
+                    accountStatsLoader.setActivity_End_Date(Activity_End_Date);
                     accountStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
                     accountStatsLoader.setAge_Start_Range(Age_Start_Range);
                     accountStatsLoader.setAge_End_Range(Age_End_Range);
@@ -145,7 +174,7 @@ public class OverAllAccountStats {
 
 
                 }
-                OverAllAccountLevelStatsDAO.storeaccountlevelstats(accountStatsLoaderList);
+                overAllAccountLevelStatsDAO.storeaccountlevelstats(accountStatsLoaderList);
 
 
 

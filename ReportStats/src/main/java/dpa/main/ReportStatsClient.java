@@ -23,10 +23,11 @@ public class ReportStatsClient {
         try{
             StatsInformationCaller statsInformationCaller = new StatsInformationCaller();
             statsInformationCaller.getAccountInformation();
-            //System.out.println("Everything Executed Check for Results in Database");
+
         }
         catch(Exception e){
             logger.error(String.valueOf(e));
+            e.printStackTrace();
         }
 
     }

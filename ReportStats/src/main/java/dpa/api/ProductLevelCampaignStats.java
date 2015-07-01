@@ -22,6 +22,9 @@ import org.slf4j.Logger;
 
 import java.beans.PropertyVetoException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,11 +44,12 @@ public class ProductLevelCampaignStats {
      */
     public boolean getCampaignstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException {
 
+        ProductLevelCampaignStatsDAO productLevelCampaignStatsDAO=new ProductLevelCampaignStatsDAO();
         //Fields in the parameters
         long Client_ID=Client_ID_Integer;
         boolean store=false;
         String Account_ID = Long.toString(Account_ID_Integer);
-        String date_preset = "last_90_days";
+        String date_preset = "yesterday";
         String data_columns = "['campaign_group_id','spend','product_id','total_actions'," +
                 "'reach','clicks','impressions','frequency','social_reach','social_impressions'," +
                 "'cpm','unique_impressions','unique_social_impressions','cpp','ctr','cpc','cost_per_unique_click']";
@@ -63,7 +67,7 @@ public class ProductLevelCampaignStats {
 
         BufferedReader reader=null;
 
-        int status=0;
+        boolean status=false;
         //getting the httpresponse
         CloseableHttpResponse httpResponse;
         //declaring the httpget request
@@ -91,33 +95,53 @@ public class ProductLevelCampaignStats {
 
 
 
-            Gson gson=new Gson();
+            if(status) {
+                Gson gson=new Gson();
 
+                httpResponse = httpClient.execute(httpGet);
+                reader = new BufferedReader(new InputStreamReader(
 
+                        httpResponse.getEntity().getContent()));
+                String inputLine;
+                StringBuffer fbresponse= new StringBuffer();
+                while ((inputLine = reader.readLine()) != null) {
+                    fbresponse.append(inputLine);
+                }
+                String jsonfeed = fbresponse.toString();
+                ProductLevelCampaignStatsJSONResponse response = gson.fromJson(jsonfeed, ProductLevelCampaignStatsJSONResponse.class);
 
-            if(status==1) {
-                ProductLevelCampaignStatsJSONResponse response = gson.fromJson(reader, ProductLevelCampaignStatsJSONResponse.class);
-
-                List<ProductLevelCampaignResultData> results = response.resultdata;
+                List<ProductLevelCampaignResultData> results = response.data;
 
                 CampaignStatsLoader campaignStatsLoader;
-                List<CampaignStatsLoader> campaignStatsLoaderList = new ArrayList<CampaignStatsLoader>();
+                List<CampaignStatsLoader> campaignStatsLoaderList =new ArrayList<CampaignStatsLoader>();
 
                 for (ProductLevelCampaignResultData resultData : results) {
 
                     campaignStatsLoader = new CampaignStatsLoader();
 
-
             /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
             are getting yesterday's datein date_preset field of the curl request*/
                     Date Stats_Date = StatisticsDate.getYesterday();
 
+                    DateFormat format=new SimpleDateFormat("yyyy-mm-dd");
+                    String Start_Date=resultData.date_start;
+                    String Stop_Date=resultData.date_stop;
+                    Date Activity_Start_Date= null;
+                    Date Activity_End_Date=null;
+                    try {
+                        Activity_Start_Date = format.parse(Start_Date);
+                        Activity_End_Date=format.parse(Stop_Date);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+
                     campaignStatsLoader.setClient_ID(Client_ID);
-                    campaignStatsLoader.setCampaign_ID(Long.valueOf(resultData.campaign_group_id));
-                    campaignStatsLoader.setActivity_Start_Date(resultData.date_start);
-                    campaignStatsLoader.setActivity_End_Date(resultData.date_stop);
+                    campaignStatsLoader.setCampaign_ID(Long.parseLong(resultData.campaign_group_id.trim()));
+                    campaignStatsLoader.setActivity_Start_Date(Activity_Start_Date);
+                    campaignStatsLoader.setActivity_End_Date(Activity_End_Date);
                     campaignStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-                    campaignStatsLoader.setProduct_ID(Long.valueOf(resultData.product_id));
+                    campaignStatsLoader.setProduct_ID(Long.parseLong(resultData.campaign_group_id.trim()));
                     campaignStatsLoader.setReach(resultData.reach);
                     campaignStatsLoader.setFrequency(resultData.frequency);
                     campaignStatsLoader.setImpressions(resultData.impressions);
@@ -141,7 +165,7 @@ public class ProductLevelCampaignStats {
                     campaignStatsLoaderList.add(campaignStatsLoader);
 
                 }
-                ProductLevelCampaignStatsDAO.storecampaignlevelstats(campaignStatsLoaderList);
+                productLevelCampaignStatsDAO.storecampaignlevelstats(campaignStatsLoaderList);
 
 
                 httpClient.close();
