@@ -180,10 +180,12 @@ import java.net.URISyntaxException;
                 /*
                 calling the method to store the data into database
                  */
-                productLevelAccountStatsDAO.storeaccountlevelstats(accountStatsLoaderList);
+                boolean success=productLevelAccountStatsDAO.storeaccountlevelstats(accountStatsLoaderList);
 
+
+                if(success){
                 store=true;
-
+                }
             }
 
             reader.close();

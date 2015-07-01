@@ -28,9 +28,10 @@ public class ProductLevelCampaignStatsDAO {
 
 
 
-    public void storecampaignlevelstats(List<CampaignStatsLoader> campaignStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
+    public boolean storecampaignlevelstats(List<CampaignStatsLoader> campaignStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
 
 
+        boolean success=false;
         String query = "INSERT INTO Product_Account_Statistics_Results" +
                 "(Application_Client_ID," +
                 "Client_Campaign_ID," +
@@ -82,8 +83,11 @@ public class ProductLevelCampaignStatsDAO {
                 statement.setDate(19, (java.sql.Date) campaignStatsLoader.getActivity_Start_Date());
                 statement.setDate(20, (java.sql.Date) campaignStatsLoader.getActivity_End_Date());
 
-                statement.executeUpdate();
-                logger.info("Row Successfully inserted for Campaign Statistics Level");
+                int rowaffected=statement.executeUpdate();
+                if(rowaffected>0){
+                    success=true;
+                    logger.info("Row Successfully inserted for Account Statistics Level");
+                }
             }
 
 
@@ -98,5 +102,6 @@ public class ProductLevelCampaignStatsDAO {
 
         }
 
+        return success;
     }
 }

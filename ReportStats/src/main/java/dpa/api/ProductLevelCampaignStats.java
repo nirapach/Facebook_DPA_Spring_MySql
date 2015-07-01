@@ -165,11 +165,13 @@ public class ProductLevelCampaignStats {
                     campaignStatsLoaderList.add(campaignStatsLoader);
 
                 }
-                productLevelCampaignStatsDAO.storecampaignlevelstats(campaignStatsLoaderList);
+                boolean success=productLevelCampaignStatsDAO.storecampaignlevelstats(campaignStatsLoaderList);
 
 
-                httpClient.close();
-                store= true;
+
+                if(success){
+                    store=true;
+                }
             }
             reader.close();
 
@@ -188,7 +190,8 @@ public class ProductLevelCampaignStats {
             logger.info(String.valueOf(e));
             e.printStackTrace();
         }
-return store;
+        httpClient.close();
+        return store;
 
     }
 }

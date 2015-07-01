@@ -174,14 +174,10 @@ public class OverAllAccountStats {
 
 
                 }
-                overAllAccountLevelStatsDAO.storeaccountlevelstats(accountStatsLoaderList);
-
-
-
-                httpClient.close();
-
-
-                store=true;
+                boolean success=overAllAccountLevelStatsDAO.storeaccountlevelstats(accountStatsLoaderList);
+                if(success){
+                    store=true;
+                }
             }
             reader.close();
 
@@ -200,6 +196,7 @@ public class OverAllAccountStats {
             logger.info(String.valueOf(e));
             e.printStackTrace();
         }
+        httpClient.close();
     return store;
 
     }

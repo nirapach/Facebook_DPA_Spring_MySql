@@ -26,9 +26,10 @@ public class OverAllAccountLevelStatsDAO {
     //default constructor
     public OverAllAccountLevelStatsDAO(){}
 
-    public void storeaccountlevelstats(List<AccountStatsLoader> accountStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
+    public boolean storeaccountlevelstats(List<AccountStatsLoader> accountStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
 
 
+        boolean success=false;
         String query = "INSERT INTO Overall_Account_Statistics_Results" +
                 "(Application_Client_ID," +
                 "Application_Ad_Account_ID," +
@@ -87,8 +88,11 @@ public class OverAllAccountLevelStatsDAO {
                 statement.setDate(22, (java.sql.Date) accountStatsLoader.getActivity_End_Date());
                 statement.setDouble(23,accountStatsLoader.getCost_Per_Unique_Click());
 
-                statement.executeUpdate();
-                logger.info("Row Successfully inserted for OverAllAccount Statistics Level");
+                int rowaffected=statement.executeUpdate();
+                if(rowaffected>0){
+                    success=true;
+                    logger.info("Row Successfully inserted for Account Statistics Level");
+                }
             }
 
 
@@ -102,7 +106,7 @@ public class OverAllAccountLevelStatsDAO {
             DBUtils.close(connection);
 
         }
-
+return success;
     }
 }
 

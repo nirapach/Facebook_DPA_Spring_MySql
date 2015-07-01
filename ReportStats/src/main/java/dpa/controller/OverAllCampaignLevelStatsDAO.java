@@ -28,8 +28,9 @@ public class OverAllCampaignLevelStatsDAO {
     //default constructor
     public OverAllCampaignLevelStatsDAO(){}
 
-    public void storecamapignlevelstats(List<CampaignStatsLoader> campaignStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
+    public boolean storecamapignlevelstats(List<CampaignStatsLoader> campaignStatsLoaderList) throws SQLException, IOException, PropertyVetoException{
 
+        boolean success=false;
         String query = "INSERT INTO Overall_Campaign_Statistics_Results" +
                 "(Application_Client_ID," +
                 "Application_Ad_AdSet_ID," +
@@ -86,8 +87,11 @@ public class OverAllCampaignLevelStatsDAO {
                 statement.setDate(22, (Date) campaignStatsLoader.getActivity_End_Date());
                 statement.setDouble(23,campaignStatsLoader.getCost_Per_Unique_Click());
 
-                statement.executeUpdate();
-                logger.info("Row Successfully inserted for OverAllCampaign Statistics Level");
+                int rowaffected=statement.executeUpdate();
+                if(rowaffected>0){
+                    success=true;
+                    logger.info("Row Successfully inserted for Account Statistics Level");
+                }
             }
 
 
@@ -101,7 +105,7 @@ public class OverAllCampaignLevelStatsDAO {
             DBUtils.close(connection);
 
         }
-
+        return success;
     }
 }
 
