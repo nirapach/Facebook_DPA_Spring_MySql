@@ -46,9 +46,6 @@ public class OAuthExpirationTokenChecker {
         String inputLine;
         boolean status = false;
         StringBuffer fbresponse = new StringBuffer();
-        String propertyFileName = "config.properties";
-
-        Properties config = new Properties();
 
         Email email = new SimpleEmail();
 

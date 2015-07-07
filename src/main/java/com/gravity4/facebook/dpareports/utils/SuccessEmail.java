@@ -5,6 +5,8 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,10 +16,30 @@ import java.util.Properties;
 /**
  * Created by niranjan on 6/30/15.
  */
+@Service
 public class SuccessEmail {
+
+    String receiveremailaddress = "sundi@gravity4.com";
+    @Value("${smtp.hostname}")
+    String hostname;
+    @Value("${smtp.smtpport}")
+    int smtpport;
+    @Value("${smtp.sendermailaddress}")
+    String sendermailaddress;
+    @Value("${smtp.sendermailpassword}")
+    String sendermailpassword;
+    @Value("${smtp.sendermailname}")
+    String sendermailname;
+    @Value("${smtp.enable}")
+    boolean enabled;
+
+    private SuccessEmail() {
+    }
 
     public void sendemail(String subject, String message, Long Client_ID) throws IOException {
 
+        if (!enabled)
+            return;
 
         Logger logger = LoggerFactory.getLogger(OAuthExpirationTokenChecker.class);
 
@@ -47,21 +69,9 @@ public class SuccessEmail {
                 e.printStackTrace();
             }
         }
-        String hostname;
-        int smtpport;
-        String sendermailaddress;
-        String sendermailpassword;
-        String sendermailname;
-        String receiveremailaddress = "sundi@gravity4.com";
 
         //need to get the list of mail id's for sending emails
         try {
-            hostname = config.getProperty("hostname");
-            smtpport = Integer.parseInt(config.getProperty("smtpport"));
-            sendermailaddress = config.getProperty("sendermailaddress");
-            sendermailpassword = config.getProperty("sendermailpassword");
-            sendermailname = config.getProperty("sendermailname");
-
             email.setHostName(hostname);
             email.setSmtpPort(smtpport);
             email.setAuthentication(sendermailaddress, sendermailpassword);
