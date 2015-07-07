@@ -5,6 +5,7 @@ package com.gravity4.facebook.dpareports.dao;
  */
 
 import com.gravity4.facebook.dpareports.model.AdSetStatsLoader;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ import java.util.List;
 public class OverAllAdSetLevelStatsDAO extends BaseDAO {
 
 
-    public void storeadsetlevelstats(List<AdSetStatsLoader> adSetStatsLoaderList){
+    public void storeadsetlevelstats(final List<AdSetStatsLoader> adSetStatsLoaderList){
 
         String query = "INSERT INTO Overall_AdSet_Statistics_Results" +
                 "(Application_Client_ID," +
@@ -49,40 +50,42 @@ public class OverAllAdSetLevelStatsDAO extends BaseDAO {
                 "VALUES" +
                 "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
-        for (final AdSetStatsLoader adSetStatsLoader : adSetStatsLoaderList) {
+        getJdbcTemplate().batchUpdate(query, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement statement, int i) throws SQLException {
+                AdSetStatsLoader adSetStatsLoader = adSetStatsLoaderList.get(i);
 
-            PreparedStatementSetter pss = new PreparedStatementSetter() {
-                @Override
-                public void setValues(PreparedStatement statement) throws SQLException {
-                    statement.setLong(1, adSetStatsLoader.getClient_ID());
-                    statement.setLong(2, adSetStatsLoader.getAdSet_ID());
-                    statement.setInt(3, adSetStatsLoader.getAge_Start_Range());
-                    statement.setInt(4, adSetStatsLoader.getAge_End_Range());
-                    statement.setString(5, adSetStatsLoader.getGender());
-                    statement.setInt(6, adSetStatsLoader.getReach());
-                    statement.setDouble(7, adSetStatsLoader.getFrequency());
-                    statement.setInt(8, adSetStatsLoader.getImpressions());
-                    statement.setInt(9, adSetStatsLoader.getClicks());
-                    statement.setInt(10, adSetStatsLoader.getTotal_Actions());
-                    statement.setInt(11, adSetStatsLoader.getSocial_Reach());
-                    statement.setInt(12, adSetStatsLoader.getSocial_Impressions());
-                    statement.setInt(13, adSetStatsLoader.getUnique_Impressions());
-                    statement.setLong(14, adSetStatsLoader.getUnique_Social_Impressions());
-                    statement.setDouble(15, adSetStatsLoader.getCPM());
-                    statement.setDouble(16, adSetStatsLoader.getCPP());
-                    statement.setDouble(17, adSetStatsLoader.getCPC());
-                    statement.setDouble(18, adSetStatsLoader.getCTR());
-                    statement.setDouble(19, adSetStatsLoader.getSpend());
-                    statement.setDate(20, (Date) adSetStatsLoader.getStats_Date());
-                    statement.setDate(21, (Date) adSetStatsLoader.getActivity_Start_Date());
-                    statement.setDate(22, (Date) adSetStatsLoader.getActivity_End_Date());
-                    statement.setDouble(23, adSetStatsLoader.getCost_Per_Unique_Click());
-                }
-            };
+                statement.setLong(1, adSetStatsLoader.getClient_ID());
+                statement.setLong(2, adSetStatsLoader.getAdSet_ID());
+                statement.setInt(3, adSetStatsLoader.getAge_Start_Range());
+                statement.setInt(4, adSetStatsLoader.getAge_End_Range());
+                statement.setString(5, adSetStatsLoader.getGender());
+                statement.setInt(6, adSetStatsLoader.getReach());
+                statement.setDouble(7, adSetStatsLoader.getFrequency());
+                statement.setInt(8, adSetStatsLoader.getImpressions());
+                statement.setInt(9, adSetStatsLoader.getClicks());
+                statement.setInt(10, adSetStatsLoader.getTotal_Actions());
+                statement.setInt(11, adSetStatsLoader.getSocial_Reach());
+                statement.setInt(12, adSetStatsLoader.getSocial_Impressions());
+                statement.setInt(13, adSetStatsLoader.getUnique_Impressions());
+                statement.setLong(14, adSetStatsLoader.getUnique_Social_Impressions());
+                statement.setDouble(15, adSetStatsLoader.getCPM());
+                statement.setDouble(16, adSetStatsLoader.getCPP());
+                statement.setDouble(17, adSetStatsLoader.getCPC());
+                statement.setDouble(18, adSetStatsLoader.getCTR());
+                statement.setDouble(19, adSetStatsLoader.getSpend());
+                statement.setDate(20, (Date) adSetStatsLoader.getStats_Date());
+                statement.setDate(21, (Date) adSetStatsLoader.getActivity_Start_Date());
+                statement.setDate(22, (Date) adSetStatsLoader.getActivity_End_Date());
+                statement.setDouble(23, adSetStatsLoader.getCost_Per_Unique_Click());
 
-            getJdbcTemplate().update(query, pss);
+            }
 
-        }
+            @Override
+            public int getBatchSize() {
+                return adSetStatsLoaderList.size();
+            }
+        });
     }
 }
 

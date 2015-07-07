@@ -5,6 +5,7 @@ package com.gravity4.facebook.dpareports.dao;
  */
 
 import com.gravity4.facebook.dpareports.model.CampaignStatsLoader;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +19,7 @@ import java.util.List;
 @Component
 public class ProductLevelCampaignStatsDAO extends BaseDAO {
 
-    public void storecampaignlevelstats(List<CampaignStatsLoader> campaignStatsLoaderList){
+    public void storecampaignlevelstats(final List<CampaignStatsLoader> campaignStatsLoaderList){
 
         String query = "INSERT INTO Product_Account_Statistics_Results" +
                 "(Application_Client_ID," +
@@ -44,36 +45,37 @@ public class ProductLevelCampaignStatsDAO extends BaseDAO {
                 "VALUES" +
                 "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        for (final CampaignStatsLoader campaignStatsLoader : campaignStatsLoaderList) {
+        getJdbcTemplate().batchUpdate(query, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement statement, int i) throws SQLException {
+                CampaignStatsLoader campaignStatsLoader = campaignStatsLoaderList.get(i);
 
-            PreparedStatementSetter pss = new PreparedStatementSetter() {
-                @Override
-                public void setValues(PreparedStatement statement) throws SQLException {
-                    statement.setLong(1, campaignStatsLoader.getClient_ID());
-                    statement.setLong(2, campaignStatsLoader.getCampaign_ID());
-                    statement.setLong(3, campaignStatsLoader.getProduct_ID());
-                    statement.setLong(4, campaignStatsLoader.getReach());
-                    statement.setDouble(5, campaignStatsLoader.getFrequency());
-                    statement.setLong(6, campaignStatsLoader.getImpressions());
-                    statement.setLong(7, campaignStatsLoader.getClicks());
-                    statement.setLong(8, campaignStatsLoader.getTotal_Actions());
-                    statement.setLong(9, campaignStatsLoader.getSocial_Reach());
-                    statement.setLong(10, campaignStatsLoader.getSocial_Impressions());
-                    statement.setLong(11, campaignStatsLoader.getUnique_Impressions());
-                    statement.setLong(12, campaignStatsLoader.getUnique_Social_Impressions());
-                    statement.setDouble(12, campaignStatsLoader.getCPM());
-                    statement.setDouble(14, campaignStatsLoader.getCPP());
-                    statement.setDouble(15, campaignStatsLoader.getCPC());
-                    statement.setDouble(16, campaignStatsLoader.getCTR());
-                    statement.setDouble(17, campaignStatsLoader.getSpend());
-                    statement.setDate(18, (java.sql.Date) campaignStatsLoader.getStats_Date());
-                    statement.setDate(19, (java.sql.Date) campaignStatsLoader.getActivity_Start_Date());
-                    statement.setDate(20, (java.sql.Date) campaignStatsLoader.getActivity_End_Date());
-                }
-            };
+                statement.setLong(1, campaignStatsLoader.getClient_ID());
+                statement.setLong(2, campaignStatsLoader.getCampaign_ID());
+                statement.setLong(3, campaignStatsLoader.getProduct_ID());
+                statement.setLong(4, campaignStatsLoader.getReach());
+                statement.setDouble(5, campaignStatsLoader.getFrequency());
+                statement.setLong(6, campaignStatsLoader.getImpressions());
+                statement.setLong(7, campaignStatsLoader.getClicks());
+                statement.setLong(8, campaignStatsLoader.getTotal_Actions());
+                statement.setLong(9, campaignStatsLoader.getSocial_Reach());
+                statement.setLong(10, campaignStatsLoader.getSocial_Impressions());
+                statement.setLong(11, campaignStatsLoader.getUnique_Impressions());
+                statement.setLong(12, campaignStatsLoader.getUnique_Social_Impressions());
+                statement.setDouble(12, campaignStatsLoader.getCPM());
+                statement.setDouble(14, campaignStatsLoader.getCPP());
+                statement.setDouble(15, campaignStatsLoader.getCPC());
+                statement.setDouble(16, campaignStatsLoader.getCTR());
+                statement.setDouble(17, campaignStatsLoader.getSpend());
+                statement.setDate(18, (java.sql.Date) campaignStatsLoader.getStats_Date());
+                statement.setDate(19, (java.sql.Date) campaignStatsLoader.getActivity_Start_Date());
+                statement.setDate(20, (java.sql.Date) campaignStatsLoader.getActivity_End_Date());
+            }
 
-            getJdbcTemplate().update(query, pss);
-        }
-
+            @Override
+            public int getBatchSize() {
+                return 0;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        });
     }
 }

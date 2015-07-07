@@ -5,11 +5,9 @@ package com.gravity4.facebook.dpareports.dao;
  */
 
 import com.gravity4.facebook.dpareports.model.AccountStatsLoader;
-import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Component;
 
-import java.beans.PropertyVetoException;
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.List;
 @Component
 public class OverAllAccountLevelStatsDAO extends BaseDAO {
 
-    public void storeaccountlevelstats(List<AccountStatsLoader> accountStatsLoaderList){
+    public void storeaccountlevelstats(final List<AccountStatsLoader> accountStatsLoaderList) {
 
         String query = "INSERT INTO Overall_Account_Statistics_Results" +
                 "(Application_Client_ID," +
@@ -48,39 +46,42 @@ public class OverAllAccountLevelStatsDAO extends BaseDAO {
                 "VALUES" +
                 "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        for (final AccountStatsLoader accountStatsLoader : accountStatsLoaderList) {
-            PreparedStatementSetter pss = new PreparedStatementSetter() {
-                @Override
-                public void setValues(PreparedStatement statement) throws SQLException {
-                    statement.setLong(1, accountStatsLoader.getClient_ID());
-                    statement.setLong(2, accountStatsLoader.getAccount_ID());
-                    statement.setInt(3, accountStatsLoader.getAge_Start_Range());
-                    statement.setInt(4, accountStatsLoader.getAge_End_Range());
-                    statement.setString(5, accountStatsLoader.getGender());
-                    statement.setInt(6, accountStatsLoader.getReach());
-                    statement.setDouble(7, accountStatsLoader.getFrequency());
-                    statement.setInt(8, accountStatsLoader.getImpressions());
-                    statement.setInt(9, accountStatsLoader.getClicks());
-                    statement.setInt(10, accountStatsLoader.getTotal_Actions());
-                    statement.setInt(11, accountStatsLoader.getSocial_Reach());
-                    statement.setInt(12, accountStatsLoader.getSocial_Impressions());
-                    statement.setInt(13, accountStatsLoader.getUnique_Impressions());
-                    statement.setInt(14, accountStatsLoader.getUnique_Social_Impressions());
-                    statement.setDouble(15, accountStatsLoader.getCPM());
-                    statement.setDouble(16, accountStatsLoader.getCPP());
-                    statement.setDouble(17, accountStatsLoader.getCPC());
-                    statement.setDouble(18, accountStatsLoader.getCTR());
-                    statement.setDouble(19, accountStatsLoader.getSpend());
-                    statement.setDate(20, (java.sql.Date) accountStatsLoader.getStats_Date());
-                    statement.setDate(21, (java.sql.Date) accountStatsLoader.getActivity_Start_Date());
-                    statement.setDate(22, (java.sql.Date) accountStatsLoader.getActivity_End_Date());
-                    statement.setDouble(23, accountStatsLoader.getCost_Per_Unique_Click());
 
-                }
-            };
+        getJdbcTemplate().batchUpdate(query, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement statement, int i) throws SQLException {
+                AccountStatsLoader accountStatsLoader = accountStatsLoaderList.get(i);
 
-            getJdbcTemplate().update(query, pss);
-        }
+                statement.setLong(1, accountStatsLoader.getClient_ID());
+                statement.setLong(2, accountStatsLoader.getAccount_ID());
+                statement.setInt(3, accountStatsLoader.getAge_Start_Range());
+                statement.setInt(4, accountStatsLoader.getAge_End_Range());
+                statement.setString(5, accountStatsLoader.getGender());
+                statement.setInt(6, accountStatsLoader.getReach());
+                statement.setDouble(7, accountStatsLoader.getFrequency());
+                statement.setInt(8, accountStatsLoader.getImpressions());
+                statement.setInt(9, accountStatsLoader.getClicks());
+                statement.setInt(10, accountStatsLoader.getTotal_Actions());
+                statement.setInt(11, accountStatsLoader.getSocial_Reach());
+                statement.setInt(12, accountStatsLoader.getSocial_Impressions());
+                statement.setInt(13, accountStatsLoader.getUnique_Impressions());
+                statement.setInt(14, accountStatsLoader.getUnique_Social_Impressions());
+                statement.setDouble(15, accountStatsLoader.getCPM());
+                statement.setDouble(16, accountStatsLoader.getCPP());
+                statement.setDouble(17, accountStatsLoader.getCPC());
+                statement.setDouble(18, accountStatsLoader.getCTR());
+                statement.setDouble(19, accountStatsLoader.getSpend());
+                statement.setDate(20, (java.sql.Date) accountStatsLoader.getStats_Date());
+                statement.setDate(21, (java.sql.Date) accountStatsLoader.getActivity_Start_Date());
+                statement.setDate(22, (java.sql.Date) accountStatsLoader.getActivity_End_Date());
+                statement.setDouble(23, accountStatsLoader.getCost_Per_Unique_Click());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return accountStatsLoaderList.size();
+            }
+        });
     }
 }
 

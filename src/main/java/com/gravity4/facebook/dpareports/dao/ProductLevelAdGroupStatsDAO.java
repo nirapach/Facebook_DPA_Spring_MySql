@@ -5,6 +5,7 @@ package com.gravity4.facebook.dpareports.dao;
  */
 
 import com.gravity4.facebook.dpareports.model.AdGroupStatsLoader;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ import java.util.List;
 public class ProductLevelAdGroupStatsDAO extends BaseDAO {
 
 
-    public void storeadgrouplevelstats(List<AdGroupStatsLoader> adGroupStatsLoaderList){
+    public void storeadgrouplevelstats(final List<AdGroupStatsLoader> adGroupStatsLoaderList){
 
         String query = "INSERT INTO Product_Ad_Statistics_Results" +
                 "(Application_Client_ID," +
@@ -46,36 +47,41 @@ public class ProductLevelAdGroupStatsDAO extends BaseDAO {
                 "VALUES" +
                 "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        for (final AdGroupStatsLoader adGroupStatsLoader : adGroupStatsLoaderList) {
 
-            PreparedStatementSetter pss = new PreparedStatementSetter() {
-                @Override
-                public void setValues(PreparedStatement statement) throws SQLException {
-                    statement.setLong(1, adGroupStatsLoader.getClient_ID());
-                    statement.setLong(2, adGroupStatsLoader.getAdGroup_ID());
-                    statement.setLong(3, adGroupStatsLoader.getProduct_ID());
-                    statement.setInt(4, adGroupStatsLoader.getReach());
-                    statement.setDouble(5, adGroupStatsLoader.getFrequency());
-                    statement.setLong(6, adGroupStatsLoader.getImpressions());
-                    statement.setLong(7, adGroupStatsLoader.getClicks());
-                    statement.setLong(8, adGroupStatsLoader.getTotal_Actions());
-                    statement.setDouble(9, adGroupStatsLoader.getRelevance_Score());
-                    statement.setInt(10, adGroupStatsLoader.getSocial_Reach());
-                    statement.setInt(11, adGroupStatsLoader.getSocial_Impressions());
-                    statement.setInt(12, adGroupStatsLoader.getUnique_Impressions());
-                    statement.setInt(13, adGroupStatsLoader.getUnique_Social_Impressions());
-                    statement.setDouble(14, adGroupStatsLoader.getCPM());
-                    statement.setDouble(15, adGroupStatsLoader.getCPP());
-                    statement.setDouble(16, adGroupStatsLoader.getCPC());
-                    statement.setDouble(17, adGroupStatsLoader.getCTR());
-                    statement.setDouble(18, adGroupStatsLoader.getSpend());
-                    statement.setDate(19, (java.sql.Date) adGroupStatsLoader.getStats_Date());
-                    statement.setDate(20, (java.sql.Date) adGroupStatsLoader.getActivity_Start_Date());
-                    statement.setDate(21, (java.sql.Date) adGroupStatsLoader.getActivity_End_Date());
-                }
-            };
+        getJdbcTemplate().batchUpdate(query, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement statement, int i) throws SQLException {
 
-            getJdbcTemplate().update(query, pss);
-        }
+                AdGroupStatsLoader adGroupStatsLoader = adGroupStatsLoaderList.get(i);
+
+                statement.setLong(1, adGroupStatsLoader.getClient_ID());
+                statement.setLong(2, adGroupStatsLoader.getAdGroup_ID());
+                statement.setLong(3, adGroupStatsLoader.getProduct_ID());
+                statement.setInt(4, adGroupStatsLoader.getReach());
+                statement.setDouble(5, adGroupStatsLoader.getFrequency());
+                statement.setLong(6, adGroupStatsLoader.getImpressions());
+                statement.setLong(7, adGroupStatsLoader.getClicks());
+                statement.setLong(8, adGroupStatsLoader.getTotal_Actions());
+                statement.setDouble(9, adGroupStatsLoader.getRelevance_Score());
+                statement.setInt(10, adGroupStatsLoader.getSocial_Reach());
+                statement.setInt(11, adGroupStatsLoader.getSocial_Impressions());
+                statement.setInt(12, adGroupStatsLoader.getUnique_Impressions());
+                statement.setInt(13, adGroupStatsLoader.getUnique_Social_Impressions());
+                statement.setDouble(14, adGroupStatsLoader.getCPM());
+                statement.setDouble(15, adGroupStatsLoader.getCPP());
+                statement.setDouble(16, adGroupStatsLoader.getCPC());
+                statement.setDouble(17, adGroupStatsLoader.getCTR());
+                statement.setDouble(18, adGroupStatsLoader.getSpend());
+                statement.setDate(19, (java.sql.Date) adGroupStatsLoader.getStats_Date());
+                statement.setDate(20, (java.sql.Date) adGroupStatsLoader.getActivity_Start_Date());
+                statement.setDate(21, (java.sql.Date) adGroupStatsLoader.getActivity_End_Date());
+
+            }
+
+            @Override
+            public int getBatchSize() {
+                return adGroupStatsLoaderList.size();
+            }
+        });
     }
 }
