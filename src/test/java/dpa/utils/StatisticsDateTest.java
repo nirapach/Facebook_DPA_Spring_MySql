@@ -25,7 +25,9 @@ public class StatisticsDateTest extends TestCase {
             cal.add(Calendar.DATE, -1);
             Date today = cal.getTime();
             Date yesterday = StatisticsDate.getYesterday();
-            Assert.assertEquals(today, yesterday);
+            String yesterdaydate=yesterday.toString();
+            String todaydate=today.toString();
+            Assert.assertEquals(todaydate,yesterdaydate);
         }
         catch(Exception e){
             /*ignore*/
