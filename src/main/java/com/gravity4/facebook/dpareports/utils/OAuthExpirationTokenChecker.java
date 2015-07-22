@@ -77,8 +77,8 @@ public class OAuthExpirationTokenChecker {
                         email.setStartTLSEnabled(true);
                         email.setFrom(sendermailaddress, sendermailname);
                         email.setSubject("OAUTH Access Token Expiration for Facebook Dynamic Product Ads" +
-                                " Campaign for the client:" + client_id);
-                        email.setMsg("OAUTH Access Token Expiration for Facebook Dynamic Product Ads Campaign for the client:" + client_id);
+                                " Campaign for the Business Page:" + client_id);
+                        email.setMsg("OAUTH Access Token Expiration for Facebook Dynamic Product Ads Campaign for the Business Page:" + client_id);
                         email.addTo(receiveremailaddress);
                         email.send();
                             /*

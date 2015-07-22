@@ -25,7 +25,7 @@ public class AccountInformationDAO extends BaseDAO {
 
             AccountInformationLoader accountInformationLoader = new AccountInformationLoader();
 
-            accountInformationLoader.setApplication_Client_ID(resultSet.getLong("Application_Client_ID"));
+            accountInformationLoader.setApplication_Client_ID(resultSet.getLong("Application_Page_ID"));
             accountInformationLoader.setAd_Account_ID(resultSet.getLong("Business_Manager_Ad_Account_ID"));
             accountInformationLoader.setAccess_Token(resultSet.getString("Application_Long_Lived_Access_Token"));
 
@@ -35,7 +35,7 @@ public class AccountInformationDAO extends BaseDAO {
 
     public List<AccountInformationLoader> getAccountInformation(){
 
-        String query = "select Application_Client_ID,Business_Manager_Ad_Account_ID,Application_Long_Lived_Access_Token" +
+        String query = "select Application_Page_ID,Business_Manager_Ad_Account_ID,Application_Long_Lived_Access_Token" +
                 " from Account_Information_Master";
 
         return getJdbcTemplate().query(query, rowMapper);
