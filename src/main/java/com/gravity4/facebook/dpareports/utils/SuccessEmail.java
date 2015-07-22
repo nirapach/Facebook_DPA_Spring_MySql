@@ -81,7 +81,7 @@ public class SuccessEmail {
             email.setMsg(message + Client_ID);
             email.addTo(receiveremailaddress);
             email.send();
-            logger.info("Email Notification Sent Successfully for Application:" + Client_ID);
+            logger.info("Email Notification Sent Successfully for Application's business page:" + Client_ID);
 
 
         } catch (EmailException ee) {
