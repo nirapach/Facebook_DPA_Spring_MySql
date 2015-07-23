@@ -100,8 +100,9 @@ public class StatsInformationCaller {
         boolean accountstats = productLevelAccountStats.getAccountstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
         //right now just the sample code is given,need to finalize on the email list and the subject header
         if (accountstats) {
-            successEmail.sendemail("Account Statistics at Product Level Succesfully stored for:",
-                    "Account Statistics at Product Level Succesfully stored for:", client_id);
+            logger.info("Sending Email Notification for accountstats");
+            successEmail.sendemail("Account Statistics at Product Level Succesfully stored for Client Page:",
+                    "Account Statistics at Product Level Succesfully stored for Client Page:", client_id);
 
 
         }
@@ -113,8 +114,8 @@ public class StatsInformationCaller {
         boolean overallaccountstats = overAllAccountStats.getOverAllAccountstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
         //right now just the sample code is given,need to finalize on the email list and the subject header
         if (overallaccountstats) {
-            successEmail.sendemail("Account Statistics Overall Succesfully stored for:",
-                    "Account Statistics Overall Succesfully stored for:", client_id);
+            successEmail.sendemail("Account Statistics Overall Succesfully stored for Client Page:",
+                    "Account Statistics Overall Succesfully stored for Client Page:", client_id);
         }
 
         /*
@@ -124,8 +125,8 @@ public class StatsInformationCaller {
 
         if (campaignstats) {
 
-            successEmail.sendemail("Campaign Statistics at Product Level Succesfully stored for Application:",
-                    "Campaign Statistics at Product Level Succesfully stored for Application:", client_id);
+            successEmail.sendemail("Campaign Statistics at Product Level Succesfully stored for Client Page:",
+                    "Campaign Statistics at Product Level Succesfully stored for Client Page:", client_id);
         }
 
          /*
@@ -134,8 +135,8 @@ public class StatsInformationCaller {
         boolean overallcampaignstats = overAllCampaignStats.getOverAllCampaignstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
 
         if (overallcampaignstats) {
-            successEmail.sendemail("Campaign Statistics Overall Succesfully stored for Application:",
-                    "Campaign Statistics Overall Succesfully stored for application:", client_id);
+            successEmail.sendemail("Campaign Statistics Overall Succesfully stored for Client Page:",
+                    "Campaign Statistics Overall Succesfully stored for Client Page:", client_id);
         }
         /*
         Calling the method to get AdSet Level Statistics
@@ -143,8 +144,8 @@ public class StatsInformationCaller {
         boolean adsetstats = productLevelAdSetStats.getAdsetstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
 
         if (adsetstats) {
-            successEmail.sendemail("Adset Statistics at Product Level Succesfully stored for Application:",
-                    "Adset Statistics at Product Level Succesfully stored for Application:", client_id);
+            successEmail.sendemail("Adset Statistics at Product Level Succesfully stored for Client Page:",
+                    "Adset Statistics at Product Level Succesfully stored for Client Page:", client_id);
         }
         /*
         Calling the method to get OverAllAdSet Level Statistics
@@ -153,8 +154,8 @@ public class StatsInformationCaller {
 
         if (overalladsetstats) {
 
-            successEmail.sendemail("Adset Statistics overall Succesfully stored for Application:",
-                    "Adset Statistics overall Succesfully stored for application:", client_id);
+            successEmail.sendemail("Adset Statistics overall Succesfully stored for Client Page:",
+                    "Adset Statistics overall Succesfully stored for Client Page:", client_id);
         }
          /*
         Calling the method to get AdGroup Level Statistics
@@ -163,8 +164,8 @@ public class StatsInformationCaller {
 
         if (adgroupstats) {
 
-            successEmail.sendemail("AdGroup Statistics at Product Level Succesfully stored for Application:",
-                    "AdGroup Statistics at Product Level Succesfully stored for Application:", client_id);
+            successEmail.sendemail("AdGroup Statistics at Product Level Succesfully stored for Client Page:",
+                    "AdGroup Statistics at Product Level Succesfully stored for Client Page:", client_id);
         }
 
         /*
@@ -174,8 +175,8 @@ public class StatsInformationCaller {
 
         if (overalladgroupstats) {
 
-            successEmail.sendemail("AdGroup Statistics Overall Succesfully stored for Application:",
-                    "AdGroup Statistics Overall Succesfully stored for Application:", client_id);
+            successEmail.sendemail("AdGroup Statistics Overall Succesfully stored for Client Page:",
+                    "AdGroup Statistics Overall Succesfully stored for Client Page:", client_id);
         }
 
     }

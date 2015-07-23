@@ -26,7 +26,8 @@ public class OAuthExpirationTokenChecker {
     {}
 
 
-    String receiveremailaddress = "sundi@gravity4.com";
+    @Value("${smtp.receivermailaddress}")
+    String receiveremailaddress;
     @Value("${smtp.hostname}")
     String hostname;
     @Value("${smtp.smtpport}")

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
@@ -54,9 +55,13 @@ public class ProductLevelAdGroupStatsDAO extends BaseDAO {
 
                 AdGroupStatsLoader adGroupStatsLoader = adGroupStatsLoaderList.get(i);
 
+                java.sql.Date statsdate = new java.sql.Date(adGroupStatsLoader.getStats_Date().getTime());
+                java.sql.Date Activity_Start_Date = new java.sql.Date(adGroupStatsLoader.getActivity_Start_Date().getTime());
+                java.sql.Date Activity_End_Date = new java.sql.Date(adGroupStatsLoader.getActivity_End_Date().getTime());
+
                 statement.setLong(1, adGroupStatsLoader.getClient_ID());
                 statement.setLong(2, adGroupStatsLoader.getAdGroup_ID());
-                statement.setLong(3, adGroupStatsLoader.getProduct_ID());
+                statement.setString(3, adGroupStatsLoader.getProduct_ID());
                 statement.setInt(4, adGroupStatsLoader.getReach());
                 statement.setDouble(5, adGroupStatsLoader.getFrequency());
                 statement.setLong(6, adGroupStatsLoader.getImpressions());
@@ -72,9 +77,9 @@ public class ProductLevelAdGroupStatsDAO extends BaseDAO {
                 statement.setDouble(16, adGroupStatsLoader.getCPC());
                 statement.setDouble(17, adGroupStatsLoader.getCTR());
                 statement.setDouble(18, adGroupStatsLoader.getSpend());
-                statement.setDate(19, (java.sql.Date) adGroupStatsLoader.getStats_Date());
-                statement.setDate(20, (java.sql.Date) adGroupStatsLoader.getActivity_Start_Date());
-                statement.setDate(21, (java.sql.Date) adGroupStatsLoader.getActivity_End_Date());
+                statement.setDate(19, statsdate);
+                statement.setDate(20, Activity_Start_Date);
+                statement.setDate(21, Activity_End_Date);
 
             }
 

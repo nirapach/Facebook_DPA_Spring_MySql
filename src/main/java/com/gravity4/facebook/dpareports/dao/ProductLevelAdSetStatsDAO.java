@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
@@ -20,9 +21,9 @@ public class ProductLevelAdSetStatsDAO extends BaseDAO {
 
     public void storeadsetlevelstats(final List<AdSetStatsLoader> adSetStatsLoaderList){
 
-        String query = "INSERT INTO Product_Account_Statistics_Results" +
+        String query = "INSERT INTO Product_AdSet_Statistics_Results" +
                 "(Application_Client_ID," +
-                "Application_Ad_AdSet_ID," +
+                "Client_AdSet_ID," +
                 "Client_Product_ID," +
                 "Client_Reports_Reach," +
                 "Client_Reports_Frequency," +
@@ -50,9 +51,13 @@ public class ProductLevelAdSetStatsDAO extends BaseDAO {
 
                 AdSetStatsLoader adSetStatsLoader = adSetStatsLoaderList.get(i);
 
+                java.sql.Date statsdate = new java.sql.Date(adSetStatsLoader.getStats_Date().getTime());
+                java.sql.Date Activity_Start_Date = new java.sql.Date(adSetStatsLoader.getActivity_Start_Date().getTime());
+                java.sql.Date Activity_End_Date = new java.sql.Date(adSetStatsLoader.getActivity_End_Date().getTime());
+
                 statement.setLong(1, adSetStatsLoader.getClient_ID());
                 statement.setLong(2, adSetStatsLoader.getAdSet_ID());
-                statement.setLong(3, adSetStatsLoader.getProduct_ID());
+                statement.setString(3, adSetStatsLoader.getProduct_ID());
                 statement.setInt(4, adSetStatsLoader.getReach());
                 statement.setDouble(5, adSetStatsLoader.getFrequency());
                 statement.setInt(6, adSetStatsLoader.getImpressions());
@@ -67,9 +72,9 @@ public class ProductLevelAdSetStatsDAO extends BaseDAO {
                 statement.setDouble(15, adSetStatsLoader.getCPC());
                 statement.setDouble(16, adSetStatsLoader.getCTR());
                 statement.setDouble(17, adSetStatsLoader.getSpend());
-                statement.setDate(18, (java.sql.Date) adSetStatsLoader.getStats_Date());
-                statement.setDate(19, (java.sql.Date) adSetStatsLoader.getActivity_Start_Date());
-                statement.setDate(20, (java.sql.Date) adSetStatsLoader.getActivity_End_Date());
+                statement.setDate(18, statsdate);
+                statement.setDate(19, Activity_Start_Date);
+                statement.setDate(20, Activity_End_Date);
 
             }
 

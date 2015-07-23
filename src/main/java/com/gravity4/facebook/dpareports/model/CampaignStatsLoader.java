@@ -9,9 +9,8 @@ public class CampaignStatsLoader {
 
     private long Client_ID;
     private long Campaign_ID;
-    private long Product_ID;
-    private int Age_Start_Range;
-    private int Age_End_Range;
+    private String Product_ID;
+    private String Age_Range;
     private String Gender;
     private int Reach;
     private double Frequency;
@@ -54,28 +53,20 @@ public class CampaignStatsLoader {
         Campaign_ID = campaign_ID;
     }
 
-    public long getProduct_ID() {
+    public String getProduct_ID() {
         return Product_ID;
     }
 
-    public void setProduct_ID(long product_ID) {
+    public void setProduct_ID(String product_ID) {
         Product_ID = product_ID;
     }
 
-    public int getAge_Start_Range() {
-        return Age_Start_Range;
+    public String getAge_Range() {
+        return Age_Range;
     }
 
-    public void setAge_Start_Range(int age_Start_Range) {
-        Age_Start_Range = age_Start_Range;
-    }
-
-    public int getAge_End_Range() {
-        return Age_End_Range;
-    }
-
-    public void setAge_End_Range(int age_End_Range) {
-        Age_End_Range = age_End_Range;
+    public void setAge_Range(String age_Range) {
+        Age_Range = age_Range;
     }
 
     public String getGender() {

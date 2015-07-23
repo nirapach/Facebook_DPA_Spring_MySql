@@ -149,7 +149,7 @@ public class ProductLevelAccountStats {
 
                     accountStatsLoader.setClient_ID(Client_ID);
                     accountStatsLoader.setAccount_ID(Long.parseLong(data.account_id.trim()));
-                    accountStatsLoader.setProduct_ID(Long.parseLong(data.product_id.trim()));
+                    accountStatsLoader.setProduct_ID(data.product_id.trim());
                     accountStatsLoader.setActivity_Start_Date(Activity_Start_Date);
                     accountStatsLoader.setActivity_End_Date(Activity_End_Date);
                     accountStatsLoader.setCost_Per_Unique_Click(data.cost_per_unique_click);
@@ -169,8 +169,7 @@ public class ProductLevelAccountStats {
                     accountStatsLoader.setSpend(data.spend);
                     accountStatsLoader.setStats_Date(Stats_Date);
 
-                    accountStatsLoader.setAge_Start_Range(0);
-                    accountStatsLoader.setAge_End_Range(0);
+                    accountStatsLoader.setAge_Range("");
                     accountStatsLoader.setGender("null");
 
                     //boolean success=productLevelAccountStatsDAO.storeaccountlevelstats(accountStatsLoader);

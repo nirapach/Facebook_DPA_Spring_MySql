@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
@@ -21,7 +22,7 @@ public class ProductLevelCampaignStatsDAO extends BaseDAO {
 
     public void storecampaignlevelstats(final List<CampaignStatsLoader> campaignStatsLoaderList){
 
-        String query = "INSERT INTO Product_Account_Statistics_Results" +
+        String query = "INSERT INTO Product_Campaign_Statistics_Results" +
                 "(Application_Client_ID," +
                 "Client_Campaign_ID," +
                 "Client_Product_ID," +
@@ -50,9 +51,13 @@ public class ProductLevelCampaignStatsDAO extends BaseDAO {
             public void setValues(PreparedStatement statement, int i) throws SQLException {
                 CampaignStatsLoader campaignStatsLoader = campaignStatsLoaderList.get(i);
 
+                java.sql.Date statsdate = new java.sql.Date(campaignStatsLoader.getStats_Date().getTime());
+                java.sql.Date Activity_Start_Date = new java.sql.Date(campaignStatsLoader.getActivity_Start_Date().getTime());
+                java.sql.Date Activity_End_Date = new java.sql.Date(campaignStatsLoader.getActivity_End_Date().getTime());
+
                 statement.setLong(1, campaignStatsLoader.getClient_ID());
                 statement.setLong(2, campaignStatsLoader.getCampaign_ID());
-                statement.setLong(3, campaignStatsLoader.getProduct_ID());
+                statement.setString(3, campaignStatsLoader.getProduct_ID());
                 statement.setLong(4, campaignStatsLoader.getReach());
                 statement.setDouble(5, campaignStatsLoader.getFrequency());
                 statement.setLong(6, campaignStatsLoader.getImpressions());
@@ -67,9 +72,9 @@ public class ProductLevelCampaignStatsDAO extends BaseDAO {
                 statement.setDouble(15, campaignStatsLoader.getCPC());
                 statement.setDouble(16, campaignStatsLoader.getCTR());
                 statement.setDouble(17, campaignStatsLoader.getSpend());
-                statement.setDate(18, (java.sql.Date) campaignStatsLoader.getStats_Date());
-                statement.setDate(19, (java.sql.Date) campaignStatsLoader.getActivity_Start_Date());
-                statement.setDate(20, (java.sql.Date) campaignStatsLoader.getActivity_End_Date());
+                statement.setDate(18, statsdate);
+                statement.setDate(19, Activity_Start_Date);
+                statement.setDate(20, Activity_End_Date);
             }
 
             @Override

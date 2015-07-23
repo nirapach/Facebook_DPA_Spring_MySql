@@ -128,12 +128,6 @@ public class OverAllAdSetStats {
 
                     adSetStatsLoader = new AdSetStatsLoader();
 
-                    //getting the age range and splitting it into accessible integer values
-                    String Age = resultData.age;
-                    String Age_Start_SubString = Age.substring(Age.lastIndexOf("-") - 1);
-                    String Age_End_SubString = Age.substring(Age.lastIndexOf("-") + 1);
-                    int Age_Start_Range = Integer.parseInt(Age_Start_SubString);
-                    int Age_End_Range = Integer.parseInt(Age_End_SubString);
 
             /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
             are getting yesterday's datein date_preset field of the curl request*/
@@ -158,8 +152,7 @@ public class OverAllAdSetStats {
                     adSetStatsLoader.setActivity_Start_Date(Activity_Start_Date);
                     adSetStatsLoader.setActivity_End_Date(Activity_End_Date);
                     adSetStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-                    adSetStatsLoader.setAge_Start_Range(Age_Start_Range);
-                    adSetStatsLoader.setAge_End_Range(Age_End_Range);
+                    adSetStatsLoader.setAge_Range(resultData.age);
                     adSetStatsLoader.setGender(resultData.gender);
                     adSetStatsLoader.setReach(resultData.reach);
                     adSetStatsLoader.setFrequency(resultData.frequency);
@@ -176,7 +169,7 @@ public class OverAllAdSetStats {
                     adSetStatsLoader.setCPP(resultData.cpp);
                     adSetStatsLoader.setSpend(resultData.spend);
                     adSetStatsLoader.setStats_Date(Stats_Date);
-                    adSetStatsLoader.setProduct_ID(0);
+                    adSetStatsLoader.setProduct_ID("");
 
                     adSetStatsLoaderList.add(adSetStatsLoader);
 
