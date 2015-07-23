@@ -144,7 +144,7 @@ public class ProductLevelAdSetStats {
                     adSetStatsLoader.setActivity_Start_Date(Activity_Start_Date);
                     adSetStatsLoader.setActivity_End_Date(Activity_End_Date);
                     adSetStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-                    adSetStatsLoader.setProduct_ID(Long.parseLong(resultData.product_id.trim()));
+                    adSetStatsLoader.setProduct_ID(resultData.product_id.trim());
                     adSetStatsLoader.setReach(resultData.reach);
                     adSetStatsLoader.setFrequency(resultData.frequency);
                     adSetStatsLoader.setImpressions(resultData.impressions);
@@ -161,8 +161,7 @@ public class ProductLevelAdSetStats {
                     adSetStatsLoader.setSpend(resultData.spend);
                     adSetStatsLoader.setStats_Date(Stats_Date);
 
-                    adSetStatsLoader.setAge_Start_Range(0);
-                    adSetStatsLoader.setAge_End_Range(0);
+                    adSetStatsLoader.setAge_Range("");
                     adSetStatsLoader.setGender("null");
 
                     adSetStatsLoaderList.add(adSetStatsLoader);

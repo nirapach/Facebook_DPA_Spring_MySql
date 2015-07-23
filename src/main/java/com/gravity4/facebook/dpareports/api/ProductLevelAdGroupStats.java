@@ -147,7 +147,7 @@ public class ProductLevelAdGroupStats {
                     adGroupStatsLoader.setActivity_Start_Date(Activity_Start_Date);
                     adGroupStatsLoader.setActivity_End_Date(Activity_End_Date);
                     adGroupStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-                    adGroupStatsLoader.setProduct_ID(Long.parseLong(resultData.product_id.trim()));
+                    adGroupStatsLoader.setProduct_ID(resultData.product_id.trim());
                     adGroupStatsLoader.setReach(resultData.reach);
                     adGroupStatsLoader.setFrequency(resultData.frequency);
                     adGroupStatsLoader.setImpressions(resultData.impressions);
@@ -166,8 +166,7 @@ public class ProductLevelAdGroupStats {
                     adGroupStatsLoader.setStats_Date(Stats_Date);
 
 
-                    adGroupStatsLoader.setAge_Start_Range(0);
-                    adGroupStatsLoader.setAge_End_Range(0);
+                    adGroupStatsLoader.setAge_Range("");
                     adGroupStatsLoader.setGender("null");
 
                     adGroupStatsLoaderList.add(adGroupStatsLoader);

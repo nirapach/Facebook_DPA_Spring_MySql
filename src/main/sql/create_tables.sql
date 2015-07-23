@@ -13,8 +13,7 @@ CREATE TABLE `Account_Information_Master` (
 CREATE TABLE `Overall_Account_Statistics_Results` (
   `Application_Client_ID` bigint(20) DEFAULT '0',
   `Application_Ad_Account_ID` bigint(20) DEFAULT NULL,
-  `Client_Reports_Age_Stats_Start_Range` int(11) DEFAULT NULL,
-  `Client_Reports_Age_Stats_End_Range` int(11) DEFAULT NULL,
+  `Client_Reports_Age_Stats_Range` varchar(45) DEFAULT NULL,
   `Client_Reports_Gender_Stats` varchar(45) DEFAULT NULL,
   `Client_Reports_Reach` int(11) DEFAULT NULL,
   `Client_Reports_Frequency` double DEFAULT NULL,
@@ -38,8 +37,7 @@ CREATE TABLE `Overall_Account_Statistics_Results` (
 CREATE TABLE `Overall_AdSet_Statistics_Results` (
   `Application_Client_ID` bigint(20) DEFAULT '0',
   `Application_Ad_AdSet_ID` bigint(20) DEFAULT NULL,
-  `Client_Reports_Age_Stats_Start_Range` int(11) DEFAULT NULL,
-  `Client_Reports_Age_Stats_End_Range` int(11) DEFAULT NULL,
+  `Client_Reports_Age_Stats_Range` varchar(45) DEFAULT NULL,
   `Client_Reports_Gender_Stats` varchar(45) DEFAULT NULL,
   `Client_Reports_Reach` int(11) DEFAULT NULL,
   `Client_Reports_Frequency` double DEFAULT NULL,
@@ -63,8 +61,7 @@ CREATE TABLE `Overall_AdSet_Statistics_Results` (
 CREATE TABLE `Overall_Ad_Statistics_Results` (
   `Application_Client_ID` bigint(20) DEFAULT '0',
   `Application_Ad_Group_ID` bigint(20) DEFAULT NULL,
-  `Client_Reports_Age_Stats_Start_Range` int(11) DEFAULT NULL,
-  `Client_Reports_Age_Stats_End_Range` int(11) DEFAULT NULL,
+  `Client_Reports_Age_Stats_Range` varchar(45) DEFAULT NULL,
   `Client_Reports_Gender_Stats` varchar(45) DEFAULT NULL,
   `Client_Reports_Reach` int(11) DEFAULT NULL,
   `Client_Reports_Frequency` double DEFAULT NULL,
@@ -90,8 +87,7 @@ CREATE TABLE `Overall_Ad_Statistics_Results` (
 CREATE TABLE `Overall_Campaign_Statistics_Results` (
   `Application_Client_ID` bigint(20) DEFAULT '0',
   `Application_Campaign_ID` bigint(20) DEFAULT NULL,
-  `Client_Reports_Age_Stats_Start_Range` int(11) DEFAULT NULL,
-  `Client_Reports_Age_Stats_End_Range` int(11) DEFAULT NULL,
+  `Client_Reports_Age_Stats_Range` varchar(45) DEFAULT NULL,
   `Client_Reports_Gender_Stats` varchar(45) DEFAULT NULL,
   `Client_Reports_Reach` int(11) DEFAULT NULL,
   `Client_Reports_Frequency` double DEFAULT NULL,
@@ -115,7 +111,7 @@ CREATE TABLE `Overall_Campaign_Statistics_Results` (
 CREATE TABLE `Product_Account_Statistics_Results` (
   `Application_Client_ID` bigint(20) DEFAULT NULL,
   `Application_Ad_Account_ID` bigint(20) DEFAULT NULL,
-  `Client_Product_ID` bigint(20) DEFAULT NULL,
+  `Client_Product_ID` varchar(45) DEFAULT NULL,
   `Client_Reports_Reach` int(11) DEFAULT NULL,
   `Client_Reports_Frequency` double DEFAULT NULL,
   `Client_Reports_Impressions` int(11) DEFAULT NULL,
@@ -137,7 +133,7 @@ CREATE TABLE `Product_Account_Statistics_Results` (
   CREATE TABLE `Product_AdSet_Statistics_Results` (
     `Application_Client_ID` bigint(20) DEFAULT NULL,
     `Client_AdSet_ID` bigint(20) DEFAULT NULL,
-    `Client_Product_ID` bigint(20) DEFAULT NULL,
+    `Client_Product_ID` varchar(45) DEFAULT NULL,
     `Client_Reports_Reach` int(11) DEFAULT NULL,
     `Client_Reports_Frequency` double DEFAULT NULL,
     `Client_Reports_Impressions` int(11) DEFAULT NULL,
@@ -159,7 +155,7 @@ CREATE TABLE `Product_Account_Statistics_Results` (
     CREATE TABLE `Product_Ad_Statistics_Results` (
       `Application_Client_ID` bigint(20) DEFAULT NULL,
       `Client_Ad_Group_ID` bigint(20) DEFAULT NULL,
-      `Client_Product_ID` bigint(20) DEFAULT NULL,
+      `Client_Product_ID` varchar(45) DEFAULT NULL,
       `Client_Reports_Reach` int(11) DEFAULT NULL,
       `Client_Reports_Frequency` double DEFAULT NULL,
       `Client_Reports_Impressions` int(11) DEFAULT NULL,
@@ -182,7 +178,7 @@ CREATE TABLE `Product_Account_Statistics_Results` (
       CREATE TABLE `Product_Campaign_Statistics_Results` (
         `Application_Client_ID` bigint(20) DEFAULT NULL,
         `Client_Campaign_ID` bigint(20) DEFAULT NULL,
-        `Client_Product_ID` bigint(20) DEFAULT NULL,
+        `Client_Product_ID` varchar(45) DEFAULT NULL,
         `Client_Reports_Reach` int(11) DEFAULT NULL,
         `Client_Reports_Frequency` double DEFAULT NULL,
         `Client_Reports_Impressions` int(11) DEFAULT NULL,

@@ -19,7 +19,8 @@ import java.util.Properties;
 @Service
 public class SuccessEmail {
 
-    String receiveremailaddress = "sundi@gravity4.com";
+    @Value("${smtp.receivermailaddress}")
+    String receiveremailaddress;
     @Value("${smtp.hostname}")
     String hostname;
     @Value("${smtp.smtpport}")
@@ -38,58 +39,33 @@ public class SuccessEmail {
 
     public void sendemail(String subject, String message, Long Client_ID) throws IOException {
 
-        if (!enabled)
-            return;
-
-        Logger logger = LoggerFactory.getLogger(OAuthExpirationTokenChecker.class);
-
-        String propertyFileName = "config.properties";
-
-        Properties config = new Properties();
+        Logger logger = LoggerFactory.getLogger(SuccessEmail.class);
 
         Email email = new SimpleEmail();
+        if (enabled) {
 
-        InputStream inputstream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
-
-        if (inputstream != null)
-
-        {
+            logger.info("Inside Success Email"+enabled);
+            //need to get the list of mail id's for sending emails
             try {
-                config.load(inputstream);
-            } catch (IOException e) {
-                e.printStackTrace();
+                email.setHostName(hostname);
+                email.setSmtpPort(smtpport);
+                email.setAuthentication(sendermailaddress, sendermailpassword);
+                email.setStartTLSEnabled(true);
+                email.setFrom(sendermailaddress, sendermailname);
+                email.setSubject(subject + Client_ID);
+                email.setMsg(message + Client_ID);
+                email.addTo(receiveremailaddress);
+                email.send();
+                logger.info("Email Notification Sent Successfully for Application's business page:" + Client_ID);
+
+
+            } catch (EmailException ee) {
+                ee.printStackTrace();
+            } catch (Exception e) {
+                logger.info(String.valueOf(e));
+                throw new IOException("Problem with configuration properties file", e);
+
             }
-        } else
-
-        {
-            logger.info(String.valueOf("Configuration Properties File'" + propertyFileName + "' not found in classpath"));
-            try {
-                throw new FileNotFoundException("Configuration Properties File'" + propertyFileName + "' not found in classpath");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-        //need to get the list of mail id's for sending emails
-        try {
-            email.setHostName(hostname);
-            email.setSmtpPort(smtpport);
-            email.setAuthentication(sendermailaddress, sendermailpassword);
-            email.setStartTLSEnabled(true);
-            email.setFrom(sendermailaddress, sendermailname);
-            email.setSubject(subject + Client_ID);
-            email.setMsg(message + Client_ID);
-            email.addTo(receiveremailaddress);
-            email.send();
-            logger.info("Email Notification Sent Successfully for Application's business page:" + Client_ID);
-
-
-        } catch (EmailException ee) {
-            ee.printStackTrace();
-        } catch (Exception e) {
-            logger.info(String.valueOf(e));
-            throw new IOException("Problem with configuration properties file", e);
-
         }
     }
 

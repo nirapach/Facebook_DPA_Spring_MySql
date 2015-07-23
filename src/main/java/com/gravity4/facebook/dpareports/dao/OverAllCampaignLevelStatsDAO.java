@@ -21,9 +21,8 @@ public class OverAllCampaignLevelStatsDAO extends BaseDAO {
 
         String query = "INSERT INTO Overall_Campaign_Statistics_Results" +
                 "(Application_Client_ID," +
-                "Application_Ad_AdSet_ID," +
-                "Client_Reports_Age_Stats_Start_Range," +
-                "Client_Reports_Age_Stats_End_Range," +
+                "Application_Campaign_ID," +
+                "Client_Reports_Age_Stats_Range," +
                 "Client_Reports_Gender_Stats," +
                 "Client_Reports_Reach," +
                 "Client_Reports_Frequency," +
@@ -44,7 +43,7 @@ public class OverAllCampaignLevelStatsDAO extends BaseDAO {
                 "Client_Reports_Ad_Activity_Date_End," +
                 "Client_Cost_Per_Unique_Click)" +
                 "VALUES" +
-                "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
 
         getJdbcTemplate().batchUpdate(query, new BatchPreparedStatementSetter() {
@@ -53,29 +52,32 @@ public class OverAllCampaignLevelStatsDAO extends BaseDAO {
 
                 CampaignStatsLoader campaignStatsLoader = campaignStatsLoaderList.get(i);
 
+                java.sql.Date statsdate = new java.sql.Date(campaignStatsLoader.getStats_Date().getTime());
+                java.sql.Date Activity_Start_Date = new java.sql.Date(campaignStatsLoader.getActivity_Start_Date().getTime());
+                java.sql.Date Activity_End_Date = new java.sql.Date(campaignStatsLoader.getActivity_End_Date().getTime());
+
                 statement.setLong(1, campaignStatsLoader.getClient_ID());
                 statement.setLong(2, campaignStatsLoader.getCampaign_ID());
-                statement.setInt(3, campaignStatsLoader.getAge_Start_Range());
-                statement.setInt(4, campaignStatsLoader.getAge_End_Range());
-                statement.setString(5, campaignStatsLoader.getGender());
-                statement.setInt(6, campaignStatsLoader.getReach());
-                statement.setDouble(7, campaignStatsLoader.getFrequency());
-                statement.setInt(8, campaignStatsLoader.getImpressions());
-                statement.setInt(9, campaignStatsLoader.getClicks());
-                statement.setInt(10, campaignStatsLoader.getTotal_Actions());
-                statement.setInt(11, campaignStatsLoader.getSocial_Reach());
-                statement.setInt(12, campaignStatsLoader.getSocial_Impressions());
-                statement.setInt(13, campaignStatsLoader.getUnique_Impressions());
-                statement.setInt(14, campaignStatsLoader.getUnique_Social_Impressions());
-                statement.setDouble(15, campaignStatsLoader.getCPM());
-                statement.setDouble(16, campaignStatsLoader.getCPP());
-                statement.setDouble(17, campaignStatsLoader.getCPC());
-                statement.setDouble(18, campaignStatsLoader.getCTR());
-                statement.setDouble(19, campaignStatsLoader.getSpend());
-                statement.setDate(20, (Date) campaignStatsLoader.getStats_Date());
-                statement.setDate(21, (Date) campaignStatsLoader.getActivity_Start_Date());
-                statement.setDate(22, (Date) campaignStatsLoader.getActivity_End_Date());
-                statement.setDouble(23, campaignStatsLoader.getCost_Per_Unique_Click());
+                statement.setString(3, campaignStatsLoader.getAge_Range());
+                statement.setString(4, campaignStatsLoader.getGender());
+                statement.setInt(5, campaignStatsLoader.getReach());
+                statement.setDouble(6, campaignStatsLoader.getFrequency());
+                statement.setInt(7, campaignStatsLoader.getImpressions());
+                statement.setInt(8, campaignStatsLoader.getClicks());
+                statement.setInt(9, campaignStatsLoader.getTotal_Actions());
+                statement.setInt(10, campaignStatsLoader.getSocial_Reach());
+                statement.setInt(11, campaignStatsLoader.getSocial_Impressions());
+                statement.setInt(12, campaignStatsLoader.getUnique_Impressions());
+                statement.setInt(13, campaignStatsLoader.getUnique_Social_Impressions());
+                statement.setDouble(14, campaignStatsLoader.getCPM());
+                statement.setDouble(15, campaignStatsLoader.getCPP());
+                statement.setDouble(16, campaignStatsLoader.getCPC());
+                statement.setDouble(17, campaignStatsLoader.getCTR());
+                statement.setDouble(18, campaignStatsLoader.getSpend());
+                statement.setDate(19, statsdate);
+                statement.setDate(20, Activity_Start_Date);
+                statement.setDate(21, Activity_End_Date);
+                statement.setDouble(22, campaignStatsLoader.getCost_Per_Unique_Click());
             }
 
             @Override

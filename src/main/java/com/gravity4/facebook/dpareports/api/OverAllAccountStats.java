@@ -126,13 +126,6 @@ public class OverAllAccountStats {
 
                     accountStatsLoader = new AccountStatsLoader();
 
-                    //getting the age range and splitting it into accessible integer values
-                    String Age = resultData.age;
-                    String Age_Start_SubString = Age.substring(Age.lastIndexOf("-") - 1);
-                    String Age_End_SubString = Age.substring(Age.lastIndexOf("-") + 1);
-                    int Age_Start_Range = Integer.parseInt(Age_Start_SubString);
-                    int Age_End_Range = Integer.parseInt(Age_End_SubString);
-
             /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
             are getting yesterday's datein date_preset field of the curl request*/
 
@@ -155,8 +148,7 @@ public class OverAllAccountStats {
                     accountStatsLoader.setActivity_Start_Date(Activity_Start_Date);
                     accountStatsLoader.setActivity_End_Date(Activity_End_Date);
                     accountStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-                    accountStatsLoader.setAge_Start_Range(Age_Start_Range);
-                    accountStatsLoader.setAge_End_Range(Age_End_Range);
+                    accountStatsLoader.setAge_Range(resultData.age);
                     accountStatsLoader.setGender(resultData.gender);
                     accountStatsLoader.setReach(resultData.reach);
                     accountStatsLoader.setFrequency(resultData.frequency);
@@ -173,7 +165,7 @@ public class OverAllAccountStats {
                     accountStatsLoader.setCPP(resultData.cpp);
                     accountStatsLoader.setSpend(resultData.spend);
                     accountStatsLoader.setStats_Date(Stats_Date);
-                    accountStatsLoader.setProduct_ID(0);
+                    accountStatsLoader.setProduct_ID("");
 
                     accountStatsLoaderList.add(accountStatsLoader);
 

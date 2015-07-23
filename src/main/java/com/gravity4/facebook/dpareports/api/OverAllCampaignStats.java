@@ -129,13 +129,6 @@ public class OverAllCampaignStats {
 
                     campaignStatsLoader = new CampaignStatsLoader();
 
-                    //getting the age range and splitting it into accessible integer values
-                    String Age = resultData.age;
-                    String Age_Start_SubString = Age.substring(Age.lastIndexOf("-") - 1);
-                    String Age_End_SubString = Age.substring(Age.lastIndexOf("-") + 1);
-                    int Age_Start_Range = Integer.parseInt(Age_Start_SubString);
-                    int Age_End_Range = Integer.parseInt(Age_End_SubString);
-
             /*get yesterday's date so that it can be stored as the date on which these stats belong to since we
             are getting yesterday's datein date_preset field of the curl request*/
 
@@ -159,8 +152,7 @@ public class OverAllCampaignStats {
                     campaignStatsLoader.setActivity_Start_Date(Activity_Start_Date);
                     campaignStatsLoader.setActivity_End_Date(Activity_End_Date);
                     campaignStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-                    campaignStatsLoader.setAge_Start_Range(Age_Start_Range);
-                    campaignStatsLoader.setAge_End_Range(Age_End_Range);
+                    campaignStatsLoader.setAge_Range(resultData.age);
                     campaignStatsLoader.setGender(resultData.gender);
                     campaignStatsLoader.setReach(resultData.reach);
                     campaignStatsLoader.setFrequency(resultData.frequency);
@@ -177,7 +169,7 @@ public class OverAllCampaignStats {
                     campaignStatsLoader.setCPP(resultData.cpp);
                     campaignStatsLoader.setSpend(resultData.spend);
                     campaignStatsLoader.setStats_Date(Stats_Date);
-                    campaignStatsLoader.setProduct_ID(0);
+                    campaignStatsLoader.setProduct_ID("");
 
                     campaignStatsLoaderList.add(campaignStatsLoader);
 
