@@ -4,6 +4,10 @@ package com.gravity4.facebook.dpareports.dao;
  * Created by niranjan on 6/18/15.
  */
 
+import com.gravity4.facebook.dpareports.mapper.OverAllAdSetCSVMapper;
+import com.gravity4.facebook.dpareports.mapper.OverAllCampaignCSVMapper;
+import com.gravity4.facebook.dpareports.model.CSVOverAllAdSetStats;
+import com.gravity4.facebook.dpareports.model.CSVOverAllCampaignStats;
 import com.gravity4.facebook.dpareports.model.CampaignStatsLoader;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Component;
@@ -16,6 +20,18 @@ import java.util.List;
 
 @Component
 public class OverAllCampaignLevelStatsDAO extends BaseDAO {
+
+    public List<CSVOverAllCampaignStats> fileadsetlevelstats(final long page_id,Date Stats_date) {
+
+        List<CSVOverAllCampaignStats> csvOverAllCampaignStatsList;
+        String SELECT = " SELECT * "
+                + " FROM Overall_Campaign_Statistics_Results"
+                + " WHERE Application_Client_ID="+page_id+" and Stats_Date="+"'"+Stats_date+"'";
+
+        csvOverAllCampaignStatsList=getJdbcTemplate().query(SELECT,new OverAllCampaignCSVMapper());
+
+        return csvOverAllCampaignStatsList;
+    }
 
     public void storecamapignlevelstats(final List<CampaignStatsLoader> campaignStatsLoaderList) {
 

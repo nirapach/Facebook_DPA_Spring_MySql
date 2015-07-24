@@ -97,12 +97,12 @@ public class StatsInformationCaller {
         /*
         Calling the method to get Account Level Statistics
          */
-        boolean accountstats = productLevelAccountStats.getAccountstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
+        String accountstats = productLevelAccountStats.getAccountstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
         //right now just the sample code is given,need to finalize on the email list and the subject header
-        if (accountstats) {
+        if (accountstats!=null) {
             logger.info("Sending Email Notification for accountstats");
             successEmail.sendemail("Account Statistics at Product Level Succesfully stored for Client Page:",
-                    "Account Statistics at Product Level Succesfully stored for Client Page:", client_id);
+                    "Account Statistics at Product Level Succesfully stored for Client Page:", client_id,accountstats);
 
 
         }
@@ -111,73 +111,76 @@ public class StatsInformationCaller {
         Calling the method to get overall account stats
          */
 
-        boolean overallaccountstats = overAllAccountStats.getOverAllAccountstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
+        String overallaccountstats = overAllAccountStats.getOverAllAccountstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
         //right now just the sample code is given,need to finalize on the email list and the subject header
-        if (overallaccountstats) {
+        if (overallaccountstats!=null) {
             successEmail.sendemail("Account Statistics Overall Succesfully stored for Client Page:",
-                    "Account Statistics Overall Succesfully stored for Client Page:", client_id);
+                    "Account Statistics Overall Succesfully stored for Client Page:", client_id,overallaccountstats);
         }
 
         /*
         Calling the method to get Campaign Level Statistics
          */
-        boolean campaignstats = productLevelCampaignStats.getCampaignstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
+      String campaignstats = productLevelCampaignStats.getCampaignstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
 
-        if (campaignstats) {
+        if (campaignstats!=null) {
 
             successEmail.sendemail("Campaign Statistics at Product Level Succesfully stored for Client Page:",
-                    "Campaign Statistics at Product Level Succesfully stored for Client Page:", client_id);
+                    "Campaign Statistics at Product Level Succesfully stored for Client Page:", client_id,campaignstats);
         }
 
          /*
         Calling the method to get OverAllCampaign Level Statistics
          */
-        boolean overallcampaignstats = overAllCampaignStats.getOverAllCampaignstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
+        String overallcampaignstats = overAllCampaignStats.getOverAllCampaignstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
 
-        if (overallcampaignstats) {
+        if (overallcampaignstats!=null) {
             successEmail.sendemail("Campaign Statistics Overall Succesfully stored for Client Page:",
-                    "Campaign Statistics Overall Succesfully stored for Client Page:", client_id);
+                    "Campaign Statistics Overall Succesfully stored for Client Page:", client_id,overallcampaignstats);
         }
+
+
         /*
         Calling the method to get AdSet Level Statistics
          */
-        boolean adsetstats = productLevelAdSetStats.getAdsetstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
+       String adsetstats = productLevelAdSetStats.getAdsetstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
 
-        if (adsetstats) {
+        if (adsetstats!=null) {
             successEmail.sendemail("Adset Statistics at Product Level Succesfully stored for Client Page:",
-                    "Adset Statistics at Product Level Succesfully stored for Client Page:", client_id);
+                    "Adset Statistics at Product Level Succesfully stored for Client Page:", client_id,adsetstats);
         }
         /*
         Calling the method to get OverAllAdSet Level Statistics
          */
-        boolean overalladsetstats = overAllAdSetStats.getOverAllAdSetstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
+        String overalladsetstats = overAllAdSetStats.getOverAllAdSetstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
 
-        if (overalladsetstats) {
+        if (overalladsetstats!=null) {
 
             successEmail.sendemail("Adset Statistics overall Succesfully stored for Client Page:",
-                    "Adset Statistics overall Succesfully stored for Client Page:", client_id);
+                    "Adset Statistics overall Succesfully stored for Client Page:", client_id,overalladsetstats);
         }
          /*
         Calling the method to get AdGroup Level Statistics
          */
-        boolean adgroupstats = productLevelAdGroupStats.getAdgroupstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
+       String adgroupstats = productLevelAdGroupStats.getAdgroupstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
 
-        if (adgroupstats) {
+        if (adgroupstats!=null) {
 
             successEmail.sendemail("AdGroup Statistics at Product Level Succesfully stored for Client Page:",
-                    "AdGroup Statistics at Product Level Succesfully stored for Client Page:", client_id);
+                    "AdGroup Statistics at Product Level Succesfully stored for Client Page:", client_id,adgroupstats);
         }
 
         /*
         Calling the method to get OverAllAdGroup Level Statistics
         */
-        boolean overalladgroupstats = overAllAdGroupStats.getOverAllAdGroupstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
+       String overalladgroupstats = overAllAdGroupStats.getOverAllAdGroupstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
 
-        if (overalladgroupstats) {
+        if (overalladgroupstats!=null) {
 
             successEmail.sendemail("AdGroup Statistics Overall Succesfully stored for Client Page:",
-                    "AdGroup Statistics Overall Succesfully stored for Client Page:", client_id);
+                    "AdGroup Statistics Overall Succesfully stored for Client Page:", client_id,overalladgroupstats);
         }
+
 
     }
 

@@ -220,4 +220,33 @@ public class CampaignStatsLoader {
     public void setStats_Date(Date stats_Date) {
         Stats_Date = stats_Date;
     }
+
+    @Override
+    public String toString() {
+        return "CampaignStatsLoader{" +
+                "Client_ID=" + Client_ID +
+                ", Campaign_ID=" + Campaign_ID +
+                ", Product_ID='" + Product_ID + '\'' +
+                ", Age_Range='" + Age_Range + '\'' +
+                ", Gender='" + Gender + '\'' +
+                ", Reach=" + Reach +
+                ", Frequency=" + Frequency +
+                ", Clicks=" + Clicks +
+                ", Total_Actions=" + Total_Actions +
+                ", Impressions=" + Impressions +
+                ", Social_Reach=" + Social_Reach +
+                ", Social_Impressions=" + Social_Impressions +
+                ", Unique_Impressions=" + Unique_Impressions +
+                ", Unique_Social_Impressions=" + Unique_Social_Impressions +
+                ", CPM=" + CPM +
+                ", CPP=" + CPP +
+                ", Spend=" + Spend +
+                ", CPC=" + CPC +
+                ", CTR=" + CTR +
+                ", Cost_Per_Unique_Click=" + Cost_Per_Unique_Click +
+                ", Activity_Start_Date=" + Activity_Start_Date +
+                ", Activity_End_Date=" + Activity_End_Date +
+                ", Stats_Date=" + Stats_Date +
+                '}';
+    }
 }

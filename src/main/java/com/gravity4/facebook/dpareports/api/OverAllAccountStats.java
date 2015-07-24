@@ -7,6 +7,8 @@ package com.gravity4.facebook.dpareports.api;
 import com.google.gson.Gson;
 import com.gravity4.facebook.dpareports.dao.OverAllAccountLevelStatsDAO;
 import com.gravity4.facebook.dpareports.model.AccountStatsLoader;
+import com.gravity4.facebook.dpareports.CSVFileWriter.OverAllAccountCSVWriter;
+import com.gravity4.facebook.dpareports.model.CSVOverAllAccountStats;
 import com.gravity4.facebook.dpareports.responseparser.responsedata.OverAllAccountStatsJSONResponse;
 import com.gravity4.facebook.dpareports.responseparser.resultdata.OverAllAccountsResultData;
 import com.gravity4.facebook.dpareports.utils.OAuthExpirationTokenChecker;
@@ -47,14 +49,16 @@ public class OverAllAccountStats {
     @Autowired
     OAuthExpirationTokenChecker oAuthExpirationTokenChecker;
 
+    OverAllAccountCSVWriter overAllAccountCSVWriter=new OverAllAccountCSVWriter();
+
     /*
        Makes a Get API call to reportstats API to get the statistics at the Ad Account Level
         */
-    public boolean getOverAllAccountstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException, HTTPException {
+    public String getOverAllAccountstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException, HTTPException {
 
         //Fields in the parameters
         long Client_ID = Client_ID_Integer;
-        boolean store = false;
+        String store_file_name = null;
         String Account_ID = Long.toString(Account_ID_Integer);
         String date_preset = "yesterday";
         String data_columns = "['account_id','spend','age','gender','total_actions'," +
@@ -122,6 +126,7 @@ public class OverAllAccountStats {
                 List<AccountStatsLoader> accountStatsLoaderList = new ArrayList<AccountStatsLoader>();
                 ;
 
+
                 for (OverAllAccountsResultData resultData : results) {
 
                     accountStatsLoader = new AccountStatsLoader();
@@ -171,8 +176,19 @@ public class OverAllAccountStats {
 
 
                 }
+                //for storng into database
                 overAllAccountLevelStatsDAO.storeaccountlevelstats(accountStatsLoaderList);
-                store = true;
+                //for storing into file for email
+                List<CSVOverAllAccountStats> csvOverAllAccountStatslist;
+                java.sql.Date emailstatsdate = new java.sql.Date(StatisticsDate.getYesterday().getTime());
+                csvOverAllAccountStatslist=overAllAccountLevelStatsDAO.fileaccountlevelstats(Client_ID,emailstatsdate);
+                //call the CSV file writer
+               String stored= overAllAccountCSVWriter.writecsvfile(csvOverAllAccountStatslist,Client_ID,emailstatsdate);
+
+                if(stored!=null){
+                    store_file_name=stored;
+                }
+
             }
             reader.close();
 
@@ -191,7 +207,7 @@ public class OverAllAccountStats {
             e.printStackTrace();
         }
         httpClient.close();
-        return store;
+        return store_file_name;
 
     }
 }

@@ -4,18 +4,34 @@ package com.gravity4.facebook.dpareports.dao;
  * Created by niranjan on 6/18/15.
  */
 
+import com.gravity4.facebook.dpareports.mapper.OverAllAccountCSVMapper;
 import com.gravity4.facebook.dpareports.model.AccountStatsLoader;
+import com.gravity4.facebook.dpareports.model.CSVOverAllAccountStats;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Component
 public class OverAllAccountLevelStatsDAO extends BaseDAO {
+
+    public List<CSVOverAllAccountStats> fileaccountlevelstats(final long page_id,Date Stats_date) {
+
+        List<CSVOverAllAccountStats> overAllAccountStatsList;
+        String SELECT = " SELECT * "
+                + " FROM Overall_Account_Statistics_Results"
+                + " WHERE Application_Client_ID="+page_id+" and Stats_Date="+"'"+Stats_date+"'";
+
+        overAllAccountStatsList=getJdbcTemplate().query(SELECT,new OverAllAccountCSVMapper());
+
+        return overAllAccountStatsList;
+    }
+
 
     public void storeaccountlevelstats(final List<AccountStatsLoader> accountStatsLoaderList) {
 

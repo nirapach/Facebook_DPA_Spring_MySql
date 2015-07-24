@@ -3,13 +3,13 @@ package com.gravity4.facebook.dpareports.model;
 import java.util.Date;
 
 /**
- * Created by niranjan on 6/18/15.
+ * Created by niranjan on 7/23/15.
  */
-public class AdGroupStatsLoader {
+public class CSVOverAllAdGroupStats {
 
-    private long Client_ID;
+
+    private long Page_ID;
     private long AdGroup_ID;
-    private String Product_ID;
     private String Age_Range;
     private String Gender;
     private int Reach;
@@ -18,7 +18,6 @@ public class AdGroupStatsLoader {
     private int Total_Actions;
     private int Impressions;
     private int Social_Reach;
-    private double Relevance_Score;
     private int Social_Impressions;
     private int Unique_Impressions;
     private int Unique_Social_Impressions;
@@ -31,16 +30,18 @@ public class AdGroupStatsLoader {
     private Date Activity_Start_Date;
     private Date Activity_End_Date;
     private Date Stats_Date;
+    private double Relevance_Score;
 
-    /*getters and setters
+    /*
+    getters and setters
      */
 
-    public long getClient_ID() {
-        return Client_ID;
+    public long getPage_ID() {
+        return Page_ID;
     }
 
-    public void setClient_ID(long client_ID) {
-        Client_ID = client_ID;
+    public void setPage_ID(long page_ID) {
+        Page_ID = page_ID;
     }
 
     public long getAdGroup_ID() {
@@ -49,14 +50,6 @@ public class AdGroupStatsLoader {
 
     public void setAdGroup_ID(long adGroup_ID) {
         AdGroup_ID = adGroup_ID;
-    }
-
-    public String getProduct_ID() {
-        return Product_ID;
-    }
-
-    public void setProduct_ID(String product_ID) {
-        Product_ID = product_ID;
     }
 
     public String getAge_Range() {
@@ -121,14 +114,6 @@ public class AdGroupStatsLoader {
 
     public void setSocial_Reach(int social_Reach) {
         Social_Reach = social_Reach;
-    }
-
-    public double getRelevance_Score() {
-        return Relevance_Score;
-    }
-
-    public void setRelevance_Score(double relevance_Score) {
-        Relevance_Score = relevance_Score;
     }
 
     public int getSocial_Impressions() {
@@ -227,12 +212,19 @@ public class AdGroupStatsLoader {
         Stats_Date = stats_Date;
     }
 
+    public double getRelevance_Score() {
+        return Relevance_Score;
+    }
+
+    public void setRelevance_Score(double relevance_Score) {
+        Relevance_Score = relevance_Score;
+    }
+
     @Override
     public String toString() {
-        return "AdGroupStatsLoader{" +
-                "Client_ID=" + Client_ID +
-                ", AdGroup_ID=" + AdGroup_ID +
-                ", Product_ID='" + Product_ID + '\'' +
+        return "CSVOverAllAdGroupStats{" +
+                "Page_ID=" + Page_ID +
+                ", Campaign_ID=" + AdGroup_ID +
                 ", Age_Range='" + Age_Range + '\'' +
                 ", Gender='" + Gender + '\'' +
                 ", Reach=" + Reach +
@@ -241,7 +233,6 @@ public class AdGroupStatsLoader {
                 ", Total_Actions=" + Total_Actions +
                 ", Impressions=" + Impressions +
                 ", Social_Reach=" + Social_Reach +
-                ", Relevance_Score=" + Relevance_Score +
                 ", Social_Impressions=" + Social_Impressions +
                 ", Unique_Impressions=" + Unique_Impressions +
                 ", Unique_Social_Impressions=" + Unique_Social_Impressions +
@@ -254,6 +245,7 @@ public class AdGroupStatsLoader {
                 ", Activity_Start_Date=" + Activity_Start_Date +
                 ", Activity_End_Date=" + Activity_End_Date +
                 ", Stats_Date=" + Stats_Date +
+                ", Relevance_Score=" + Relevance_Score +
                 '}';
     }
 }
