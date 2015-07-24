@@ -1,18 +1,21 @@
 package com.gravity4.facebook.dpareports.CSVFileWriter;
 
+
 import com.gravity4.facebook.dpareports.model.CSVOverAllAdGroupStats;
-import com.gravity4.facebook.dpareports.model.CSVOverAllCampaignStats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.sql.Date;
 
 /**
  * Created by niranjan on 7/23/15.
  */
+@SuppressWarnings("unchecked")
 public class OverAllAdGroupCSVWriter {
     //Delimiter used in CSV file
     private static final String COMMA_DELIMITER = ",";
@@ -20,7 +23,7 @@ public class OverAllAdGroupCSVWriter {
 
     //CSV file header
     private static final String FILE_HEADER = "Stats_Date,Page_ID," +
-            "AdGroup_ID,Age_Range,Gender,Reach, " +
+            "AdGroup_ID,AdGroup_Name,Age_Range,Gender,Reach, " +
             "Frequency,Clicks,Total_Actions,Impressions, " +
             "Social_Reach,Social_Impressions,Unique_Impressions,Unique_Social_Impressions, " +
             "CPM,CPP,Spend,CPC,CTR,Cost_Per_Unique_Click, " +
@@ -31,8 +34,10 @@ public class OverAllAdGroupCSVWriter {
         Logger logger = LoggerFactory.getLogger(OverAllAdGroupCSVWriter.class);
         //boolean stored=false;
 
+        String File_Starting_Name="DPAStats";
+
         //create File object
-        File file = new File("src/main/ReportFiles/"+page_id+"_"+"OverAllAdGroupLevelStats"+Stats_date+".csv");
+        File file = new File("src/main/ReportFiles/"+File_Starting_Name+"_"+page_id+"_"+"OverAllAdGroupLevelStats_"+Stats_date+".csv");
 
         /*
      * To actually create a file specified by a pathname, use
@@ -55,7 +60,7 @@ public class OverAllAdGroupCSVWriter {
         logger.info("Was file " + file.getPath() + " created ? : " + blnCreated);
 
         String filename=file.getAbsolutePath();
-
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
         FileWriter fileWriter = null;
         try {
@@ -69,12 +74,14 @@ public class OverAllAdGroupCSVWriter {
             fileWriter.append(NEW_LINE_SEPARATOR);
 
             for(CSVOverAllAdGroupStats csvOverAllAccountStats:overAllAdGroupStatsList){
-                long stat=csvOverAllAccountStats.getStats_Date().getTime();
-                fileWriter.append(String.valueOf(stat));
+                Date stat=csvOverAllAccountStats.getStats_Date();
+                fileWriter.append(formatter.format(stat));
                 fileWriter.append(COMMA_DELIMITER);
                 fileWriter.append(String.valueOf(csvOverAllAccountStats.getPage_ID()));
                 fileWriter.append(COMMA_DELIMITER);
                 fileWriter.append(String.valueOf(csvOverAllAccountStats.getAdGroup_ID()));
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(csvOverAllAccountStats.getAdGroup_Name());
                 fileWriter.append(COMMA_DELIMITER);
                 fileWriter.append(csvOverAllAccountStats.getAge_Range());
                 fileWriter.append(COMMA_DELIMITER);
@@ -110,15 +117,14 @@ public class OverAllAdGroupCSVWriter {
                 fileWriter.append(COMMA_DELIMITER);
                 fileWriter.append(String.valueOf(csvOverAllAccountStats.getCost_Per_Unique_Click()));
                 fileWriter.append(COMMA_DELIMITER);
-                long start=csvOverAllAccountStats.getActivity_Start_Date().getTime();
+                Date start=csvOverAllAccountStats.getActivity_Start_Date();
+                Date end=csvOverAllAccountStats.getActivity_End_Date();
+                fileWriter.append(formatter.format(start));
                 fileWriter.append(COMMA_DELIMITER);
-                long end=csvOverAllAccountStats.getActivity_End_Date().getTime();
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(start));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(end));
+                fileWriter.append(formatter.format(end));
                 fileWriter.append(COMMA_DELIMITER);
                 fileWriter.append(String.valueOf(csvOverAllAccountStats.getRelevance_Score()));
+
                 fileWriter.append(NEW_LINE_SEPARATOR);
 
             }

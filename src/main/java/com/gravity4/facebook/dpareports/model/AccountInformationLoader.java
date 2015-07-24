@@ -8,6 +8,15 @@ public class AccountInformationLoader {
     private long Ad_Account_ID;
     private long Application_Client_ID;
     private String Access_Token;
+    private String Business_Name;
+
+    public String getBusiness_Name() {
+        return Business_Name;
+    }
+
+    public void setBusiness_Name(String business_Name) {
+        Business_Name = business_Name;
+    }
 
     public long getAd_Account_ID() {
         return Ad_Account_ID;
@@ -39,6 +48,7 @@ public class AccountInformationLoader {
                 "Ad_Account_ID=" + Ad_Account_ID +
                 ", Application_Client_ID=" + Application_Client_ID +
                 ", Access_Token='" + Access_Token + '\'' +
+                ", Business_Name='" + Business_Name + '\'' +
                 '}';
     }
 }

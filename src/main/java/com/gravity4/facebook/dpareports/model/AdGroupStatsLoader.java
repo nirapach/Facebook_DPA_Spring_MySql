@@ -31,6 +31,7 @@ public class AdGroupStatsLoader {
     private Date Activity_Start_Date;
     private Date Activity_End_Date;
     private Date Stats_Date;
+    private String AdGroup_Name;
 
     /*getters and setters
      */
@@ -227,6 +228,14 @@ public class AdGroupStatsLoader {
         Stats_Date = stats_Date;
     }
 
+    public String getAdGroup_Name() {
+        return AdGroup_Name;
+    }
+
+    public void setAdGroup_Name(String adGroup_Name) {
+        AdGroup_Name = adGroup_Name;
+    }
+
     @Override
     public String toString() {
         return "AdGroupStatsLoader{" +
@@ -254,6 +263,7 @@ public class AdGroupStatsLoader {
                 ", Activity_Start_Date=" + Activity_Start_Date +
                 ", Activity_End_Date=" + Activity_End_Date +
                 ", Stats_Date=" + Stats_Date +
+                ", AdGroup_Name='" + AdGroup_Name + '\'' +
                 '}';
     }
 }

@@ -39,6 +39,7 @@ import java.util.List;
 
 
 @Service
+@SuppressWarnings("unchecked")
 public class ProductLevelAdGroupStats {
 
     Logger logger = LoggerFactory.getLogger(ProductLevelAdGroupStats.class);
@@ -61,7 +62,7 @@ public class ProductLevelAdGroupStats {
         String store_file_name = null;
         String Account_ID = Long.toString(Account_ID_Integer);
         String date_preset = "yesterday";
-        String data_columns = "['adgroup_id','spend','product_id','total_actions','relevance_score'," +
+        String data_columns = "['adgroup_name','spend','product_id','total_actions','relevance_score'," +
                 "'reach','clicks','impressions','frequency','social_reach','social_impressions'," +
                 "'cpm','unique_impressions','unique_social_impressions','cpp','ctr','cpc','cost_per_unique_click']";
 
@@ -146,10 +147,11 @@ public class ProductLevelAdGroupStats {
 
                     adGroupStatsLoader.setClient_ID(Client_ID);
                     adGroupStatsLoader.setAdGroup_ID(Long.parseLong(resultData.adgroup_id.trim()));
+                    adGroupStatsLoader.setAdGroup_Name(resultData.adgroup_name);
                     adGroupStatsLoader.setActivity_Start_Date(Activity_Start_Date);
                     adGroupStatsLoader.setActivity_End_Date(Activity_End_Date);
                     adGroupStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-                    adGroupStatsLoader.setProduct_ID(resultData.product_id.trim());
+                    adGroupStatsLoader.setProduct_ID(resultData.product_id);
                     adGroupStatsLoader.setReach(resultData.reach);
                     adGroupStatsLoader.setFrequency(resultData.frequency);
                     adGroupStatsLoader.setImpressions(resultData.impressions);

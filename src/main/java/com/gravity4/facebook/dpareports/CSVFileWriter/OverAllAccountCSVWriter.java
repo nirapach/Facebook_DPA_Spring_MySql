@@ -6,14 +6,14 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 /**
  * Created by niranjan on 7/23/15.
  */
+
+@SuppressWarnings("unchecked")
 public class OverAllAccountCSVWriter {
 
 
@@ -23,7 +23,7 @@ public class OverAllAccountCSVWriter {
 
     //CSV file header
     private static final String FILE_HEADER = "Stats_Date,Page_ID," +
-            "Account_ID,Age_Range,Gender,Reach, " +
+            "Account_ID,Account_Name,Age_Range,Gender,Reach, " +
             "Frequency,Clicks,Total_Actions,Impressions, " +
             "Social_Reach,Social_Impressions,Unique_Impressions,Unique_Social_Impressions, " +
             "CPM,CPP,Spend,CPC,CTR,Cost_Per_Unique_Click, " +
@@ -32,10 +32,10 @@ public class OverAllAccountCSVWriter {
     public static String writecsvfile(List<CSVOverAllAccountStats> overAllAccountStatsList,long page_id, java.sql.Date Stats_date) throws IOException {
 
         Logger logger = LoggerFactory.getLogger(OverAllAccountCSVWriter.class);
-        //boolean stored=false;
 
+        String File_Starting_Name="DPAStats";
         //create File object
-        File file = new File("src/main/ReportFiles/"+page_id+"_"+"OverAllAccountLevelStats"+Stats_date+".csv");
+        File file = new File("src/main/ReportFiles/"+File_Starting_Name+"_"+page_id+"_"+"OverAllAccountLevelStats_"+Stats_date+".csv");
 
         /*
      * To actually create a file specified by a pathname, use
@@ -59,6 +59,7 @@ public class OverAllAccountCSVWriter {
 
         String filename=file.getAbsolutePath();
 
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
         FileWriter fileWriter = null;
         try {
@@ -72,12 +73,15 @@ public class OverAllAccountCSVWriter {
             fileWriter.append(NEW_LINE_SEPARATOR);
 
             for(CSVOverAllAccountStats csvOverAllAccountStats:overAllAccountStatsList){
-                long stat=csvOverAllAccountStats.getStats_Date().getTime();
-                fileWriter.append(String.valueOf(stat));
+
+                Date stat=csvOverAllAccountStats.getStats_Date();
+                fileWriter.append(formatter.format(stat));
                 fileWriter.append(COMMA_DELIMITER);
                 fileWriter.append(String.valueOf(csvOverAllAccountStats.getPage_ID()));
                 fileWriter.append(COMMA_DELIMITER);
                 fileWriter.append(String.valueOf(csvOverAllAccountStats.getAccount_ID()));
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(csvOverAllAccountStats.getAccount_Name());
                 fileWriter.append(COMMA_DELIMITER);
                 fileWriter.append(csvOverAllAccountStats.getAge_Range());
                 fileWriter.append(COMMA_DELIMITER);
@@ -113,13 +117,11 @@ public class OverAllAccountCSVWriter {
                 fileWriter.append(COMMA_DELIMITER);
                 fileWriter.append(String.valueOf(csvOverAllAccountStats.getCost_Per_Unique_Click()));
                 fileWriter.append(COMMA_DELIMITER);
-                long start=csvOverAllAccountStats.getActivity_Start_Date().getTime();
+                Date start=csvOverAllAccountStats.getActivity_Start_Date();
+                Date end=csvOverAllAccountStats.getActivity_End_Date();
+                fileWriter.append(formatter.format(start));
                 fileWriter.append(COMMA_DELIMITER);
-                long end=csvOverAllAccountStats.getActivity_End_Date().getTime();
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(start));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(end));
+                fileWriter.append(formatter.format(end));
                 fileWriter.append(NEW_LINE_SEPARATOR);
 
             }

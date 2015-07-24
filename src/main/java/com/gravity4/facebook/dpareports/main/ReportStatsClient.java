@@ -5,8 +5,6 @@ package com.gravity4.facebook.dpareports.main;
  */
 
 import com.gravity4.facebook.dpareports.views.StatsInformationCaller;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
@@ -16,6 +14,7 @@ import java.io.IOException;
 
 
 @Component
+@SuppressWarnings("unchecked")
 public class ReportStatsClient {
 
 

@@ -39,6 +39,7 @@ import java.util.List;
 
 
 @Service
+@SuppressWarnings("unchecked")
 public class ProductLevelCampaignStats {
 
     private ProductLevelCampaignStats(){}
@@ -61,7 +62,7 @@ public class ProductLevelCampaignStats {
         String store_file_name = null;
         String Account_ID = Long.toString(Account_ID_Integer);
         String date_preset = "yesterday";
-        String data_columns = "['campaign_group_id','spend','product_id','total_actions'," +
+        String data_columns = "['campaign_group_name','spend','product_id','total_actions'," +
                 "'reach','clicks','impressions','frequency','social_reach','social_impressions'," +
                 "'cpm','unique_impressions','unique_social_impressions','cpp','ctr','cpc','cost_per_unique_click']";
 
@@ -142,14 +143,13 @@ public class ProductLevelCampaignStats {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-
-
                     campaignStatsLoader.setClient_ID(Client_ID);
                     campaignStatsLoader.setCampaign_ID(Long.parseLong(resultData.campaign_group_id.trim()));
+                    campaignStatsLoader.setCampaign_Name(resultData.campaign_group_name);
                     campaignStatsLoader.setActivity_Start_Date(Activity_Start_Date);
                     campaignStatsLoader.setActivity_End_Date(Activity_End_Date);
                     campaignStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);
-                    campaignStatsLoader.setProduct_ID(resultData.campaign_group_id.trim());
+                    campaignStatsLoader.setProduct_ID(resultData.product_id);
                     campaignStatsLoader.setReach(resultData.reach);
                     campaignStatsLoader.setFrequency(resultData.frequency);
                     campaignStatsLoader.setImpressions(resultData.impressions);
@@ -172,6 +172,7 @@ public class ProductLevelCampaignStats {
                     campaignStatsLoaderList.add(campaignStatsLoader);
 
                 }
+                //calling method to store the data into DB
                 productLevelCampaignStatsDAO.storecampaignlevelstats(campaignStatsLoaderList);
 
 

@@ -1,6 +1,6 @@
 package com.gravity4.facebook.dpareports.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Created by niranjan on 7/23/15.
@@ -9,6 +9,7 @@ public class CSVOverAllAccountStats {
 
     private long Page_ID;
     private long Account_ID;
+    private String Account_Name;
     private String Age_Range;
     private String Gender;
     private int Reach;
@@ -35,6 +36,14 @@ public class CSVOverAllAccountStats {
     /*
     getters and setters
      */
+
+    public String getAccount_Name() {
+        return Account_Name;
+    }
+
+    public void setAccount_Name(String account_Name) {
+        Account_Name = account_Name;
+    }
 
     public long getPage_ID() {
         return Page_ID;
@@ -218,6 +227,7 @@ public class CSVOverAllAccountStats {
         return "CSVOverAllAccountStats{" +
                 "Page_ID=" + Page_ID +
                 ", Account_ID=" + Account_ID +
+                ", Account_Name='" + Account_Name + '\'' +
                 ", Age_Range='" + Age_Range + '\'' +
                 ", Gender='" + Gender + '\'' +
                 ", Reach=" + Reach +

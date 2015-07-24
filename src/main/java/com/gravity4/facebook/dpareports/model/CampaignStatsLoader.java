@@ -9,6 +9,7 @@ public class CampaignStatsLoader {
 
     private long Client_ID;
     private long Campaign_ID;
+    private String Campaign_Name;
     private String Product_ID;
     private String Age_Range;
     private String Gender;
@@ -36,6 +37,14 @@ public class CampaignStatsLoader {
     /*
     getters and setters
      */
+
+    public String getCampaign_Name() {
+        return Campaign_Name;
+    }
+
+    public void setCampaign_Name(String campaign_Name) {
+        Campaign_Name = campaign_Name;
+    }
 
     public long getClient_ID() {
         return Client_ID;
@@ -226,6 +235,7 @@ public class CampaignStatsLoader {
         return "CampaignStatsLoader{" +
                 "Client_ID=" + Client_ID +
                 ", Campaign_ID=" + Campaign_ID +
+                ", Campaign_Name='" + Campaign_Name + '\'' +
                 ", Product_ID='" + Product_ID + '\'' +
                 ", Age_Range='" + Age_Range + '\'' +
                 ", Gender='" + Gender + '\'' +
