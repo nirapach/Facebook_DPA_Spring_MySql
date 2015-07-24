@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 /**
  * Created by niranjan on 6/24/15.
  */
+@SuppressWarnings("unchecked")
 public class StatisticsDate {
 
     public static Date getYesterday() {

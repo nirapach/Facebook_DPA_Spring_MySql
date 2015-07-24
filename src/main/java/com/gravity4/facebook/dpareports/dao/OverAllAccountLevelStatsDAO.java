@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 
 @Component
+@SuppressWarnings("unchecked")
 public class OverAllAccountLevelStatsDAO extends BaseDAO {
 
     public List<CSVOverAllAccountStats> fileaccountlevelstats(final long page_id,Date Stats_date) {

@@ -39,6 +39,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@SuppressWarnings("unchecked")
 public class ProductLevelAccountStats {
 
     Logger logger = LoggerFactory.getLogger(ProductLevelAccountStats.class);

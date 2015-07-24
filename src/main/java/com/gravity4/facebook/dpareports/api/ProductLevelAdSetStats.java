@@ -39,6 +39,7 @@ import java.util.List;
 
 
 @Service
+@SuppressWarnings("unchecked")
 public class ProductLevelAdSetStats {
 
     Logger logger = LoggerFactory.getLogger(ProductLevelAdSetStats.class);

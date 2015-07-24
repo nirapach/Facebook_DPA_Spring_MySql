@@ -8,11 +8,8 @@ import com.gravity4.facebook.dpareports.mapper.ProductLevelAdGroupCSVMapper;
 import com.gravity4.facebook.dpareports.model.AdGroupStatsLoader;
 import com.gravity4.facebook.dpareports.model.CSVProductLevelAdGroupStats;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
 
-import java.beans.PropertyVetoException;
-import java.io.IOException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -20,6 +17,7 @@ import java.util.List;
 
 
 @Component
+@SuppressWarnings("unchecked")
 public class ProductLevelAdGroupStatsDAO extends BaseDAO {
 
     public List<CSVProductLevelAdGroupStats> fileproductleveladgroupstats(final long page_id,Date Stats_date) {

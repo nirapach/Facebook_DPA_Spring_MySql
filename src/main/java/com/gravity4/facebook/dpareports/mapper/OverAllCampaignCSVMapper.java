@@ -1,6 +1,6 @@
 package com.gravity4.facebook.dpareports.mapper;
 
-import com.gravity4.facebook.dpareports.model.CSVOverAllAdSetStats;
+
 import com.gravity4.facebook.dpareports.model.CSVOverAllCampaignStats;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -10,6 +10,7 @@ import java.sql.SQLException;
 /**
  * Created by niranjan on 7/23/15.
  */
+@SuppressWarnings("unchecked")
 public class OverAllCampaignCSVMapper implements RowMapper<CSVOverAllCampaignStats> {
 
 

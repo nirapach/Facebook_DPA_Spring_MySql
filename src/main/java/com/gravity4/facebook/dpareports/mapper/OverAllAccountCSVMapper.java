@@ -9,6 +9,7 @@ import java.sql.SQLException;
 /**
  * Created by niranjan on 7/23/15.
  */
+@SuppressWarnings("unchecked")
 public class OverAllAccountCSVMapper implements RowMapper<CSVOverAllAccountStats> {
 
 

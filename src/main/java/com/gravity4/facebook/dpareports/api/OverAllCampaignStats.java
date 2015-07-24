@@ -5,10 +5,8 @@ package com.gravity4.facebook.dpareports.api;
  */
 
 import com.google.gson.Gson;
-import com.gravity4.facebook.dpareports.CSVFileWriter.OverAllAdSetCSVWriter;
 import com.gravity4.facebook.dpareports.CSVFileWriter.OverAllCampaignCSVWriter;
 import com.gravity4.facebook.dpareports.dao.OverAllCampaignLevelStatsDAO;
-import com.gravity4.facebook.dpareports.model.CSVOverAllAdSetStats;
 import com.gravity4.facebook.dpareports.model.CSVOverAllCampaignStats;
 import com.gravity4.facebook.dpareports.model.CampaignStatsLoader;
 import com.gravity4.facebook.dpareports.responseparser.responsedata.OverAllCampaignStatsJSONResponse;
@@ -41,6 +39,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@SuppressWarnings("unchecked")
 public class OverAllCampaignStats {
 
     Logger logger = LoggerFactory.getLogger(OverAllCampaignStats.class);

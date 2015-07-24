@@ -5,7 +5,7 @@ USE dpa-reports;
 CREATE TABLE `Account_Information_Master` (
   `Application_Client_ID` bigint(20) NOT NULL DEFAULT '0',
   `Business_Manager_Ad_Account_ID` bigint(20) DEFAULT NULL,
-  `Business_Manager_Account_Username` varchar(45) DEFAULT NULL,
+  `Business_Client_Name` varchar(45) DEFAULT NULL,
   `Application_Long_Lived_Access_Token` longtext,
   PRIMARY KEY (`Application_Client_ID`)
 );

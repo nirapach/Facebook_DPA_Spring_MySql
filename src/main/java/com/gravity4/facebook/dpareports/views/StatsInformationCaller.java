@@ -21,6 +21,7 @@ import java.util.List;
 
 
 @Service
+@SuppressWarnings("unchecked")
 public class StatsInformationCaller {
 
     @Autowired
@@ -29,9 +30,6 @@ public class StatsInformationCaller {
     get the account information for all clients
      */
     public void getAccountInformation() throws IOException, PropertyVetoException {
-
-
-
 
         List<AccountInformationLoader> accountInformationLoaderList;
 
@@ -87,6 +85,7 @@ public class StatsInformationCaller {
         long Ad_Account_ID_Integer = accountInformationLoader.getAd_Account_ID();
         long Client_ID_Integer = accountInformationLoader.getApplication_Client_ID();
         String Access_Token = accountInformationLoader.getAccess_Token();
+        String Client_Name=accountInformationLoader.getBusiness_Name();
 
         /*
         Calling the method to get Account Level Statistics
@@ -96,7 +95,7 @@ public class StatsInformationCaller {
         if (accountstats!=null) {
             logger.info("Sending Email Notification for accountstats");
             successEmail.sendemail("Account Statistics at Product Level Succesfully stored for Client Page:",
-                    "Account Statistics at Product Level Succesfully stored for Client Page:", client_id,accountstats);
+                    "Account Statistics at Product Level Succesfully stored for Client Page:", client_id,accountstats,Client_Name);
         }
 
         /*
@@ -107,7 +106,7 @@ public class StatsInformationCaller {
         //right now just the sample code is given,need to finalize on the email list and the subject header
         if (overallaccountstats!=null) {
             successEmail.sendemail("Account Statistics Overall Succesfully stored for Client Page:",
-                    "Account Statistics Overall Succesfully stored for Client Page:", client_id,overallaccountstats);
+                    "Account Statistics Overall Succesfully stored for Client Page:", client_id,overallaccountstats,Client_Name);
         }
 
         /*
@@ -117,8 +116,8 @@ public class StatsInformationCaller {
 
         if (campaignstats!=null) {
 
-            successEmail.sendemail("Campaign Statistics at Product Level Succesfully stored for Client Page:",
-                    "Campaign Statistics at Product Level Succesfully stored for Client Page:", client_id,campaignstats);
+            successEmail.sendemail("Campaign Statistics at Product Level Succesfully stored for Client:",
+                    "Campaign Statistics at Product Level Succesfully stored for Client:", client_id,campaignstats,Client_Name);
         }
 
          /*
@@ -127,8 +126,8 @@ public class StatsInformationCaller {
         String overallcampaignstats = overAllCampaignStats.getOverAllCampaignstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
 
         if (overallcampaignstats!=null) {
-            successEmail.sendemail("Campaign Statistics Overall Succesfully stored for Client Page:",
-                    "Campaign Statistics Overall Succesfully stored for Client Page:", client_id,overallcampaignstats);
+            successEmail.sendemail("Campaign Statistics Overall Succesfully stored for Client:",
+                    "Campaign Statistics Overall Succesfully stored for Client:", client_id,overallcampaignstats,Client_Name);
         }
 
 
@@ -138,8 +137,8 @@ public class StatsInformationCaller {
         String adsetstats = productLevelAdSetStats.getAdsetstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
 
         if (adsetstats!=null) {
-            successEmail.sendemail("Adset Statistics at Product Level Succesfully stored for Client Page:",
-                    "Adset Statistics at Product Level Succesfully stored for Client Page:", client_id,adsetstats);
+            successEmail.sendemail("Adset Statistics at Product Level Succesfully stored for Client:",
+                    "Adset Statistics at Product Level Succesfully stored for Client:", client_id,adsetstats,Client_Name);
         }
         /*
         Calling the method to get OverAllAdSet Level Statistics
@@ -148,8 +147,8 @@ public class StatsInformationCaller {
 
         if (overalladsetstats!=null) {
 
-            successEmail.sendemail("Adset Statistics overall Succesfully stored for Client Page:",
-                    "Adset Statistics overall Succesfully stored for Client Page:", client_id,overalladsetstats);
+            successEmail.sendemail("Adset Statistics overall Succesfully stored for Client:",
+                    "Adset Statistics overall Succesfully stored for Client:", client_id,overalladsetstats,Client_Name);
         }
          /*
         Calling the method to get AdGroup Level Statistics
@@ -158,8 +157,8 @@ public class StatsInformationCaller {
 
         if (adgroupstats!=null) {
 
-            successEmail.sendemail("AdGroup Statistics at Product Level Succesfully stored for Client Page:",
-                    "AdGroup Statistics at Product Level Succesfully stored for Client Page:", client_id,adgroupstats);
+            successEmail.sendemail("AdGroup Statistics at Product Level Succesfully stored for Client:",
+                    "AdGroup Statistics at Product Level Succesfully stored for Client:", client_id,adgroupstats,Client_Name);
         }
 
         /*
@@ -169,8 +168,8 @@ public class StatsInformationCaller {
 
         if (overalladgroupstats!=null) {
 
-            successEmail.sendemail("AdGroup Statistics Overall Succesfully stored for Client Page:",
-                    "AdGroup Statistics Overall Succesfully stored for Client Page:", client_id,overalladgroupstats);
+            successEmail.sendemail("AdGroup Statistics Overall Succesfully stored for Client:",
+                    "AdGroup Statistics Overall Succesfully stored for Client:", client_id,overalladgroupstats,Client_Name);
         }
 
 

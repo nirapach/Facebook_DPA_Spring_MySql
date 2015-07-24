@@ -6,9 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 /**
@@ -34,10 +32,10 @@ public class OverAllAccountCSVWriter {
     public static String writecsvfile(List<CSVOverAllAccountStats> overAllAccountStatsList,long page_id, java.sql.Date Stats_date) throws IOException {
 
         Logger logger = LoggerFactory.getLogger(OverAllAccountCSVWriter.class);
-        //boolean stored=false;
 
+        String File_Starting_Name="DPAStats";
         //create File object
-        File file = new File("src/main/ReportFiles/"+page_id+"_"+"OverAllAccountLevelStats_"+Stats_date+".csv");
+        File file = new File("src/main/ReportFiles/"+File_Starting_Name+"_"+page_id+"_"+"OverAllAccountLevelStats_"+Stats_date+".csv");
 
         /*
      * To actually create a file specified by a pathname, use
@@ -75,6 +73,7 @@ public class OverAllAccountCSVWriter {
             fileWriter.append(NEW_LINE_SEPARATOR);
 
             for(CSVOverAllAccountStats csvOverAllAccountStats:overAllAccountStatsList){
+
                 Date stat=csvOverAllAccountStats.getStats_Date();
                 fileWriter.append(formatter.format(stat));
                 fileWriter.append(COMMA_DELIMITER);

@@ -6,15 +6,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+
 
 /**
  * Created by niranjan on 6/30/15.
  */
 @Service
+@SuppressWarnings("unchecked")
 public class SuccessEmail {
 
     @Value("${smtp.receivermailaddress}")
@@ -35,7 +34,7 @@ public class SuccessEmail {
     private SuccessEmail() {
     }
 
-    public void sendemail(String subject, String message, Long Client_ID,String filename) throws IOException {
+    public void sendemail(String subject, String message, Long Client_ID,String filename,String Client_Name) throws IOException {
 
         Logger logger = LoggerFactory.getLogger(SuccessEmail.class);
 
@@ -48,7 +47,7 @@ public class SuccessEmail {
         attachment.setPath(filename);
         attachment.setDisposition(EmailAttachment.ATTACHMENT);
         attachment.setDescription("DPA Campaign Reports");
-        attachment.setName("Yesterday's_Report_"+att_name);
+        attachment.setName(Client_Name+"_"+att_name);
 
         MultiPartEmail email = new MultiPartEmail();
 
@@ -62,13 +61,13 @@ public class SuccessEmail {
                 email.setAuthentication(sendermailaddress, sendermailpassword);
                 email.setStartTLSEnabled(true);
                 email.setFrom(sendermailaddress, sendermailname);
-                email.setSubject(subject + Client_ID);
-                email.setMsg(message + Client_ID);
+                email.setSubject(subject + Client_Name + "_" + Client_ID);
+                email.setMsg(message + Client_Name+"_"+Client_ID);
                 email.addTo(receiveremailaddress);
                 // add the attachment
                 email.attach(attachment);
                 email.send();
-                logger.info("Email Notification Sent Successfully for Application's business page:" + Client_ID);
+                logger.info("Email Notification Sent Successfully for Application's business page:" + Client_ID+"_"+Client_Name);
 
 
             } catch (EmailException ee) {

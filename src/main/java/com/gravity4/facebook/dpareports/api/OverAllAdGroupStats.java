@@ -40,6 +40,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@SuppressWarnings("unchecked")
 public class OverAllAdGroupStats {
 
     Logger logger = LoggerFactory.getLogger(OverAllAdGroupStats.class);

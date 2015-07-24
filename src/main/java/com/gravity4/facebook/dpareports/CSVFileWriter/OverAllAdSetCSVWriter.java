@@ -1,6 +1,6 @@
 package com.gravity4.facebook.dpareports.CSVFileWriter;
 
-import com.gravity4.facebook.dpareports.model.CSVOverAllAccountStats;
+
 import com.gravity4.facebook.dpareports.model.CSVOverAllAdSetStats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +32,12 @@ public class OverAllAdSetCSVWriter {
     public static String writecsvfile(List<CSVOverAllAdSetStats> overAllAdSetStatsList,long page_id, java.sql.Date Stats_date) throws IOException {
 
         Logger logger = LoggerFactory.getLogger(OverAllAdSetCSVWriter.class);
-        //boolean stored=false;
+
+        String File_Starting_Name="DPAStats";
+
 
         //create File object
-        File file = new File("src/main/ReportFiles/"+page_id+"_"+"OverAllAdSetLevelStats_"+Stats_date+".csv");
+        File file = new File("src/main/ReportFiles/"+ File_Starting_Name+"_"+page_id+"_"+"OverAllAdSetLevelStats_"+Stats_date+".csv");
 
         /*
      * To actually create a file specified by a pathname, use

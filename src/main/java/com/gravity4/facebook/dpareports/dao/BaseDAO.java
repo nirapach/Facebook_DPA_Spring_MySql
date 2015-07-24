@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 /**
  * Created by amihalchenko on 07.07.15
  */
+@SuppressWarnings("unchecked")
 public class BaseDAO {
 
     private DataSource dataSource;

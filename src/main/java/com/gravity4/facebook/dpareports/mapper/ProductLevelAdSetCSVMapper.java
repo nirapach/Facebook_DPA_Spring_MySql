@@ -1,6 +1,5 @@
 package com.gravity4.facebook.dpareports.mapper;
 
-import com.gravity4.facebook.dpareports.model.CSVProductLevelAccountStats;
 import com.gravity4.facebook.dpareports.model.CSVProductLevelAdSetStats;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -10,6 +9,7 @@ import java.sql.SQLException;
 /**
  * Created by niranjan on 7/23/15.
  */
+@SuppressWarnings("unchecked")
 public class ProductLevelAdSetCSVMapper implements RowMapper<CSVProductLevelAdSetStats> {
 
 
