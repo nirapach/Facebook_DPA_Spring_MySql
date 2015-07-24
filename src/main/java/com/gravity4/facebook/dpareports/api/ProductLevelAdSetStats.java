@@ -5,8 +5,10 @@ package com.gravity4.facebook.dpareports.api;
  */
 
 import com.google.gson.Gson;
+import com.gravity4.facebook.dpareports.CSVFileWriter.ProductLevelAdSetCSVWriter;
 import com.gravity4.facebook.dpareports.dao.ProductLevelAdSetStatsDAO;
 import com.gravity4.facebook.dpareports.model.AdSetStatsLoader;
+import com.gravity4.facebook.dpareports.model.CSVProductLevelAdSetStats;
 import com.gravity4.facebook.dpareports.responseparser.responsedata.ProductLevelAdSetStatsJSONResponse;
 import com.gravity4.facebook.dpareports.responseparser.resultdata.ProductLevelAdSetResultData;
 import com.gravity4.facebook.dpareports.utils.OAuthExpirationTokenChecker;
@@ -50,11 +52,11 @@ public class ProductLevelAdSetStats {
     /*
        Makes a Get API call to reportstats API to get the statistics at the AdSet Level
         */
-    public boolean getAdsetstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException {
+    public String getAdsetstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException {
 
         //Fields in the parameters
         long Client_ID = Client_ID_Integer;
-        boolean store = false;
+        String store_file_name = null;
         String Account_ID = Long.toString(Account_ID_Integer);
         String date_preset = "yesterday";
         String data_columns = "['campaign_id','spend','product_id','total_actions'," +
@@ -170,7 +172,16 @@ public class ProductLevelAdSetStats {
                 }
                 productLevelAdSetStatsDAO.storeadsetlevelstats(adSetStatsLoaderList);
 
-                store = true;
+                List<CSVProductLevelAdSetStats> csvProductLevelAdSetStatsList;
+                java.sql.Date emailstatsdate = new java.sql.Date(StatisticsDate.getYesterday().getTime());
+                csvProductLevelAdSetStatsList=productLevelAdSetStatsDAO.fileproductlevelaccountstats(Client_ID, emailstatsdate);
+                //call the CSV file writer
+                String stored= ProductLevelAdSetCSVWriter.writecsvfile(csvProductLevelAdSetStatsList, Client_ID, emailstatsdate);
+
+                if(stored!=null){
+                    store_file_name=stored;
+                }
+
             }
             reader.close();
         } catch (ClientProtocolException e) {
@@ -188,7 +199,7 @@ public class ProductLevelAdSetStats {
         }
 
         httpClient.close();
-        return store;
+        return store_file_name;
 
 
     }

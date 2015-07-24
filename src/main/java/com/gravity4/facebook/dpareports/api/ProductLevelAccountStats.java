@@ -5,8 +5,10 @@ package com.gravity4.facebook.dpareports.api;
  */
 
 import com.google.gson.Gson;
+import com.gravity4.facebook.dpareports.CSVFileWriter.ProductLevelAccountCSVWriter;
 import com.gravity4.facebook.dpareports.dao.ProductLevelAccountStatsDAO;
 import com.gravity4.facebook.dpareports.model.AccountStatsLoader;
+import com.gravity4.facebook.dpareports.model.CSVProductLevelAccountStats;
 import com.gravity4.facebook.dpareports.responseparser.responsedata.ProductLevelAccountStatsJSONResponse;
 import com.gravity4.facebook.dpareports.responseparser.resultdata.ProductLevelAccountsResultData;
 import com.gravity4.facebook.dpareports.utils.OAuthExpirationTokenChecker;
@@ -51,12 +53,12 @@ public class ProductLevelAccountStats {
     /*
        Makes a Get API call to reportstats API to get the statistics at the Ad Account Level
         */
-    public boolean getAccountstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException, HTTPException {
+    public String getAccountstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException, HTTPException {
 
 
         //Fields in the parameters
         long Client_ID = Client_ID_Integer;
-        boolean store = false;
+        String store_file_name = null;
         String Account_ID = Long.toString(Account_ID_Integer);
         String date_preset = "yesterday";
         String data_columns = "['account_id','spend','product_id','total_actions'," +
@@ -188,7 +190,21 @@ public class ProductLevelAccountStats {
                 calling the method to store the data into database
                  */
                 productLevelAccountStatsDAO.storeaccountlevelstats(accountStatsLoaderList);
-                store = true;
+//for storing into file for email
+
+                List<CSVProductLevelAccountStats> csvProductLevelAccountStatsList;
+                java.sql.Date emailstatsdate = new java.sql.Date(StatisticsDate.getYesterday().getTime());
+                csvProductLevelAccountStatsList=productLevelAccountStatsDAO.fileproductlevelaccountstats(Client_ID, emailstatsdate);
+                //call the CSV file writer
+                String stored= ProductLevelAccountCSVWriter.writecsvfile(csvProductLevelAccountStatsList, Client_ID, emailstatsdate);
+
+                if(stored!=null){
+                    store_file_name=stored;
+                }
+
+
+
+
             }
 
             reader.close();
@@ -209,6 +225,6 @@ public class ProductLevelAccountStats {
 
 
         httpClient.close();
-        return store;
+        return store_file_name;
     }
 }

@@ -5,7 +5,11 @@ package com.gravity4.facebook.dpareports.api;
  */
 
 import com.google.gson.Gson;
+import com.gravity4.facebook.dpareports.CSVFileWriter.OverAllAdSetCSVWriter;
+import com.gravity4.facebook.dpareports.CSVFileWriter.OverAllCampaignCSVWriter;
 import com.gravity4.facebook.dpareports.dao.OverAllCampaignLevelStatsDAO;
+import com.gravity4.facebook.dpareports.model.CSVOverAllAdSetStats;
+import com.gravity4.facebook.dpareports.model.CSVOverAllCampaignStats;
 import com.gravity4.facebook.dpareports.model.CampaignStatsLoader;
 import com.gravity4.facebook.dpareports.responseparser.responsedata.OverAllCampaignStatsJSONResponse;
 import com.gravity4.facebook.dpareports.responseparser.resultdata.OverAllCampaignResultData;
@@ -50,11 +54,11 @@ public class OverAllCampaignStats {
     /*
        Makes a Get API call to reportstats API to get the statistics at the Ad Set Level
         */
-    public boolean getOverAllCampaignstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException, HTTPException {
+    public String getOverAllCampaignstats(long Account_ID_Integer, long Client_ID_Integer, String Access_Token) throws URISyntaxException, IOException, PropertyVetoException, SQLException, HTTPException {
 
         //Fields in the parameters
         long Client_ID = Client_ID_Integer;
-        boolean store = false;
+        String store_file_name = null;
         String Account_ID = Long.toString(Account_ID_Integer);
         String date_preset = "yesterday";
         String data_columns = "['campaign_group_id','spend','age','gender','total_actions'," +
@@ -176,7 +180,18 @@ public class OverAllCampaignStats {
 
                 }
                 overAllCampaignLevelStatsDAO.storecamapignlevelstats(campaignStatsLoaderList);
-                store = true;
+
+                //for storing into file for email
+                List<CSVOverAllCampaignStats> csvOverAllCampaignStatsList;
+                java.sql.Date emailstatsdate = new java.sql.Date(StatisticsDate.getYesterday().getTime());
+                csvOverAllCampaignStatsList=overAllCampaignLevelStatsDAO.fileadsetlevelstats(Client_ID, emailstatsdate);
+                //call the CSV file writer
+                String stored= OverAllCampaignCSVWriter.writecsvfile(csvOverAllCampaignStatsList, Client_ID, emailstatsdate);
+
+                if(stored!=null){
+                    store_file_name=stored;
+                }
+
             }
             reader.close();
 
@@ -195,6 +210,6 @@ public class OverAllCampaignStats {
         }
 
         httpClient.close();
-        return store;
+        return store_file_name;
     }
 }

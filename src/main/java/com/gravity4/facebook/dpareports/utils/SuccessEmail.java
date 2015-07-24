@@ -1,8 +1,6 @@
 package com.gravity4.facebook.dpareports.utils;
 
-import org.apache.commons.mail.Email;
-import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.SimpleEmail;
+import org.apache.commons.mail.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,11 +35,20 @@ public class SuccessEmail {
     private SuccessEmail() {
     }
 
-    public void sendemail(String subject, String message, Long Client_ID) throws IOException {
+    public void sendemail(String subject, String message, Long Client_ID,String filename) throws IOException {
 
         Logger logger = LoggerFactory.getLogger(SuccessEmail.class);
 
-        Email email = new SimpleEmail();
+        //Email email = new SimpleEmail();
+
+        EmailAttachment attachment = new EmailAttachment();
+        attachment.setPath(filename);
+        attachment.setDisposition(EmailAttachment.ATTACHMENT);
+        attachment.setDescription("DPA Campaign Reports");
+        attachment.setName(filename);
+
+        MultiPartEmail email = new MultiPartEmail();
+
         if (enabled) {
 
             logger.info("Inside Success Email"+enabled);
@@ -55,6 +62,8 @@ public class SuccessEmail {
                 email.setSubject(subject + Client_ID);
                 email.setMsg(message + Client_ID);
                 email.addTo(receiveremailaddress);
+                // add the attachment
+                email.attach(attachment);
                 email.send();
                 logger.info("Email Notification Sent Successfully for Application's business page:" + Client_ID);
 

@@ -32,4 +32,13 @@ public class AccountInformationLoader {
     public void setAccess_Token(String access_Token) {
         Access_Token = access_Token;
     }
+
+    @Override
+    public String toString() {
+        return "AccountInformationLoader{" +
+                "Ad_Account_ID=" + Ad_Account_ID +
+                ", Application_Client_ID=" + Application_Client_ID +
+                ", Access_Token='" + Access_Token + '\'' +
+                '}';
+    }
 }

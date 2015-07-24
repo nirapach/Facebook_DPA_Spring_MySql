@@ -4,7 +4,9 @@ package com.gravity4.facebook.dpareports.dao;
  * Created by niranjan on 6/23/15.
  */
 
+import com.gravity4.facebook.dpareports.mapper.ProductLevelAdGroupCSVMapper;
 import com.gravity4.facebook.dpareports.model.AdGroupStatsLoader;
+import com.gravity4.facebook.dpareports.model.CSVProductLevelAdGroupStats;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
@@ -19,6 +21,18 @@ import java.util.List;
 
 @Component
 public class ProductLevelAdGroupStatsDAO extends BaseDAO {
+
+    public List<CSVProductLevelAdGroupStats> fileproductleveladgroupstats(final long page_id,Date Stats_date) {
+
+        List<CSVProductLevelAdGroupStats> csvProductLevelAdGroupStatsList;
+        String SELECT = " SELECT * "
+                + " FROM Product_Ad_Statistics_Results"
+                + " WHERE Application_Client_ID="+page_id+" and Stats_Date="+"'"+Stats_date+"'";
+
+        csvProductLevelAdGroupStatsList=getJdbcTemplate().query(SELECT,new ProductLevelAdGroupCSVMapper());
+
+        return csvProductLevelAdGroupStatsList;
+    }
 
 
     public void storeadgrouplevelstats(final List<AdGroupStatsLoader> adGroupStatsLoaderList){
