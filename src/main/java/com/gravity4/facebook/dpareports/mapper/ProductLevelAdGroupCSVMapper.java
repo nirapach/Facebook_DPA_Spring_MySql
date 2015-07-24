@@ -21,7 +21,7 @@ public class ProductLevelAdGroupCSVMapper implements RowMapper<CSVProductLevelAd
         java.util.Date end_date = new java.util.Date(resultSet.getDate("Client_Reports_Ad_Activity_Date_End").getTime());
 
         csvProductLevelAdGroupStats.setPage_ID(resultSet.getLong("Application_Client_ID"));
-        csvProductLevelAdGroupStats.setID(resultSet.getLong("Client_AdSet_ID"));
+        csvProductLevelAdGroupStats.setID(resultSet.getLong("Client_Ad_Group_ID"));
         csvProductLevelAdGroupStats.setProduct_ID(resultSet.getString("Client_Product_ID"));
         csvProductLevelAdGroupStats.setClicks(resultSet.getInt("Client_Reports_Clicks"));
         csvProductLevelAdGroupStats.setReach(resultSet.getInt("Client_Reports_Reach"));

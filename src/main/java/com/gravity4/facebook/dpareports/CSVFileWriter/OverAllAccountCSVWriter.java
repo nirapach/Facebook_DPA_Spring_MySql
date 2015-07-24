@@ -14,6 +14,8 @@ import java.util.List;
 /**
  * Created by niranjan on 7/23/15.
  */
+
+@SuppressWarnings("unchecked")
 public class OverAllAccountCSVWriter {
 
 
@@ -35,7 +37,7 @@ public class OverAllAccountCSVWriter {
         //boolean stored=false;
 
         //create File object
-        File file = new File("src/main/ReportFiles/"+page_id+"_"+"OverAllAccountLevelStats"+Stats_date+".csv");
+        File file = new File("src/main/ReportFiles/"+page_id+"_"+"OverAllAccountLevelStats_"+Stats_date+".csv");
 
         /*
      * To actually create a file specified by a pathname, use

@@ -39,13 +39,16 @@ public class SuccessEmail {
 
         Logger logger = LoggerFactory.getLogger(SuccessEmail.class);
 
+        String att=filename;
+        String[] split=att.split("/ReportFiles/");
+        String att_name=split[1];
         //Email email = new SimpleEmail();
 
         EmailAttachment attachment = new EmailAttachment();
         attachment.setPath(filename);
         attachment.setDisposition(EmailAttachment.ATTACHMENT);
         attachment.setDescription("DPA Campaign Reports");
-        attachment.setName(filename);
+        attachment.setName("Yesterday's_Report_"+att_name);
 
         MultiPartEmail email = new MultiPartEmail();
 

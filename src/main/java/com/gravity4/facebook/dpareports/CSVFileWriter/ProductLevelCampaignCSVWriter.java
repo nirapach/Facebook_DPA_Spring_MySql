@@ -13,6 +13,7 @@ import java.util.List;
 /**
  * Created by niranjan on 7/23/15.
  */
+@SuppressWarnings("unchecked")
 public class ProductLevelCampaignCSVWriter {
 
     //Delimiter used in CSV file
@@ -33,7 +34,7 @@ public class ProductLevelCampaignCSVWriter {
         //boolean stored=false;
 
         //create File object
-        File file = new File("src/main/ReportFiles/"+page_id+"_"+"ProductLevelCampaignStats"+Stats_date+".csv");
+        File file = new File("src/main/ReportFiles/"+page_id+"_"+"ProductLevelCampaignStats_"+Stats_date+".csv");
 
         /*
      * To actually create a file specified by a pathname, use
