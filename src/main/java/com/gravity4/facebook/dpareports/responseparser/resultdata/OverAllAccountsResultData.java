@@ -68,4 +68,7 @@ public class OverAllAccountsResultData {
     @SerializedName("cost_per_unique_click")
     public double cost_per_unique_click;
 
+    @SerializedName("account_name")
+    public String account_name;
+
 }

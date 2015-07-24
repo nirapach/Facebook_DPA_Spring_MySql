@@ -31,6 +31,7 @@ public class AccountStatsLoader {
     private Date Activity_Start_Date;
     private Date Activity_End_Date;
     private Date Stats_Date;
+    private String Account_Name;
 
     //getter and setter methods
 
@@ -219,6 +220,14 @@ public class AccountStatsLoader {
         Stats_Date = stats_Date;
     }
 
+    public String getAccount_Name() {
+        return Account_Name;
+    }
+
+    public void setAccount_Name(String account_Name) {
+        Account_Name = account_Name;
+    }
+
     @Override
     public String toString() {
         return "AccountStatsLoader{" +
@@ -245,6 +254,7 @@ public class AccountStatsLoader {
                 ", Activity_Start_Date=" + Activity_Start_Date +
                 ", Activity_End_Date=" + Activity_End_Date +
                 ", Stats_Date=" + Stats_Date +
+                ", Account_Name='" + Account_Name + '\'' +
                 '}';
     }
 }

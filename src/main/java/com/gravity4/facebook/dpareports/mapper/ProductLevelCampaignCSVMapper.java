@@ -16,12 +16,11 @@ public class ProductLevelCampaignCSVMapper implements RowMapper<CSVProductLevelC
     public CSVProductLevelCampaignStats mapRow(ResultSet resultSet, int i) throws SQLException {
 
         CSVProductLevelCampaignStats csvProductLevelCampaignStats=new CSVProductLevelCampaignStats();
-        java.util.Date stats_date = new java.util.Date(resultSet.getDate("Stats_Date").getTime());
-        java.util.Date start_date = new java.util.Date(resultSet.getDate("Client_Reports_Ad_Activity_Date_Start").getTime());
-        java.util.Date end_date = new java.util.Date(resultSet.getDate("Client_Reports_Ad_Activity_Date_End").getTime());
+
 
         csvProductLevelCampaignStats.setPage_ID(resultSet.getLong("Application_Client_ID"));
-        csvProductLevelCampaignStats.setID(resultSet.getLong("Client_AdSet_ID"));
+        csvProductLevelCampaignStats.setID(resultSet.getLong("Client_Campaign_ID"));
+        csvProductLevelCampaignStats.setName(resultSet.getString("Client_Campaign_Name"));
         csvProductLevelCampaignStats.setProduct_ID(resultSet.getString("Client_Product_ID"));
         csvProductLevelCampaignStats.setClicks(resultSet.getInt("Client_Reports_Clicks"));
         csvProductLevelCampaignStats.setReach(resultSet.getInt("Client_Reports_Reach"));
@@ -37,9 +36,9 @@ public class ProductLevelCampaignCSVMapper implements RowMapper<CSVProductLevelC
         csvProductLevelCampaignStats.setCPP(resultSet.getDouble("Client_Reports_CPP"));
         csvProductLevelCampaignStats.setCTR(resultSet.getDouble("Client_Reports_CTR"));
         csvProductLevelCampaignStats.setSpend(resultSet.getDouble("Client_Reports_Spend"));
-        csvProductLevelCampaignStats.setActivity_End_Date(end_date);
-        csvProductLevelCampaignStats.setActivity_Start_Date(start_date);
-        csvProductLevelCampaignStats.setStats_Date(stats_date);
+        csvProductLevelCampaignStats.setActivity_End_Date(resultSet.getDate("Client_Reports_Ad_Activity_Date_Start"));
+        csvProductLevelCampaignStats.setActivity_Start_Date(resultSet.getDate("Client_Reports_Ad_Activity_Date_End"));
+        csvProductLevelCampaignStats.setStats_Date(resultSet.getDate("Stats_Date"));
 
 
         return csvProductLevelCampaignStats;

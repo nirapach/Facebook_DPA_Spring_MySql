@@ -81,12 +81,6 @@ public class StatsInformationCaller {
         Logger logger = LoggerFactory.getLogger(StatsInformationCaller.class);
         long client_id = accountInformationLoader.getApplication_Client_ID();
 
-
-        /*
-        Creating objects for calling the method to make the API call
-         */
-
-
         /*
         extract the account ID from each accountInformationLoader Object
          */
@@ -103,8 +97,6 @@ public class StatsInformationCaller {
             logger.info("Sending Email Notification for accountstats");
             successEmail.sendemail("Account Statistics at Product Level Succesfully stored for Client Page:",
                     "Account Statistics at Product Level Succesfully stored for Client Page:", client_id,accountstats);
-
-
         }
 
         /*
@@ -121,7 +113,7 @@ public class StatsInformationCaller {
         /*
         Calling the method to get Campaign Level Statistics
          */
-      String campaignstats = productLevelCampaignStats.getCampaignstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
+        String campaignstats = productLevelCampaignStats.getCampaignstats(Ad_Account_ID_Integer,Client_ID_Integer, Access_Token);
 
         if (campaignstats!=null) {
 
@@ -143,7 +135,7 @@ public class StatsInformationCaller {
         /*
         Calling the method to get AdSet Level Statistics
          */
-       String adsetstats = productLevelAdSetStats.getAdsetstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
+        String adsetstats = productLevelAdSetStats.getAdsetstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
 
         if (adsetstats!=null) {
             successEmail.sendemail("Adset Statistics at Product Level Succesfully stored for Client Page:",

@@ -11,7 +11,7 @@ public class AdSetStatsLoader {
     private long AdSet_ID;
     private String Product_ID;
     private String Age_Range;
-
+    private String AdSet_Name;
     private String Gender;
     private int Reach;
     private double Frequency;
@@ -35,6 +35,14 @@ public class AdSetStatsLoader {
     /*
     getters and setters
      */
+
+    public String getAdSet_Name() {
+        return AdSet_Name;
+    }
+
+    public void setAdSet_Name(String adSet_Name) {
+        AdSet_Name = adSet_Name;
+    }
 
     public long getClient_ID() {
         return Client_ID;
@@ -227,6 +235,7 @@ public class AdSetStatsLoader {
                 ", AdSet_ID=" + AdSet_ID +
                 ", Product_ID='" + Product_ID + '\'' +
                 ", Age_Range='" + Age_Range + '\'' +
+                ", AdSet_Name='" + AdSet_Name + '\'' +
                 ", Gender='" + Gender + '\'' +
                 ", Reach=" + Reach +
                 ", Frequency=" + Frequency +

@@ -61,7 +61,7 @@ public class ProductLevelAccountStats {
         String store_file_name = null;
         String Account_ID = Long.toString(Account_ID_Integer);
         String date_preset = "yesterday";
-        String data_columns = "['account_id','spend','product_id','total_actions'," +
+        String data_columns = "['account_name','spend','product_id','total_actions'," +
                 "'reach','clicks','impressions','frequency','social_reach','social_impressions'," +
                 "'cpm','unique_impressions','unique_social_impressions','cpp','ctr','cpc','cost_per_unique_click']";
 
@@ -151,7 +151,8 @@ public class ProductLevelAccountStats {
 
                     accountStatsLoader.setClient_ID(Client_ID);
                     accountStatsLoader.setAccount_ID(Long.parseLong(data.account_id.trim()));
-                    accountStatsLoader.setProduct_ID(data.product_id.trim());
+                    accountStatsLoader.setAccount_Name(data.account_name);
+                    accountStatsLoader.setProduct_ID(data.product_id);
                     accountStatsLoader.setActivity_Start_Date(Activity_Start_Date);
                     accountStatsLoader.setActivity_End_Date(Activity_End_Date);
                     accountStatsLoader.setCost_Per_Unique_Click(data.cost_per_unique_click);

@@ -69,4 +69,7 @@ public class OverAllAdGroupResultData {
 
     @SerializedName("cost_per_unique_click")
     public double cost_per_unique_click;
+
+    @SerializedName("adgroup_name")
+    public String adgroup_name;
 }

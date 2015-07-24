@@ -62,7 +62,7 @@ public class OverAllAdSetStats {
         String store_file_name = null;
         String Account_ID = Long.toString(Account_ID_Integer);
         String date_preset = "yesterday";
-        String data_columns = "['campaign_id','spend','age','gender','total_actions'," +
+        String data_columns = "['campaign_name','spend','age','gender','total_actions'," +
                 "'reach','clicks','impressions','frequency','social_reach','social_impressions'," +
                 "'cpm','unique_impressions','unique_social_impressions','cpp','ctr','cpc','cost_per_unique_click']";
 
@@ -152,6 +152,7 @@ public class OverAllAdSetStats {
 
                     adSetStatsLoader.setClient_ID(Client_ID);
                     adSetStatsLoader.setAdSet_ID(Long.parseLong(resultData.campaign_id.trim()));
+                    adSetStatsLoader.setAdSet_Name(resultData.campaign_name);
                     adSetStatsLoader.setActivity_Start_Date(Activity_Start_Date);
                     adSetStatsLoader.setActivity_End_Date(Activity_End_Date);
                     adSetStatsLoader.setCost_Per_Unique_Click(resultData.cost_per_unique_click);

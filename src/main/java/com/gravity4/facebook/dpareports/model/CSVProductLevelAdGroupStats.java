@@ -1,6 +1,6 @@
 package com.gravity4.facebook.dpareports.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Created by niranjan on 7/23/15.
@@ -28,7 +28,15 @@ public class CSVProductLevelAdGroupStats {
     private Date Activity_End_Date;
     private Date Stats_Date;
     private double Relevance_Score;
+    private String Name;
 
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
 
     public long getID() {
         return ID;
@@ -223,6 +231,7 @@ public class CSVProductLevelAdGroupStats {
                 ", Activity_End_Date=" + Activity_End_Date +
                 ", Stats_Date=" + Stats_Date +
                 ", Relevance_Score=" + Relevance_Score +
+                ", Name='" + Name + '\'' +
                 '}';
     }
 

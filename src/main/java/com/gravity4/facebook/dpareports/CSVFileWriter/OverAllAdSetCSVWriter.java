@@ -8,8 +8,9 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
-
+import java.sql.Date;
 /**
  * Created by niranjan on 7/23/15.
  */
@@ -22,7 +23,7 @@ public class OverAllAdSetCSVWriter {
 
     //CSV file header
     private static final String FILE_HEADER = "Stats_Date,Page_ID," +
-            "AdSet_ID,Age_Range,Gender,Reach, " +
+            "AdSet_ID,AdSet_Name,Age_Range,Gender,Reach, " +
             "Frequency,Clicks,Total_Actions,Impressions, " +
             "Social_Reach,Social_Impressions,Unique_Impressions,Unique_Social_Impressions, " +
             "CPM,CPP,Spend,CPC,CTR,Cost_Per_Unique_Click, " +
@@ -58,7 +59,7 @@ public class OverAllAdSetCSVWriter {
 
         String filename=file.getAbsolutePath();
 
-
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         FileWriter fileWriter = null;
         try {
             fileWriter= new FileWriter(filename);
@@ -71,12 +72,14 @@ public class OverAllAdSetCSVWriter {
             fileWriter.append(NEW_LINE_SEPARATOR);
 
             for(CSVOverAllAdSetStats csvOverAllAccountStats:overAllAdSetStatsList){
-                long stat=csvOverAllAccountStats.getStats_Date().getTime();
-                fileWriter.append(String.valueOf(stat));
+                Date stat=csvOverAllAccountStats.getStats_Date();
+                fileWriter.append(formatter.format(stat));
                 fileWriter.append(COMMA_DELIMITER);
                 fileWriter.append(String.valueOf(csvOverAllAccountStats.getPage_ID()));
                 fileWriter.append(COMMA_DELIMITER);
                 fileWriter.append(String.valueOf(csvOverAllAccountStats.getAdSet_ID()));
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(csvOverAllAccountStats.getAdSet_Name());
                 fileWriter.append(COMMA_DELIMITER);
                 fileWriter.append(csvOverAllAccountStats.getAge_Range());
                 fileWriter.append(COMMA_DELIMITER);
@@ -112,13 +115,12 @@ public class OverAllAdSetCSVWriter {
                 fileWriter.append(COMMA_DELIMITER);
                 fileWriter.append(String.valueOf(csvOverAllAccountStats.getCost_Per_Unique_Click()));
                 fileWriter.append(COMMA_DELIMITER);
-                long start=csvOverAllAccountStats.getActivity_Start_Date().getTime();
+                Date start=csvOverAllAccountStats.getActivity_Start_Date();
+                Date end=csvOverAllAccountStats.getActivity_End_Date();
+                fileWriter.append(formatter.format(start));
                 fileWriter.append(COMMA_DELIMITER);
-                long end=csvOverAllAccountStats.getActivity_End_Date().getTime();
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(start));
-                fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(end));
+                fileWriter.append(formatter.format(end));
+
                 fileWriter.append(NEW_LINE_SEPARATOR);
 
             }

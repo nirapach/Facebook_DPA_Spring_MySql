@@ -16,12 +16,11 @@ public class OverAllAccountCSVMapper implements RowMapper<CSVOverAllAccountStats
     public CSVOverAllAccountStats mapRow(ResultSet resultSet, int i) throws SQLException {
 
         CSVOverAllAccountStats csvOverAllAccountStats=new CSVOverAllAccountStats();
-        java.util.Date stats_date = new java.util.Date(resultSet.getDate("Stats_Date").getTime());
-        java.util.Date start_date = new java.util.Date(resultSet.getDate("Client_Reports_Ad_Activity_Date_Start").getTime());
-        java.util.Date end_date = new java.util.Date(resultSet.getDate("Client_Reports_Ad_Activity_Date_End").getTime());
+
 
         csvOverAllAccountStats.setPage_ID(resultSet.getLong("Application_Client_ID"));
         csvOverAllAccountStats.setAccount_ID(resultSet.getLong("Application_Ad_Account_ID"));
+        csvOverAllAccountStats.setAccount_Name(resultSet.getString("Application_Ad_Account_Name"));
         csvOverAllAccountStats.setAge_Range(resultSet.getString("Client_Reports_Age_Stats_Range"));
         csvOverAllAccountStats.setClicks(resultSet.getInt("Client_Reports_Clicks"));
         csvOverAllAccountStats.setGender(resultSet.getString("Client_Reports_Gender_Stats"));
@@ -39,9 +38,9 @@ public class OverAllAccountCSVMapper implements RowMapper<CSVOverAllAccountStats
         csvOverAllAccountStats.setCTR(resultSet.getDouble("Client_Reports_CTR"));
         csvOverAllAccountStats.setSpend(resultSet.getDouble("Client_Reports_Spend"));
         csvOverAllAccountStats.setCost_Per_Unique_Click(resultSet.getDouble("Client_Cost_Per_Unique_Click"));
-        csvOverAllAccountStats.setActivity_End_Date(end_date);
-        csvOverAllAccountStats.setActivity_Start_Date(start_date);
-        csvOverAllAccountStats.setStats_Date(stats_date);
+        csvOverAllAccountStats.setActivity_End_Date(resultSet.getDate("Client_Reports_Ad_Activity_Date_Start"));
+        csvOverAllAccountStats.setActivity_Start_Date(resultSet.getDate("Client_Reports_Ad_Activity_Date_End"));
+        csvOverAllAccountStats.setStats_Date(resultSet.getDate("Stats_Date"));
 
 
         return csvOverAllAccountStats;

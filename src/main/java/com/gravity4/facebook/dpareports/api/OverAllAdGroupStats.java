@@ -61,7 +61,7 @@ public class OverAllAdGroupStats {
         String store_file_name = null;
         String Account_ID = Long.toString(Account_ID_Integer);
         String date_preset = "yesterday";
-        String data_columns = "['adgroup_id','spend','age','gender','total_actions'," +
+        String data_columns = "['adgroup_name','spend','age','gender','total_actions'," +
                 "'reach','clicks','impressions','frequency','social_reach','social_impressions','relevance_score'," +
                 "'cpm','unique_impressions','unique_social_impressions','cpp','ctr','cpc','cost_per_unique_click']";
 
@@ -153,6 +153,7 @@ public class OverAllAdGroupStats {
 
                     adGroupStatsLoader.setClient_ID(Client_ID);
                     adGroupStatsLoader.setAdGroup_ID(Long.parseLong(resultData.adgroup_id.trim()));
+                    adGroupStatsLoader.setAdGroup_Name(resultData.adgroup_name);
                     adGroupStatsLoader.setActivity_Start_Date(Activity_Start_Date);
                     adGroupStatsLoader.setActivity_End_Date(Activity_End_Date);
                     adGroupStatsLoader.setRelevance_Score(resultData.relevance_score);

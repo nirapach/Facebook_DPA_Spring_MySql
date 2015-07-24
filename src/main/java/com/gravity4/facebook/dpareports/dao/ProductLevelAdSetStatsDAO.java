@@ -38,6 +38,7 @@ public class ProductLevelAdSetStatsDAO extends BaseDAO {
         String query = "INSERT INTO Product_AdSet_Statistics_Results" +
                 "(Application_Client_ID," +
                 "Client_AdSet_ID," +
+                "Client_AdSet_Name," +
                 "Client_Product_ID," +
                 "Client_Reports_Reach," +
                 "Client_Reports_Frequency," +
@@ -57,7 +58,7 @@ public class ProductLevelAdSetStatsDAO extends BaseDAO {
                 "Client_Reports_Ad_Activity_Date_Start," +
                 "Client_Reports_Ad_Activity_Date_End)" +
                 "VALUES" +
-                "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         getJdbcTemplate().batchUpdate(query, new BatchPreparedStatementSetter() {
             @Override
@@ -71,24 +72,25 @@ public class ProductLevelAdSetStatsDAO extends BaseDAO {
 
                 statement.setLong(1, adSetStatsLoader.getClient_ID());
                 statement.setLong(2, adSetStatsLoader.getAdSet_ID());
-                statement.setString(3, adSetStatsLoader.getProduct_ID());
-                statement.setInt(4, adSetStatsLoader.getReach());
-                statement.setDouble(5, adSetStatsLoader.getFrequency());
-                statement.setInt(6, adSetStatsLoader.getImpressions());
-                statement.setInt(7, adSetStatsLoader.getClicks());
-                statement.setInt(8, adSetStatsLoader.getTotal_Actions());
-                statement.setInt(9, adSetStatsLoader.getSocial_Reach());
-                statement.setInt(10, adSetStatsLoader.getSocial_Impressions());
-                statement.setInt(11, adSetStatsLoader.getUnique_Impressions());
-                statement.setInt(12, adSetStatsLoader.getUnique_Social_Impressions());
-                statement.setDouble(13, adSetStatsLoader.getCPM());
-                statement.setDouble(14, adSetStatsLoader.getCPP());
-                statement.setDouble(15, adSetStatsLoader.getCPC());
-                statement.setDouble(16, adSetStatsLoader.getCTR());
-                statement.setDouble(17, adSetStatsLoader.getSpend());
-                statement.setDate(18, statsdate);
-                statement.setDate(19, Activity_Start_Date);
-                statement.setDate(20, Activity_End_Date);
+                statement.setString(3,adSetStatsLoader.getAdSet_Name());
+                statement.setString(4, adSetStatsLoader.getProduct_ID());
+                statement.setInt(5, adSetStatsLoader.getReach());
+                statement.setDouble(6, adSetStatsLoader.getFrequency());
+                statement.setInt(7, adSetStatsLoader.getImpressions());
+                statement.setInt(8, adSetStatsLoader.getClicks());
+                statement.setInt(9, adSetStatsLoader.getTotal_Actions());
+                statement.setInt(10, adSetStatsLoader.getSocial_Reach());
+                statement.setInt(11, adSetStatsLoader.getSocial_Impressions());
+                statement.setInt(12, adSetStatsLoader.getUnique_Impressions());
+                statement.setInt(13, adSetStatsLoader.getUnique_Social_Impressions());
+                statement.setDouble(14, adSetStatsLoader.getCPM());
+                statement.setDouble(15, adSetStatsLoader.getCPP());
+                statement.setDouble(16, adSetStatsLoader.getCPC());
+                statement.setDouble(17, adSetStatsLoader.getCTR());
+                statement.setDouble(18, adSetStatsLoader.getSpend());
+                statement.setDate(19, statsdate);
+                statement.setDate(20, Activity_Start_Date);
+                statement.setDate(21, Activity_End_Date);
 
             }
 
