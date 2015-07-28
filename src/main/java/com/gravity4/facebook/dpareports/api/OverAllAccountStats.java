@@ -136,7 +136,7 @@ public class OverAllAccountStats {
             are getting yesterday's datein date_preset field of the curl request*/
 
                     Date Stats_Date = StatisticsDate.getYesterday();
-                    DateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                     String Start_Date = resultData.date_start;
                     String Stop_Date = resultData.date_stop;
                     Date Activity_Start_Date = null;

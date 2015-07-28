@@ -30,9 +30,9 @@ CREATE TABLE `Overall_Account_Statistics_Results` (
   `Client_Reports_CPC` double DEFAULT NULL,
   `Client_Reports_CTR` double DEFAULT NULL,
   `Client_Reports_Spend` double DEFAULT NULL,
-  `Stats_Date` date DEFAULT NULL,
-  `Client_Reports_Ad_Activity_Date_Start` date DEFAULT NULL,
-  `Client_Reports_Ad_Activity_Date_End` date DEFAULT NULL,
+  `Stats_Date` datetime DEFAULT NULL,
+  `Client_Reports_Ad_Activity_Date_Start` datetime DEFAULT NULL,
+  `Client_Reports_Ad_Activity_Date_End` datetime DEFAULT NULL,
   `Client_Cost_Per_Unique_Click` double DEFAULT NULL);
 
 CREATE TABLE `Overall_AdSet_Statistics_Results` (
@@ -55,9 +55,9 @@ CREATE TABLE `Overall_AdSet_Statistics_Results` (
   `Client_Reports_CPC` double DEFAULT NULL,
   `Client_Reports_CTR` double DEFAULT NULL,
   `Client_Reports_Spend` double DEFAULT NULL,
-  `Stats_Date` date DEFAULT NULL,
-  `Client_Reports_Ad_Activity_Date_Start` date DEFAULT NULL,
-  `Client_Reports_Ad_Activity_Date_End` date DEFAULT NULL,
+  `Stats_Date` datetime DEFAULT NULL,
+  `Client_Reports_Ad_Activity_Date_Start` datetime DEFAULT NULL,
+  `Client_Reports_Ad_Activity_Date_End` datetime DEFAULT NULL,
   `Client_Cost_Per_Unique_Click` double DEFAULT NULL);
 
 CREATE TABLE `Overall_Ad_Statistics_Results` (
@@ -80,9 +80,9 @@ CREATE TABLE `Overall_Ad_Statistics_Results` (
   `Client_Reports_CPC` double DEFAULT NULL,
   `Client_Reports_CTR` double DEFAULT NULL,
   `Client_Reports_Spend` double DEFAULT NULL,
-  `Stats_Date` date DEFAULT NULL,
-  `Client_Reports_Ad_Activity_Date_Start` date DEFAULT NULL,
-  `Client_Reports_Ad_Activity_Date_End` date DEFAULT NULL,
+  `Stats_Date` datetime DEFAULT NULL,
+  `Client_Reports_Ad_Activity_Date_Start` datetime DEFAULT NULL,
+  `Client_Reports_Ad_Activity_Date_End` datetime DEFAULT NULL,
   `Client_Cost_Per_Unique_Click` double DEFAULT NULL,
   `Client_Ad_Relevance_Score` double DEFAULT NULL);
 
@@ -107,9 +107,9 @@ CREATE TABLE `Overall_Campaign_Statistics_Results` (
   `Client_Reports_CPC` double DEFAULT NULL,
   `Client_Reports_CTR` double DEFAULT NULL,
   `Client_Reports_Spend` double DEFAULT NULL,
-  `Stats_Date` date DEFAULT NULL,
-  `Client_Reports_Ad_Activity_Date_Start` date DEFAULT NULL,
-  `Client_Reports_Ad_Activity_Date_End` date DEFAULT NULL,
+  `Stats_Date` datetime DEFAULT NULL,
+  `Client_Reports_Ad_Activity_Date_Start` datetime DEFAULT NULL,
+  `Client_Reports_Ad_Activity_Date_End` datetime DEFAULT NULL,
   `Client_Cost_Per_Unique_Click` double DEFAULT NULL);
 
 CREATE TABLE `Product_Account_Statistics_Results` (
@@ -131,9 +131,9 @@ CREATE TABLE `Product_Account_Statistics_Results` (
   `Client_Reports_CPC` double DEFAULT NULL,
   `Client_Reports_CTR` double DEFAULT NULL,
   `Client_Reports_Spend` double DEFAULT NULL,
-  `Stats_Date` date DEFAULT NULL,
-  `Client_Reports_Ad_Activity_Date_Start` date DEFAULT NULL,
-  `Client_Reports_Ad_Activity_Date_End` date DEFAULT NULL);
+  `Stats_Date` datetime DEFAULT NULL,
+  `Client_Reports_Ad_Activity_Date_Start` datetime DEFAULT NULL,
+  `Client_Reports_Ad_Activity_Date_End` datetime DEFAULT NULL);
 
   CREATE TABLE `Product_AdSet_Statistics_Results` (
     `Application_Client_ID` bigint(20) DEFAULT NULL,
@@ -154,9 +154,9 @@ CREATE TABLE `Product_Account_Statistics_Results` (
     `Client_Reports_CPC` double DEFAULT NULL,
     `Client_Reports_CTR` double DEFAULT NULL,
     `Client_Reports_Spend` double DEFAULT NULL,
-    `Stats_Date` date DEFAULT NULL,
-    `Client_Reports_Ad_Activity_Date_Start` date DEFAULT NULL,
-    `Client_Reports_Ad_Activity_Date_End` date DEFAULT NULL);
+    `Stats_Date` datetime DEFAULT NULL,
+    `Client_Reports_Ad_Activity_Date_Start` datetime DEFAULT NULL,
+    `Client_Reports_Ad_Activity_Date_End` datetime DEFAULT NULL);
 
     CREATE TABLE `Product_Ad_Statistics_Results` (
       `Application_Client_ID` bigint(20) DEFAULT NULL,
@@ -178,9 +178,9 @@ CREATE TABLE `Product_Account_Statistics_Results` (
       `Client_Reports_CPC` double DEFAULT NULL,
       `Client_Reports_CTR` double DEFAULT NULL,
       `Client_Reports_Spend` double DEFAULT NULL,
-      `Stats_Date` date DEFAULT NULL,
-      `Client_Reports_Ad_Activity_Date_Start` date DEFAULT NULL,
-      `Client_Reports_Ad_Activity_Date_End` date DEFAULT NULL);
+      `Stats_Date` datetime DEFAULT NULL,
+      `Client_Reports_Ad_Activity_Date_Start` datetime DEFAULT NULL,
+      `Client_Reports_Ad_Activity_Date_End` datetime DEFAULT NULL);
 
       CREATE TABLE `Product_Campaign_Statistics_Results` (
         `Application_Client_ID` bigint(20) DEFAULT NULL,
@@ -201,6 +201,6 @@ CREATE TABLE `Product_Account_Statistics_Results` (
         `Client_Reports_CPC` double DEFAULT NULL,
         `Client_Reports_CTR` double DEFAULT NULL,
         `Client_Reports_Spend` double DEFAULT NULL,
-        `Stats_Date` date DEFAULT NULL,
-        `Client_Reports_Ad_Activity_Date_Start` date DEFAULT NULL,
-        `Client_Reports_Ad_Activity_Date_End` date DEFAULT NULL);
+        `Stats_Date` datetime DEFAULT NULL,
+        `Client_Reports_Ad_Activity_Date_Start` datetime DEFAULT NULL,
+        `Client_Reports_Ad_Activity_Date_End` datetime DEFAULT NULL);
