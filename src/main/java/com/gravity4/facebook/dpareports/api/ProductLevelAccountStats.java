@@ -138,7 +138,7 @@ public class ProductLevelAccountStats {
 
                     Date Stats_Date = StatisticsDate.getYesterday();
 
-                    DateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                     String Start_Date = data.date_start;
                     String Stop_Date = data.date_stop;
                     Date Activity_Start_Date = null;

@@ -38,7 +38,7 @@ public class ProductLevelAdSetCSVWriter {
         String File_Starting_Name="DPAStats";
 
         //create File object
-        File file = new File("src/main/ReportFiles/"+File_Starting_Name+page_id+"_"+"ProductLevelAdSetStats_"+Stats_date+".csv");
+        File file = new File("src/main/ReportFiles/csv_Files/"+File_Starting_Name+"_"+"ProductLevelAdSetStats_"+Stats_date+".csv");
 
         /*
      * To actually create a file specified by a pathname, use
