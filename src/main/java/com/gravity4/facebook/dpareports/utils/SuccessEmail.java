@@ -16,8 +16,6 @@ import java.io.IOException;
 @SuppressWarnings("unchecked")
 public class SuccessEmail {
 
-    @Value("${smtp.receivermailaddress}")
-    String receiveremailaddress;
     @Value("${smtp.hostname}")
     String hostname;
     @Value("${smtp.smtpport}")
@@ -34,7 +32,7 @@ public class SuccessEmail {
     private SuccessEmail() {
     }
 
-    public void sendemail(String subject, String message, Long Client_ID,String filename,String Client_Name) throws IOException {
+    public void sendemail(String subject, String message, Long Client_ID,String filename,String Client_Name,String receiver_email) throws IOException {
 
         Logger logger = LoggerFactory.getLogger(SuccessEmail.class);
 
@@ -62,7 +60,7 @@ public class SuccessEmail {
                 email.setFrom(sendermailaddress, sendermailname);
                 email.setSubject(subject + Client_Name + "_" + Client_ID);
                 email.setMsg(message + Client_Name+"_"+Client_ID);
-                email.addTo(receiveremailaddress);
+                email.addTo(receiver_email);
                 // add the attachment
                 email.attach(attachment);
                 email.send();

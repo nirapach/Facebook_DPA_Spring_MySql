@@ -10,6 +10,14 @@ CREATE TABLE `Account_Information_Master` (
   PRIMARY KEY (`Application_Client_ID`)
 );
 
+CREATE TABLE `Account_Email_List` (
+  `Email_ID` varchar(45) NOT NULL,
+  `Client_ID` bigint(45) DEFAULT NULL,
+  `Client_Name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`Email_ID`),
+  KEY `Application_Page_ID_idx` (`Client_ID`),
+  CONSTRAINT `Client_Ad_Account_fk` FOREIGN KEY (`Client_ID`) REFERENCES `Account_Information_Master` (`Business_Manager_Ad_Account_ID`) ON DELETE CASCADE ON UPDATE CASCADE);
+
 CREATE TABLE `Overall_Account_Statistics_Results` (
   `Application_Client_ID` bigint(20) DEFAULT '0',
   `Application_Ad_Account_ID` bigint(20) DEFAULT NULL,

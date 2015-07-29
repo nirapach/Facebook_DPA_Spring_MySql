@@ -99,7 +99,7 @@ public class ProductLevelAdGroupStats {
         To check for OAuth Token Expiration
          */
 
-            status = oAuthExpirationTokenChecker.checkOAuthTokenException(reader, Client_ID);
+            status = oAuthExpirationTokenChecker.checkOAuthTokenException(reader, Client_ID,Account_ID_Integer);
 
 
             if (status) {
