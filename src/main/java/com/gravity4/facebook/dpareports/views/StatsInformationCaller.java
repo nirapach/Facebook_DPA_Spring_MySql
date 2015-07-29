@@ -187,7 +187,6 @@ public class StatsInformationCaller {
 
         //create the Excel file in the filesystem
         String Excel_File_Name = csvToExcel.getExcelFileName(Client_Name);
-        System.out.println("Excel File Name:"+Excel_File_Name);
 
         for(int i=0; i < number_of_files; i++){
 
