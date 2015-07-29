@@ -6,6 +6,7 @@ package com.gravity4.facebook.dpareports.views;
 
 import com.gravity4.facebook.dpareports.api.*;
 import com.gravity4.facebook.dpareports.dao.AccountInformationDAO;
+import com.gravity4.facebook.dpareports.model.AccountEmailLoader;
 import com.gravity4.facebook.dpareports.model.AccountInformationLoader;
 import com.gravity4.facebook.dpareports.utils.CSVToExcel;
 import com.gravity4.facebook.dpareports.utils.SuccessEmail;
@@ -36,8 +37,11 @@ public class StatsInformationCaller {
 
         List<AccountInformationLoader> accountInformationLoaderList;
 
+
         try {
+            //get the account information
             accountInformationLoaderList = accountInformationDAO.getAccountInformation();
+
             for (AccountInformationLoader accountInformationLoader : accountInformationLoaderList) {
                 /*
                 call this method to get each account ID from the table
@@ -106,7 +110,7 @@ public class StatsInformationCaller {
         /*
         Calling the method to get Campaign Level Statistics
          */
-        String campaignstats = productLevelCampaignStats.getCampaignstats(Ad_Account_ID_Integer,Client_ID_Integer, Access_Token);
+        String campaignstats = productLevelCampaignStats.getCampaignstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
 
          /*
         Calling the method to get OverAllCampaign Level Statistics
@@ -133,55 +137,6 @@ public class StatsInformationCaller {
         */
         String overalladgroupstats = overAllAdGroupStats.getOverAllAdGroupstats(Ad_Account_ID_Integer, Client_ID_Integer, Access_Token);
 
-        /*
-
-        //right now just the sample code is given,need to finalize on the email list and the subject header
-        if (accountstats!=null) {
-            logger.info("Sending Email Notification for accountstats");
-            successEmail.sendemail("Account Statistics at Product Level Succesfully stored for Client Page:",
-                    "Account Statistics at Product Level Succesfully stored for Client Page:", client_id,accountstats,Client_Name);
-        }
-        //right now just the sample code is given,need to finalize on the email list and the subject header
-        if (overallaccountstats!=null) {
-            successEmail.sendemail("Account Statistics Overall Succesfully stored for Client Page:",
-                    "Account Statistics Overall Succesfully stored for Client Page:", client_id,overallaccountstats,Client_Name);
-        }
-
-
-        if (campaignstats!=null) {
-
-            successEmail.sendemail("Campaign Statistics at Product Level Succesfully stored for Client:",
-                    "Campaign Statistics at Product Level Succesfully stored for Client:", client_id,campaignstats,Client_Name);
-        }
-
-        if (overallcampaignstats!=null) {
-            successEmail.sendemail("Campaign Statistics Overall Succesfully stored for Client:",
-                    "Campaign Statistics Overall Succesfully stored for Client:", client_id,overallcampaignstats,Client_Name);
-        }
-
-        if (adsetstats!=null) {
-            successEmail.sendemail("Adset Statistics at Product Level Succesfully stored for Client:",
-                    "Adset Statistics at Product Level Succesfully stored for Client:", client_id,adsetstats,Client_Name);
-        }
-
-        if (overalladsetstats!=null) {
-
-            successEmail.sendemail("Adset Statistics overall Succesfully stored for Client:",
-                    "Adset Statistics overall Succesfully stored for Client:", client_id,overalladsetstats,Client_Name);
-        }
-
-        if (adgroupstats!=null) {
-
-            successEmail.sendemail("AdGroup Statistics at Product Level Succesfully stored for Client:",
-                    "AdGroup Statistics at Product Level Succesfully stored for Client:", client_id,adgroupstats,Client_Name);
-        }
-
-        if (overalladgroupstats!=null) {
-
-            successEmail.sendemail("AdGroup Statistics Overall Succesfully stored for Client:",
-                    "AdGroup Statistics Overall Succesfully stored for Client:", client_id,overalladgroupstats,Client_Name);
-        }
-        */
         //adding all the csv files absolute path to the list to add them into a excel file
         List<String> csvfiles = new ArrayList<String>();
 
@@ -201,10 +156,23 @@ public class StatsInformationCaller {
                 csvfiles.add(overalladgroupstats);
 
                 String Excel_File_Name = getExcelFile(csvfiles,Client_Name);
+                logger.info("Excel File Created:" + Excel_File_Name);
 
-                successEmail.sendemail("DPA Statistics Succesfully stored for Client:",
-                        "DPA Statistics Succesfully stored for Client:", client_id,Excel_File_Name,Client_Name);
-            }
+
+                List<AccountEmailLoader> accountEmailLoaderList;
+
+                //get the mailing list
+                accountEmailLoaderList = accountInformationDAO.getAccountEmailInformation(Ad_Account_ID_Integer);
+
+                for (AccountEmailLoader accountEmailLoader : accountEmailLoaderList) {
+
+                    String receiver_email_address = accountEmailLoader.getEmail_ID();
+
+                    successEmail.sendemail("DPA Statistics Succesfully stored for Client:",
+                            "DPA Statistics Succesfully stored for Client:", client_id, Excel_File_Name, Client_Name,receiver_email_address);
+                }
+                }
+
 
     }
 
@@ -222,6 +190,7 @@ public class StatsInformationCaller {
         System.out.println("Excel File Name:"+Excel_File_Name);
 
         for(int i=0; i < number_of_files; i++){
+
             String csv_name=csvfiles.get(i).toString();
             String second_part=csv_name.split("DPAStats")[1];
             int start_index=second_part.indexOf("_");
