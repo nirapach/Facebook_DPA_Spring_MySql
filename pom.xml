@@ -111,30 +111,6 @@
             </plugin>
 
 
-            <!-- Resources plugin for accessing the csv files  -->
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>../lib</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/ReportFiles</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-
             <!-- Pluin for maven execution -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

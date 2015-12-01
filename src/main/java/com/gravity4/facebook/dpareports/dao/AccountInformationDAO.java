@@ -4,8 +4,8 @@ package com.gravity4.facebook.dpareports.dao;
  * Created by niranjan on 6/18/15.
  */
 
-import com.gravity4.facebook.dpareports.model.AccountEmailLoader;
-import com.gravity4.facebook.dpareports.model.AccountInformationLoader;
+import com.gravity4.facebook.dpareports.model.APImodels.AccountEmailLoader;
+import com.gravity4.facebook.dpareports.model.APImodels.AccountInformationLoader;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -56,11 +56,11 @@ public class AccountInformationDAO extends BaseDAO {
         return getJdbcTemplate().query(query, rowMapper);
     }
 
-    public List<AccountEmailLoader> getAccountEmailInformation(long ad_account_id){
+    public List<AccountEmailLoader> getAccountEmailInformation(long ad_page_id){
 
 
 
-        String query = "select Email_ID,Client_ID,Client_Name from Account_Email_List where Client_ID="+ad_account_id;
+        String query = "select Email_ID,Client_ID,Client_Name from Account_Email_List where Client_ID="+ad_page_id;
 
         return getJdbcTemplate().query(query, rowMapperemail);
     }

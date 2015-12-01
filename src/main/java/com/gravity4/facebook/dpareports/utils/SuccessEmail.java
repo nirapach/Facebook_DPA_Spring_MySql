@@ -32,19 +32,20 @@ public class SuccessEmail {
     private SuccessEmail() {
     }
 
-    public void sendemail(String subject, String message, Long Client_ID,String filename,String Client_Name,String receiver_email) throws IOException {
+    public void sendemail(String subject, String message, Long Client_ID,String filename,String Client_Name,
+                          String receiver_email) throws IOException {
 
         Logger logger = LoggerFactory.getLogger(SuccessEmail.class);
 
         String att=filename;
-        String[] split=att.split("/Excel_Files/");
+        String[] split=att.split("/dpafiles/excel/");
         String att_name=split[1];
 
         EmailAttachment attachment = new EmailAttachment();
         attachment.setPath(filename);
         attachment.setDisposition(EmailAttachment.ATTACHMENT);
         attachment.setDescription("DPA Campaign Reports");
-        attachment.setName(att_name);
+        attachment.setName("DPA"+att_name);
 
         MultiPartEmail email = new MultiPartEmail();
 

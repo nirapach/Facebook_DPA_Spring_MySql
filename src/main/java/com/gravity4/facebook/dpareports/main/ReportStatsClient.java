@@ -23,8 +23,11 @@ public class ReportStatsClient {
 
     public static void main(String args[]) throws IOException, PropertyVetoException {
 
+        String csv_files_address=args[0];
+        String excel_files_address=args[1];
+
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("dpa-reports-app-context.xml");
-        context.getBean(ReportStatsClient.class).statsInformationCaller.getAccountInformation();
+        context.getBean(ReportStatsClient.class).statsInformationCaller.getAccountInformation(csv_files_address,excel_files_address);
     }
 
 }
